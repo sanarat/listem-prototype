@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ListEm – เลือกบทบาท</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F5F4}
+a{color:#1D4E9E}a:hover{color:#12372A}
+button{font-family:inherit}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<template id="tpl">
+
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap; font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #1B2420; background: #F3F5F4; font-size: 15px; line-height: 1.5">
+
+<section style="flex: 1 1 400px; box-sizing: border-box; background: #12372A; color: #FFFFFF; padding: clamp(28px, 5vw, 64px); display: flex; flex-direction: column; gap: 40px; justify-content: space-between">
+<div style="display: flex; align-items: center; gap: 12px">
+<svg width="40" height="40" viewBox="0 0 36 36" aria-hidden="true"><rect x="0" y="0" width="36" height="36" rx="9" fill="#E3A23B"></rect><path d="M8 25 L15 14 L19 19 L22 15 L28 25 Z" fill="none" stroke="#12372A" stroke-width="2.4" stroke-linejoin="round"></path><path d="M8 25 H28" stroke="#12372A" stroke-width="2.4" stroke-linecap="round"></path></svg>
+<div>
+<div style="font-weight: 700; font-size: 21px">ListEm</div>
+<div style="font-size: 13px; color: #B9CCC3">{{t.brandSub}}</div>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 520px">
+<div style="font-size: 13px; letter-spacing: 1px; color: #E3A23B; font-weight: 600">{{t.eyebrow}}</div>
+<h1 style="margin: 0; font-size: clamp(30px, 3.6vw, 44px); line-height: 1.25; font-weight: 700">{{t.hero}}</h1>
+<p style="margin: 0; color: #CFDDD6; font-size: 16px">{{t.heroSub}}</p>
+</div>
+<div style="background: rgba(255,255,255,0.08); border-radius: 12px; padding: 16px 18px; max-width: 420px">
+<div style="font-size: 12px; color: #B9CCC3">{{t.projectLabel}}</div>
+<div style="font-weight: 600; font-size: 17px">{{t.projectName}}</div>
+<div style="font-size: 13px; color: #B9CCC3">{{t.projectMeta}}</div>
+</div>
+</section>
+
+<main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: clamp(24px, 4vw, 56px) clamp(16px, 4vw, 64px); display: flex; flex-direction: column; gap: 24px; justify-content: center">
+<div style="display: flex; justify-content: flex-end">
+<div role="group" aria-label="Language" style="display: flex; border: 1px solid #CBD3CF; border-radius: 8px; overflow: hidden; background: #FFFFFF">
+<button type="button" onClick="{{setTh}}" aria-pressed="{{langBtn.th.pressed}}" style="min-width: 48px; min-height: 40px; border: 0; cursor: pointer; font-size: 13px; font-weight: 600; background: {{langBtn.th.bg}}; color: {{langBtn.th.fg}}">ไทย</button>
+<button type="button" onClick="{{setEn}}" aria-pressed="{{langBtn.en.pressed}}" style="min-width: 48px; min-height: 40px; border: 0; cursor: pointer; font-size: 13px; font-weight: 600; background: {{langBtn.en.bg}}; color: {{langBtn.en.fg}}">EN</button>
+</div>
+</div>
+<div>
+<h2 style="margin: 0; font-size: 26px; color: #12372A">{{t.chooseRole}}</h2>
+<p style="margin: 4px 0 0; color: #55625C">{{t.chooseSub}}</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 720px">
+<a href="agent.html" style="display: flex; gap: 18px; align-items: flex-start; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 14px; padding: 20px 22px; text-decoration: none; color: #1B2420">
+<div aria-hidden="true" style="flex: none; width: 48px; height: 48px; border-radius: 12px; background: #FCEFD9; color: #8A4B00; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"></path></svg></div>
+<div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 18px; font-weight: 700; color: #12372A">{{t.r1t}}</div>
+<div style="color: #3D4843">{{t.r1d}}</div>
+<div style="font-size: 13px; color: #55625C">{{t.r1f}}</div>
+</div>
+<div aria-hidden="true" style="flex: none; align-self: center; color: #12372A; font-size: 22px">→</div>
+</a>
+<a href="staff.html" style="display: flex; gap: 18px; align-items: flex-start; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 14px; padding: 20px 22px; text-decoration: none; color: #1B2420">
+<div aria-hidden="true" style="flex: none; width: 48px; height: 48px; border-radius: 12px; background: #DCE8FB; color: #1D4E9E; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7M5 10v10h14V10M10 20v-6h4v6"></path></svg></div>
+<div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 18px; font-weight: 700; color: #12372A">{{t.r2t}}</div>
+<div style="color: #3D4843">{{t.r2d}}</div>
+<div style="font-size: 13px; color: #55625C">{{t.r2f}}</div>
+</div>
+<div aria-hidden="true" style="flex: none; align-self: center; color: #12372A; font-size: 22px">→</div>
+</a>
+<a href="admin.html" style="display: flex; gap: 18px; align-items: flex-start; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 14px; padding: 20px 22px; text-decoration: none; color: #1B2420">
+<div aria-hidden="true" style="flex: none; width: 48px; height: 48px; border-radius: 12px; background: #D7EEDF; color: #155B34; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"></path></svg></div>
+<div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<div style="font-size: 18px; font-weight: 700; color: #12372A">{{t.r3t}}</div>
+<div style="color: #3D4843">{{t.r3d}}</div>
+<div style="font-size: 13px; color: #55625C">{{t.r3f}}</div>
+</div>
+<div aria-hidden="true" style="flex: none; align-self: center; color: #12372A; font-size: 22px">→</div>
+</a>
+</div>
+<div role="note" style="max-width: 720px; box-sizing: border-box; background: #FFF8EA; border: 1px solid #EED6A2; color: #6B4A0E; border-radius: 8px; padding: 8px 12px; font-size: 13px">{{t.sample}}</div>
+</main>
+</div>
+</template>
+<script src="assets/react.production.min.js"></script>
+<script src="assets/react-dom.production.min.js"></script>
+<script src="assets/dc-runtime.js"></script>
+<script>
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { lang: 'th' };
+  }
+  renderVals() {
+    const li = this.state.lang === 'th' ? 0 : 1;
+    const D = {
+      brandSub: ['ระบบบริหารงานขายโครงการ', 'Project sales management'],
+      eyebrow: ['ต้นแบบระบบ · PROTOTYPE', 'SYSTEM PROTOTYPE'],
+      hero: ['บริหารการขายพูลวิลล่าและที่ดิน ครบในระบบเดียว', 'Pool villa and land sales, managed in one place'],
+      heroSub: ['เชื่อมตัวแทนฝ่ายขาย เจ้าหน้าที่โครงการ และผู้ดูแลระบบ ตั้งแต่ชวนทีมงาน นัดชมโครงการ ปิดการขาย รับเงิน จนถึงจ่ายค่าคอมมิชชัน', 'Connects sales agents, project staff and system admins — from recruiting and site visits to closing, collecting payments and paying commission.'],
+      projectLabel: ['โครงการ', 'Project'],
+      projectName: ['[ชื่อโครงการ]', '[Project name]'],
+      projectMeta: ['พูลวิลล่า · ที่ดินจัดสรร', 'Pool villas · Serviced land'],
+      chooseRole: ['เลือกบทบาทเพื่อเข้าสู่ระบบ', 'Choose a role to sign in'],
+      chooseSub: ['ต้นแบบนี้จำลองการเข้าสู่ระบบตามสิทธิ์ของผู้ใช้แต่ละประเภท', 'This prototype simulates sign-in for each user type'],
+      r1t: ['ตัวแทนฝ่ายขาย', 'Sales agent'],
+      r1d: ['ดูข้อมูลทรัพย์ นัดลูกค้าชมโครงการ ติดตามยอดขายและค่าคอมมิชชัน', 'Browse listings, book site visits, track sales and commission'],
+      r1f: ['โปรไฟล์ · ผังสายงาน · นัดหมาย · ประวัติการขาย · กิจกรรม · ข้อมูลทรัพย์ · ลงทะเบียน Overview / อบรม', 'Profile · Team tree · Visits · Sales history · Activities · Listings · Overview / training sign-up'],
+      r2t: ['เจ้าหน้าที่โครงการ', 'Project staff'],
+      r2d: ['จัดการทรัพย์ ตัวแทน การขาย การรับเงิน และการจ่ายค่าคอมมิชชัน', 'Manage listings, agents, sales, payments and commission'],
+      r2f: ['ทรัพย์ · ตัวแทน · นัดหมาย · ปิดการขาย · รับเงินลูกค้า · ค่าคอมฯ · กิจกรรม · Overview · อบรม', 'Listings · Agents · Visits · Closings · Customer payments · Commission · Activities · Overview · Training'],
+      r3t: ['System admin', 'System admin'],
+      r3d: ['จัดการบัญชีผู้ใช้ของเจ้าหน้าที่โครงการและตัวแทนฝ่ายขาย', 'Manage user accounts for project staff and sales agents'],
+      r3f: ['ผู้ใช้เจ้าหน้าที่ · ผู้ใช้ตัวแทนขาย', 'Staff users · Agent users'],
+      sample: ['ข้อมูลทั้งหมดในต้นแบบนี้เป็นข้อมูลตัวอย่างสำหรับการนำเสนอเท่านั้น', 'All data in this prototype is sample data for presentation only.']
+    };
+    const t = {};
+    Object.keys(D).forEach((k) => { t[k] = D[k][li]; });
+    const seg = (on) => ({ bg: on ? '#12372A' : '#FFFFFF', fg: on ? '#FFFFFF' : '#1B2420', pressed: on ? 'true' : 'false' });
+    return {
+      t: t,
+      langBtn: { th: seg(li === 0), en: seg(li === 1) },
+      setTh: () => this.setState({ lang: 'th' }),
+      setEn: () => this.setState({ lang: 'en' })
+    };
+  }
+}
+
+DC.mount(Component);
+</script>
+</body>
+</html>

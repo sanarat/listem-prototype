@@ -1,0 +1,1039 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ListEm – ตัวแทนฝ่ายขาย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F5F4}
+a{color:#1D4E9E}a:hover{color:#12372A}
+button,input,select,textarea{font-family:inherit}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<template id="tpl">
+
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap; font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #1B2420; background: #F3F5F4; font-size: 15px; line-height: 1.5">
+
+<nav aria-label="{{t.navAria}}" style="flex: 1 1 240px; box-sizing: border-box; background: #12372A; color: #FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: center; gap: 12px; padding: 0 8px">
+<svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><rect x="0" y="0" width="36" height="36" rx="9" fill="#E3A23B"></rect><path d="M8 25 L15 14 L19 19 L22 15 L28 25 Z" fill="none" stroke="#12372A" stroke-width="2.4" stroke-linejoin="round"></path><path d="M8 25 H28" stroke="#12372A" stroke-width="2.4" stroke-linecap="round"></path></svg>
+<div>
+<div style="font-weight: 700; font-size: 19px">ListEm</div>
+<div style="font-size: 12px; color: #B9CCC3">{{t.roleName}}</div>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.08); border-radius: 10px; padding: 12px">
+<div aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 50%; background: #E3A23B; color: #12372A; display: flex; align-items: center; justify-content: center; font-weight: 700">{{me.initial}}</div>
+<div style="min-width: 0">
+<div style="font-weight: 600">{{me.name}}</div>
+<div style="font-size: 12px; color: #B9CCC3">{{me.code}} · {{t.commissionShort}} {{me.tier}}</div>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<template data-k="for" list="{{navMain}}" as="n" hint-placeholder-count="6">
+<button type="button" onClick="{{n.go}}" aria-current="{{n.cur}}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border: 0; border-radius: 8px; cursor: pointer; text-align: left; font-size: 14px; font-weight: 500; background: {{n.bg}}; color: {{n.fg}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.d}}"></path></svg>{{n.label}}</button>
+</template>
+<div style="font-size: 12px; color: #B9CCC3; padding: 14px 12px 4px">{{t.grpRecruit}}</div>
+<template data-k="for" list="{{navRecruit}}" as="n" hint-placeholder-count="2">
+<button type="button" onClick="{{n.go}}" aria-current="{{n.cur}}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border: 0; border-radius: 8px; cursor: pointer; text-align: left; font-size: 14px; font-weight: 500; background: {{n.bg}}; color: {{n.fg}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.d}}"></path></svg>{{n.label}}</button>
+</template>
+</div>
+<a href="index.html" style="margin-top: auto; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; border-radius: 8px; color: #E6EEEA; text-decoration: none; font-size: 14px; border: 1px solid rgba(255,255,255,0.2)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"></path></svg>{{t.switchRole}}</a>
+</nav>
+
+<main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 28px clamp(16px, 3vw, 40px) 56px; display: flex; flex-direction: column; gap: 20px">
+<header style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+<div>
+<h1 style="margin: 0; font-size: 26px; font-weight: 700; color: #12372A; line-height: 1.3">{{page.title}}</h1>
+<p style="margin: 4px 0 0; color: #55625C">{{page.sub}}</p>
+</div>
+<div role="group" aria-label="Language" style="display: flex; border: 1px solid #CBD3CF; border-radius: 8px; overflow: hidden; background: #FFFFFF">
+<button type="button" onClick="{{setTh}}" aria-pressed="{{langBtn.th.pressed}}" style="min-width: 48px; min-height: 40px; border: 0; cursor: pointer; font-size: 13px; font-weight: 600; background: {{langBtn.th.bg}}; color: {{langBtn.th.fg}}">ไทย</button>
+<button type="button" onClick="{{setEn}}" aria-pressed="{{langBtn.en.pressed}}" style="min-width: 48px; min-height: 40px; border: 0; cursor: pointer; font-size: 13px; font-weight: 600; background: {{langBtn.en.bg}}; color: {{langBtn.en.fg}}">EN</button>
+</div>
+</header>
+<div role="note" style="background: #FFF8EA; border: 1px solid #EED6A2; color: #6B4A0E; border-radius: 8px; padding: 8px 12px; font-size: 13px">{{t.sample}}</div>
+<template data-k="if" value="{{warn.show}}" hint-placeholder-val="{{ true }}">
+<div role="alert" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; background: #FBE1DD; border: 1px solid #EDB7AE; color: #6E2015; border-radius: 10px; padding: 10px 14px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3l10 18H2zM12 10v5M12 18v.01"></path></svg>
+<div style="flex: 1 1 260px; font-size: 14px">{{t.warnText}}</div>
+<button type="button" onClick="{{goActivity}}" style="min-height: 40px; padding: 0 14px; border: 0; border-radius: 8px; background: #8E2B1E; color: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">{{t.warnBtn}}</button>
+</div>
+</template>
+
+<template data-k="if" value="{{show.profile}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px">
+<template data-k="for" list="{{profileKpis}}" as="k" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 16px 18px">
+<div style="font-size: 13px; color: #55625C">{{k.label}}</div>
+<div style="font-size: 26px; font-weight: 700; color: #12372A; font-variant-numeric: tabular-nums; line-height: 1.35">{{k.value}}</div>
+</div>
+</template>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<section style="flex: 999 1 420px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px">
+<div aria-hidden="true" style="width: 64px; height: 64px; border-radius: 50%; background: #12372A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 700">{{me.initial}}</div>
+<div style="flex: 1 1 200px">
+<h2 style="margin: 0; font-size: 21px; color: #12372A">{{me.name}}</h2>
+<div style="color: #55625C; font-size: 14px">{{me.code}} · {{t.roleName}}</div>
+</div>
+<button type="button" onClick="{{editProfile}}" style="min-height: 44px; padding: 0 16px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 14px; font-weight: 600; cursor: pointer">{{t.editProfile}}</button>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px 24px">
+<template data-k="for" list="{{profileInfo}}" as="i" hint-placeholder-count="8">
+<div style="border-bottom: 1px solid #EEF1EF; padding-bottom: 10px">
+<div style="font-size: 12px; color: #55625C">{{i.k}}</div>
+<div style="font-weight: 500">{{i.v}}</div>
+</div>
+</template>
+</div>
+</section>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<section style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.tierTitle}}</h2>
+<div style="display: flex; align-items: baseline; gap: 10px">
+<div style="font-size: 44px; font-weight: 700; color: #12372A; line-height: 1">{{me.tier}}</div>
+<div style="color: #55625C; font-size: 14px">{{t.tierCurrentLbl}}</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<template data-k="for" list="{{tiers}}" as="r" hint-placeholder-count="3">
+<div style="border-radius: 10px; padding: 10px; text-align: center; border: 2px solid {{r.bd}}; background: {{r.bg}}">
+<div style="font-size: 20px; font-weight: 700; color: {{r.fg}}">{{r.pct}}</div>
+<div style="font-size: 12px; color: #3D4843">{{r.range}}</div>
+</div>
+</template>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; justify-content: space-between; font-size: 13px"><span style="color: #55625C">{{t.teamProgress}}</span><span style="font-weight: 600">{{prog.label}}</span></div>
+<div aria-hidden="true" style="height: 10px; border-radius: 5px; background: #EEF1EF; overflow: hidden"><div style="height: 100%; width: {{prog.w}}; background: #E3A23B"></div></div>
+<div style="font-size: 13px; color: #3D4843">{{prog.text}}</div>
+</div>
+</section>
+<section style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.fileTitle}}</h2>
+<div style="display: flex; align-items: center; gap: 12px; background: #F7F9F8; border-radius: 10px; padding: 12px">
+<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#8E2B1E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5"></path></svg>
+<div style="min-width: 0">
+<div style="font-weight: 600; font-size: 14px; word-break: break-all">สัญญาตัวแทนขาย_AG-1007.pdf</div>
+<div style="font-size: 12px; color: #55625C">{{t.fileMeta}}</div>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" onClick="{{viewFile}}" style="min-height: 44px; padding: 0 14px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 13px; font-weight: 600; cursor: pointer">{{t.viewFile}}</button>
+<button type="button" onClick="{{viewFile}}" style="min-height: 44px; padding: 0 14px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 13px; font-weight: 600; cursor: pointer">{{t.download}}</button>
+</div>
+</section>
+</div>
+</div>
+</div>
+</template>
+
+<template data-k="if" value="{{show.tree}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px">
+<template data-k="for" list="{{treeKpis}}" as="k" hint-placeholder-count="3">
+<div style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 16px 18px">
+<div style="font-size: 13px; color: #55625C">{{k.label}}</div>
+<div style="font-size: 26px; font-weight: 700; color: #12372A; font-variant-numeric: tabular-nums; line-height: 1.35">{{k.value}}</div>
+</div>
+</template>
+</div>
+<section aria-label="{{t.treeTitle}}" style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: baseline">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.treeTitle}}</h2>
+<div style="font-size: 13px; color: #55625C">{{t.treeLegend}}</div>
+</div>
+<div style="overflow-x: auto">
+<div style="min-width: max-content; display: flex; flex-direction: column; align-items: center; padding: 8px 8px 4px">
+<div style="width: 176px; box-sizing: border-box; border: 1px dashed #B9C6C0; background: #F7F9F8; border-radius: 10px; padding: 8px 10px; text-align: center">
+<div style="font-size: 12px; color: #55625C">{{t.uplineTag}} · {{up.code}}</div>
+<div style="font-weight: 600; font-size: 14px; color: #3D4843">{{up.name}}</div>
+</div>
+<div aria-hidden="true" style="width: 2px; height: 20px; background: #B9C6C0"></div>
+<div style="width: 176px; box-sizing: border-box; border: 2px solid #12372A; background: #12372A; color: #FFFFFF; border-radius: 10px; padding: 10px 12px; text-align: center; display: flex; flex-direction: column; gap: 2px">
+<div style="font-size: 12px; color: #CFDDD6">{{root.code}} · {{t.youTag}}</div>
+<div style="font-weight: 700; font-size: 15px">{{root.name}}</div>
+<div style="font-size: 12px; color: #CFDDD6">{{root.stat}}</div>
+<span style="align-self: center; margin-top: 4px; padding: 1px 10px; border-radius: 999px; background: #E3A23B; color: #12372A; font-size: 12px; font-weight: 700">{{root.tier}}</span>
+</div>
+<div aria-hidden="true" style="width: 2px; height: 20px; background: #B9C6C0"></div>
+<div style="display: flex; justify-content: center">
+<template data-k="for" list="{{l1}}" as="c" hint-placeholder-count="3">
+<div style="position: relative; display: flex; flex-direction: column; align-items: center; padding: 0 8px">
+<div aria-hidden="true" style="position: absolute; top: 0; height: 2px; background: #B9C6C0; left: {{c.hl}}; right: {{c.hr}}"></div>
+<div aria-hidden="true" style="width: 2px; height: 20px; background: #B9C6C0"></div>
+<div style="width: 168px; box-sizing: border-box; border: 1px solid #CBD3CF; background: #FFFFFF; border-radius: 10px; padding: 10px 12px; text-align: center; display: flex; flex-direction: column; gap: 2px">
+<div style="font-size: 12px; color: #55625C">{{c.code}}</div>
+<div style="font-weight: 600; font-size: 14px">{{c.name}}</div>
+<div style="font-size: 12px; color: #3D4843">{{c.stat}}</div>
+<span style="align-self: center; margin-top: 4px; padding: 1px 10px; border-radius: 999px; background: {{c.tbg}}; color: {{c.tfg}}; font-size: 12px; font-weight: 700">{{c.tier}}</span>
+</div>
+<template data-k="if" value="{{c.hasKids}}" hint-placeholder-val="{{ true }}">
+<div aria-hidden="true" style="width: 2px; height: 20px; background: #B9C6C0"></div>
+<div style="display: flex; justify-content: center">
+<template data-k="for" list="{{c.kids}}" as="k" hint-placeholder-count="2">
+<div style="position: relative; display: flex; flex-direction: column; align-items: center; padding: 0 8px">
+<div aria-hidden="true" style="position: absolute; top: 0; height: 2px; background: #B9C6C0; left: {{k.hl}}; right: {{k.hr}}"></div>
+<div aria-hidden="true" style="width: 2px; height: 20px; background: #B9C6C0"></div>
+<div style="width: 160px; box-sizing: border-box; border: 1px solid #E1E6E3; background: #F7F9F8; border-radius: 10px; padding: 10px 12px; text-align: center; display: flex; flex-direction: column; gap: 2px">
+<div style="font-size: 12px; color: #55625C">{{k.code}}</div>
+<div style="font-weight: 600; font-size: 14px">{{k.name}}</div>
+<div style="font-size: 12px; color: #3D4843">{{k.stat}}</div>
+<span style="align-self: center; margin-top: 4px; padding: 1px 10px; border-radius: 999px; background: {{k.tbg}}; color: {{k.tfg}}; font-size: 12px; font-weight: 700">{{k.tier}}</span>
+</div>
+</div>
+</template>
+</div>
+</template>
+</div>
+</template>
+</div>
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; color: #55625C">{{t.treeNote}}</p>
+</section>
+</div>
+</template>
+
+<template data-k="if" value="{{show.appt}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<div role="group" aria-label="{{t.n_appt}}" style="display: flex; gap: 8px; flex-wrap: wrap">
+<template data-k="for" list="{{apptTabs}}" as="f" hint-placeholder-count="2">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 40px; padding: 0 16px; border-radius: 999px; cursor: pointer; font-size: 13px; font-weight: 600; border: 1px solid {{f.bd}}; background: {{f.bg}}; color: {{f.fg}}">{{f.label}}</button>
+</template>
+</div>
+<button type="button" onClick="{{openAppt}}" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>{{t.newAppt}}</button>
+</div>
+<template data-k="if" value="{{showAppt}}" hint-placeholder-val="{{ false }}">
+<section aria-label="{{t.newAppt}}" style="background: #FFFFFF; border: 1px solid #CBD3CF; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.newAppt}}</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ap-name" style="font-size: 13px; font-weight: 600">{{t.fCust}} *</label><input id="ap-name" type="text" value="{{af.name}}" onChange="{{setAf.name}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ap-phone" style="font-size: 13px; font-weight: 600">{{t.fPhone}} *</label><input id="ap-phone" type="tel" value="{{af.phone}}" onChange="{{setAf.phone}}" placeholder="08x-xxx-xxxx" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ap-date" style="font-size: 13px; font-weight: 600">{{t.fDate}} *</label><input id="ap-date" type="date" value="{{af.date}}" onChange="{{setAf.date}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ap-time" style="font-size: 13px; font-weight: 600">{{t.fTime}}</label><select id="ap-time" value="{{af.time}}" onChange="{{setAf.time}}" style="min-height: 44px; padding: 0 10px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF"><template data-k="for" list="{{timeOptions}}" as="o" hint-placeholder-count="5"><option value="{{o}}">{{o}}</option></template></select></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ap-people" style="font-size: 13px; font-weight: 600">{{t.fPeople}}</label><input id="ap-people" type="number" min="1" value="{{af.people}}" onChange="{{setAf.people}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ap-prop" style="font-size: 13px; font-weight: 600">{{t.fProp}}</label><select id="ap-prop" value="{{af.prop}}" onChange="{{setAf.prop}}" style="min-height: 44px; padding: 0 10px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF"><template data-k="for" list="{{propOptions}}" as="o" hint-placeholder-count="5"><option value="{{o.id}}">{{o.name}}</option></template></select></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ap-note" style="font-size: 13px; font-weight: 600">{{t.fNote}}</label><textarea id="ap-note" rows="2" value="{{af.note}}" onChange="{{setAf.note}}" style="padding: 10px 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; resize: vertical"></textarea></div>
+<div style="display: flex; gap: 10px; flex-wrap: wrap">
+<button type="button" onClick="{{saveAppt}}" style="min-height: 44px; padding: 0 20px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">{{t.save}}</button>
+<button type="button" onClick="{{closeAppt}}" style="min-height: 44px; padding: 0 20px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #1B2420; font-size: 14px; font-weight: 600; cursor: pointer">{{t.cancel}}</button>
+</div>
+</section>
+</template>
+<div style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; overflow: hidden">
+<template data-k="for" list="{{apptRows}}" as="a" hint-placeholder-count="3">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 14px 18px; border-bottom: 1px solid #EEF1EF">
+<div style="flex: none; width: 60px; text-align: center; background: #F3F5F4; border-radius: 10px; padding: 6px 0">
+<div style="font-size: 22px; font-weight: 700; color: #12372A; line-height: 1.2">{{a.day}}</div>
+<div style="font-size: 12px; color: #55625C">{{a.mon}}</div>
+</div>
+<div style="flex: 1 1 260px; min-width: 0">
+<div style="font-weight: 600">{{a.name}} <span style="font-weight: 400; color: #55625C; font-size: 13px">· {{a.phone}}</span></div>
+<div style="font-size: 13px; color: #3D4843">{{a.meta}}</div>
+<template data-k="if" value="{{a.hasNote}}" hint-placeholder-val="{{ false }}"><div style="font-size: 13px; color: #55625C">{{t.fNote}}: {{a.note}}</div></template>
+</div>
+<div style="font-size: 12px; color: #55625C">{{a.id}}</div>
+<span style="display: inline-block; padding: 2px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{a.c.bg}}; color: {{a.c.fg}}">{{a.c.label}}</span>
+</div>
+</template>
+<template data-k="if" value="{{apptEmpty}}" hint-placeholder-val="{{ false }}"><div style="padding: 32px; text-align: center; color: #55625C">{{t.apptEmpty}}</div></template>
+</div>
+</div>
+</template>
+
+<template data-k="if" value="{{show.sales}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px">
+<template data-k="for" list="{{salesKpis}}" as="k" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 16px 18px">
+<div style="font-size: 13px; color: #55625C">{{k.label}}</div>
+<div style="font-size: 26px; font-weight: 700; color: #12372A; font-variant-numeric: tabular-nums; line-height: 1.35">{{k.value}}</div>
+</div>
+</template>
+</div>
+<section style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 16px; color: #12372A">{{t.ruleTitle}}</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px">
+<template data-k="for" list="{{tiers}}" as="r" hint-placeholder-count="3">
+<div style="display: flex; align-items: center; gap: 12px; border-radius: 10px; padding: 10px 12px; border: 2px solid {{r.bd}}; background: {{r.bg}}">
+<div style="font-size: 22px; font-weight: 700; color: {{r.fg}}">{{r.pct}}</div>
+<div style="font-size: 13px; color: #3D4843">{{r.rule}}</div>
+</div>
+</template>
+</div>
+</section>
+<div role="group" aria-label="{{t.filterType}}" style="display: flex; gap: 8px; flex-wrap: wrap">
+<template data-k="for" list="{{salesChips}}" as="f" hint-placeholder-count="3">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 40px; padding: 0 16px; border-radius: 999px; cursor: pointer; font-size: 13px; font-weight: 600; border: 1px solid {{f.bd}}; background: {{f.bg}}; color: {{f.fg}}">{{f.label}}</button>
+</template>
+</div>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{t.n_sales}}" style="min-width: 1060px">
+<div role="row" style="display: grid; grid-template-columns: 116px 104px minmax(180px, 1.5fr) minmax(150px, 1.2fr) 116px 96px 64px 104px 150px; gap: 12px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{t.cContract}}</div><div role="columnheader">{{t.cDate}}</div><div role="columnheader">{{t.cProp}}</div><div role="columnheader">{{t.cCust}}</div><div role="columnheader">{{t.cPrice}}</div><div role="columnheader">{{t.cSeq}}</div><div role="columnheader">{{t.cRate}}</div><div role="columnheader">{{t.cComm}}</div><div role="columnheader">{{t.cStatus}}</div>
+</div>
+<template data-k="for" list="{{salesRows}}" as="r" hint-placeholder-count="3">
+<div role="row" style="display: grid; grid-template-columns: 116px 104px minmax(180px, 1.5fr) minmax(150px, 1.2fr) 116px 96px 64px 104px 150px; gap: 12px; padding: 12px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center">
+<div role="cell" style="color: #55625C">{{r.id}}</div>
+<div role="cell">{{r.dateText}}</div>
+<div role="cell"><div style="font-weight: 600">{{r.prop}}</div><div style="font-size: 12px; color: #55625C">{{r.propName}}</div></div>
+<div role="cell">{{r.cust}}</div>
+<div role="cell" style="font-variant-numeric: tabular-nums">{{r.priceText}}</div>
+<div role="cell">{{r.seq}}</div>
+<div role="cell" style="font-weight: 700; color: #12372A">{{r.rate}}</div>
+<div role="cell" style="font-weight: 600; font-variant-numeric: tabular-nums">{{r.commText}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.c.bg}}; color: {{r.c.fg}}">{{r.c.label}}</span></div>
+</div>
+</template>
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; color: #55625C">{{t.salesNote}}</p>
+</div>
+</template>
+
+<template data-k="if" value="{{show.activity}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div role="note" style="display: flex; gap: 12px; align-items: flex-start; background: #DCE8FB; color: #163C78; border-radius: 10px; padding: 12px 16px; font-size: 14px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="flex: none; margin-top: 2px"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v6M12 7.5v.01"></path></svg>
+<div>{{t.actRule}}</div>
+</div>
+<section style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.monthsTitle}}</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px">
+<template data-k="for" list="{{months}}" as="m" hint-placeholder-count="6">
+<div style="border-radius: 10px; padding: 10px; text-align: center; background: {{m.c.bg}}; color: {{m.c.fg}}">
+<div style="font-size: 15px; font-weight: 700">{{m.label}}</div>
+<div style="font-size: 12px; font-weight: 600">{{m.c.label}}</div>
+</div>
+</template>
+</div>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.upcomingTitle}}</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px">
+<template data-k="for" list="{{actUp}}" as="a" hint-placeholder-count="2">
+<article style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; color: #55625C">{{a.dateText}} · {{a.place}}</div>
+<h3 style="margin: 0; font-size: 16px">{{a.title}}</h3>
+<template data-k="if" value="{{a.canRegister}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{a.register}}" style="align-self: flex-start; min-height: 44px; padding: 0 16px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">{{t.register}}</button>
+</template>
+<template data-k="if" value="{{a.isRegistered}}" hint-placeholder-val="{{ false }}">
+<span style="align-self: flex-start; padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; background: #DCE8FB; color: #1D4E9E">{{t.am_registered}}</span>
+</template>
+</article>
+</template>
+</div>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.histTitle}}</h2>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{t.histTitle}}" style="min-width: 760px">
+<div role="row" style="display: grid; grid-template-columns: 120px minmax(220px, 2fr) minmax(150px, 1.2fr) 130px minmax(180px, 1.4fr); gap: 12px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{t.cDate}}</div><div role="columnheader">{{t.cActivity}}</div><div role="columnheader">{{t.cPlace}}</div><div role="columnheader">{{t.cResult}}</div><div role="columnheader">{{t.cRight}}</div>
+</div>
+<template data-k="for" list="{{actHist}}" as="a" hint-placeholder-count="5">
+<div role="row" style="display: grid; grid-template-columns: 120px minmax(220px, 2fr) minmax(150px, 1.2fr) 130px minmax(180px, 1.4fr); gap: 12px; padding: 12px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center">
+<div role="cell">{{a.dateText}}</div>
+<div role="cell" style="font-weight: 600">{{a.title}}</div>
+<div role="cell" style="color: #3D4843">{{a.place}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{a.c.bg}}; color: {{a.c.fg}}">{{a.c.label}}</span></div>
+<div role="cell" style="font-size: 13px; color: {{a.rightFg}}">{{a.right}}</div>
+</div>
+</template>
+</div>
+</div>
+</section>
+</div>
+</template>
+
+<template data-k="if" value="{{show.props}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div role="group" aria-label="{{t.filterType}}" style="display: flex; gap: 8px; flex-wrap: wrap">
+<template data-k="for" list="{{propChips}}" as="f" hint-placeholder-count="3">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 40px; padding: 0 16px; border-radius: 999px; cursor: pointer; font-size: 13px; font-weight: 600; border: 1px solid {{f.bd}}; background: {{f.bg}}; color: {{f.fg}}">{{f.label}}</button>
+</template>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<div style="flex: 999 1 520px; min-width: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px">
+<template data-k="for" list="{{propCards}}" as="p" hint-placeholder-count="6">
+<article style="background: #FFFFFF; border: 2px solid {{p.bd}}; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column">
+<div style="height: 132px; background: #E3EEE8; position: relative">
+<template data-k="if" value="{{p.isVilla}}" hint-placeholder-val="{{ true }}">
+<svg viewBox="0 0 240 132" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="240" height="132" fill="#E3EEE8"></rect><rect x="0" y="100" width="240" height="32" fill="#CFE3D6"></rect><rect x="80" y="30" width="62" height="24" fill="#FFFFFF" stroke="#12372A" stroke-width="2"></rect><rect x="74" y="25" width="74" height="6" fill="#12372A"></rect><rect x="58" y="54" width="96" height="48" fill="#FFFFFF" stroke="#12372A" stroke-width="2"></rect><rect x="52" y="50" width="108" height="6" fill="#12372A"></rect><rect x="68" y="64" width="24" height="26" fill="#9CC3D5"></rect><rect x="104" y="64" width="38" height="26" fill="#9CC3D5"></rect><rect x="92" y="36" width="38" height="12" fill="#9CC3D5"></rect><rect x="38" y="108" width="134" height="14" rx="3" fill="#6FB3D2"></rect><circle cx="198" cy="76" r="18" fill="#6E9F7F"></circle><rect x="196" y="90" width="4" height="14" fill="#7A5A3A"></rect></svg>
+</template>
+<template data-k="if" value="{{p.isLand}}" hint-placeholder-val="{{ false }}">
+<svg viewBox="0 0 240 132" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="240" height="132" fill="#EAF1E4"></rect><polygon points="34,104 70,40 206,40 224,104" fill="#CFE0BE" stroke="#12372A" stroke-width="2" stroke-dasharray="6 5"></polygon><circle cx="34" cy="104" r="4" fill="#E3A23B"></circle><circle cx="70" cy="40" r="4" fill="#E3A23B"></circle><circle cx="206" cy="40" r="4" fill="#E3A23B"></circle><circle cx="224" cy="104" r="4" fill="#E3A23B"></circle><rect x="0" y="112" width="240" height="20" fill="#BFC7C3"></rect><path d="M8 122 H232" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="10 8"></path><circle cx="118" cy="66" r="12" fill="#6E9F7F"></circle><rect x="116" y="76" width="4" height="10" fill="#7A5A3A"></rect></svg>
+</template>
+<span style="position: absolute; top: 10px; left: 10px; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{p.c.bg}}; color: {{p.c.fg}}">{{p.c.label}}</span>
+</div>
+<div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto">
+<div style="font-size: 12px; color: #55625C">{{p.id}}</div>
+<h3 style="margin: 0; font-size: 15px">{{p.name}}</h3>
+<div style="font-size: 13px; color: #3D4843">{{p.spec}}</div>
+<div style="font-size: 19px; font-weight: 700; color: #12372A">{{p.priceText}}</div>
+<template data-k="if" value="{{p.hasPromo}}" hint-placeholder-val="{{ false }}"><div style="font-size: 12px; font-weight: 600; color: #8A4B00; background: #FCEFD9; border-radius: 6px; padding: 4px 8px">{{p.promo}}</div></template>
+<button type="button" onClick="{{p.open}}" style="margin-top: auto; min-height: 44px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 13px; font-weight: 600; cursor: pointer">{{t.viewDetail}}</button>
+</div>
+</article>
+</template>
+</div>
+<template data-k="if" value="{{hasSelProp}}" hint-placeholder-val="{{ false }}">
+<aside aria-label="{{t.detailTitle}}" style="flex: 1 1 320px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column">
+<div style="height: 170px; background: #E3EEE8">
+<template data-k="if" value="{{sp.isVilla}}" hint-placeholder-val="{{ true }}">
+<svg viewBox="0 0 240 132" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="240" height="132" fill="#E3EEE8"></rect><rect x="0" y="100" width="240" height="32" fill="#CFE3D6"></rect><rect x="80" y="30" width="62" height="24" fill="#FFFFFF" stroke="#12372A" stroke-width="2"></rect><rect x="74" y="25" width="74" height="6" fill="#12372A"></rect><rect x="58" y="54" width="96" height="48" fill="#FFFFFF" stroke="#12372A" stroke-width="2"></rect><rect x="52" y="50" width="108" height="6" fill="#12372A"></rect><rect x="68" y="64" width="24" height="26" fill="#9CC3D5"></rect><rect x="104" y="64" width="38" height="26" fill="#9CC3D5"></rect><rect x="92" y="36" width="38" height="12" fill="#9CC3D5"></rect><rect x="38" y="108" width="134" height="14" rx="3" fill="#6FB3D2"></rect><circle cx="198" cy="76" r="18" fill="#6E9F7F"></circle><rect x="196" y="90" width="4" height="14" fill="#7A5A3A"></rect></svg>
+</template>
+<template data-k="if" value="{{sp.isLand}}" hint-placeholder-val="{{ false }}">
+<svg viewBox="0 0 240 132" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="240" height="132" fill="#EAF1E4"></rect><polygon points="34,104 70,40 206,40 224,104" fill="#CFE0BE" stroke="#12372A" stroke-width="2" stroke-dasharray="6 5"></polygon><circle cx="34" cy="104" r="4" fill="#E3A23B"></circle><circle cx="70" cy="40" r="4" fill="#E3A23B"></circle><circle cx="206" cy="40" r="4" fill="#E3A23B"></circle><circle cx="224" cy="104" r="4" fill="#E3A23B"></circle><rect x="0" y="112" width="240" height="20" fill="#BFC7C3"></rect><path d="M8 122 H232" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="10 8"></path><circle cx="118" cy="66" r="12" fill="#6E9F7F"></circle><rect x="116" y="76" width="4" height="10" fill="#7A5A3A"></rect></svg>
+</template>
+</div>
+<div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; gap: 8px; align-items: flex-start">
+<div>
+<div style="font-size: 12px; color: #55625C">{{sp.id}} · {{sp.c.label}}</div>
+<h2 style="margin: 0; font-size: 18px; color: #12372A">{{sp.name}}</h2>
+</div>
+<button type="button" onClick="{{closeProp}}" aria-label="{{t.close}}" style="flex: none; width: 40px; height: 40px; border: 1px solid #E1E6E3; border-radius: 8px; background: #FFFFFF; color: #3D4843; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="font-size: 24px; font-weight: 700; color: #12372A">{{sp.priceText}}</div>
+<template data-k="if" value="{{sp.hasPromo}}" hint-placeholder-val="{{ false }}"><div style="background: #FCEFD9; color: #6B3A00; border-radius: 8px; padding: 10px 12px; font-size: 14px"><strong>{{t.promoLbl}}:</strong> {{sp.promo}}</div></template>
+<p style="margin: 0; font-size: 14px; color: #3D4843">{{sp.desc}}</p>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<template data-k="for" list="{{sp.specs}}" as="x" hint-placeholder-count="4">
+<div style="background: #F7F9F8; border-radius: 8px; padding: 8px 10px"><div style="font-size: 12px; color: #55625C">{{x.k}}</div><div style="font-weight: 600">{{x.v}}</div></div>
+</template>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<template data-k="if" value="{{sp.canBook}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{bookFromProp}}" style="min-height: 44px; padding: 0 16px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">{{t.bookVisit}}</button>
+</template>
+<button type="button" onClick="{{shareProp}}" style="min-height: 44px; padding: 0 16px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 14px; font-weight: 600; cursor: pointer">{{t.share}}</button>
+</div>
+</div>
+</aside>
+</template>
+</div>
+</div>
+</template>
+
+<template data-k="if" value="{{show.overview}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<section style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; color: #3D4843">{{t.ovIntro}}</p>
+<ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px">
+<template data-k="for" list="{{steps}}" as="st" hint-placeholder-count="3">
+<li style="display: flex; align-items: center; gap: 10px; background: {{st.bg}}; border-radius: 10px; padding: 10px 12px">
+<span aria-hidden="true" style="flex: none; width: 28px; height: 28px; border-radius: 50%; background: {{st.dot}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px">{{st.n}}</span>
+<span style="font-size: 14px; font-weight: 600">{{st.label}}</span>
+</li>
+</template>
+</ol>
+</section>
+<section aria-label="{{t.ovFormTitle}}" style="background: #FFFFFF; border: 1px solid #CBD3CF; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.ovFormTitle}}</h2>
+<div id="ov-sess" style="font-size: 13px; font-weight: 600">{{t.chooseSession}}</div>
+<div role="group" aria-labelledby="ov-sess" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px">
+<template data-k="for" list="{{ovSessions}}" as="o" hint-placeholder-count="3">
+<button type="button" onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="min-height: 56px; padding: 8px 12px; border-radius: 10px; cursor: pointer; text-align: left; border: 2px solid {{o.bd}}; background: {{o.bg}}; color: #1B2420">
+<div style="font-weight: 700; font-size: 14px">{{o.date}}</div>
+<div style="font-size: 12px; color: #3D4843">{{o.sub}}</div>
+</button>
+</template>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ov-first" style="font-size: 13px; font-weight: 600">{{t.fFirst}} *</label><input id="ov-first" type="text" value="{{of.first}}" onChange="{{setOf.first}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ov-last" style="font-size: 13px; font-weight: 600">{{t.fLast}}</label><input id="ov-last" type="text" value="{{of.last}}" onChange="{{setOf.last}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ov-phone" style="font-size: 13px; font-weight: 600">{{t.fPhone}} *</label><input id="ov-phone" type="tel" value="{{of.phone}}" onChange="{{setOf.phone}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ov-email" style="font-size: 13px; font-weight: 600">{{t.fEmail}}</label><input id="ov-email" type="email" value="{{of.email}}" onChange="{{setOf.email}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ov-line" style="font-size: 13px; font-weight: 600">{{t.fLine}}</label><input id="ov-line" type="text" value="{{of.line}}" onChange="{{setOf.line}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+</div>
+<button type="button" onClick="{{saveOv}}" style="align-self: flex-start; min-height: 44px; padding: 0 20px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">{{t.ovSubmit}}</button>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.myRegs}}</h2>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{t.myRegs}}" style="min-width: 720px">
+<div role="row" style="display: grid; grid-template-columns: minmax(170px, 1.4fr) 130px minmax(160px, 1.2fr) 130px 160px; gap: 12px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{t.cName}}</div><div role="columnheader">{{t.fPhone}}</div><div role="columnheader">{{t.cSession}}</div><div role="columnheader">{{t.cStatus}}</div><div role="columnheader">{{t.cNext}}</div>
+</div>
+<template data-k="for" list="{{ovRows}}" as="r" hint-placeholder-count="4">
+<div role="row" style="display: grid; grid-template-columns: minmax(170px, 1.4fr) 130px minmax(160px, 1.2fr) 130px 160px; gap: 12px; padding: 8px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center; min-height: 44px">
+<div role="cell" style="font-weight: 600">{{r.name}}</div>
+<div role="cell">{{r.phone}}</div>
+<div role="cell">{{r.session}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.c.bg}}; color: {{r.c.fg}}">{{r.c.label}}</span></div>
+<div role="cell">
+<template data-k="if" value="{{r.canForward}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{r.forward}}" style="min-height: 40px; padding: 0 12px; border: 1px solid #12372A; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 13px; font-weight: 600; cursor: pointer">{{t.toTraining}}</button></template>
+<template data-k="if" value="{{r.noAction}}" hint-placeholder-val="{{ true }}"><span style="color: #55625C; font-size: 13px">{{r.nextText}}</span></template>
+</div>
+</div>
+</template>
+</div>
+</div>
+</section>
+</div>
+</template>
+
+<template data-k="if" value="{{show.training}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<p style="margin: 0; color: #3D4843">{{t.trIntro}}</p>
+<section aria-label="{{t.trFormTitle}}" style="background: #FFFFFF; border: 1px solid #CBD3CF; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.trFormTitle}}</h2>
+<div id="tr-round" style="font-size: 13px; font-weight: 600">{{t.chooseRound}}</div>
+<div role="group" aria-labelledby="tr-round" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px">
+<template data-k="for" list="{{rounds}}" as="o" hint-placeholder-count="2">
+<button type="button" onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="padding: 12px 14px; border-radius: 10px; cursor: pointer; text-align: left; border: 2px solid {{o.bd}}; background: {{o.bg}}; color: #1B2420; display: flex; flex-direction: column; gap: 6px">
+<span style="font-weight: 700; font-size: 14px">{{o.id}} · {{o.dates}}</span>
+<span style="font-size: 12px; color: #3D4843">{{o.place}}</span>
+<span aria-hidden="true" style="display: block; width: 100%; height: 6px; border-radius: 3px; background: #E1E6E3; overflow: hidden"><span style="display: block; height: 100%; width: {{o.w}}; background: #E3A23B"></span></span>
+<span style="font-size: 12px; color: #3D4843">{{o.seats}}</span>
+</button>
+</template>
+</div>
+<template data-k="if" value="{{hasQuick}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+<span style="font-size: 13px; color: #55625C">{{t.quickFill}}</span>
+<template data-k="for" list="{{quick}}" as="q" hint-placeholder-count="2">
+<button type="button" onClick="{{q.pick}}" style="min-height: 36px; padding: 0 12px; border: 1px dashed #12372A; border-radius: 999px; background: #F3F8F5; color: #12372A; font-size: 13px; font-weight: 600; cursor: pointer">+ {{q.name}}</button>
+</template>
+</div>
+</template>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="tr-name" style="font-size: 13px; font-weight: 600">{{t.cName}} *</label><input id="tr-name" type="text" value="{{tf.name}}" onChange="{{setTf.name}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="tr-phone" style="font-size: 13px; font-weight: 600">{{t.fPhone}} *</label><input id="tr-phone" type="tel" value="{{tf.phone}}" onChange="{{setTf.phone}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+</div>
+<button type="button" onClick="{{saveTr}}" style="align-self: flex-start; min-height: 44px; padding: 0 20px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">{{t.trSubmit}}</button>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.myTrainees}}</h2>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{t.myTrainees}}" style="min-width: 700px">
+<div role="row" style="display: grid; grid-template-columns: minmax(170px, 1.4fr) 130px minmax(160px, 1.2fr) 140px 160px; gap: 12px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{t.cName}}</div><div role="columnheader">{{t.fPhone}}</div><div role="columnheader">{{t.cRound}}</div><div role="columnheader">{{t.cStatus}}</div><div role="columnheader">{{t.cOutcome}}</div>
+</div>
+<template data-k="for" list="{{trRows}}" as="r" hint-placeholder-count="2">
+<div role="row" style="display: grid; grid-template-columns: minmax(170px, 1.4fr) 130px minmax(160px, 1.2fr) 140px 160px; gap: 12px; padding: 12px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center">
+<div role="cell" style="font-weight: 600">{{r.name}}</div>
+<div role="cell">{{r.phone}}</div>
+<div role="cell">{{r.round}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.c.bg}}; color: {{r.c.fg}}">{{r.c.label}}</span></div>
+<div role="cell" style="font-size: 13px; color: #3D4843">{{r.outcome}}</div>
+</div>
+</template>
+</div>
+</div>
+</section>
+</div>
+</template>
+
+</main>
+
+<template data-k="if" value="{{hasToast}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #12372A; color: #FFFFFF; padding: 12px 18px; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.18); font-size: 14px; z-index: 50; max-width: calc(100% - 32px)">{{toast}}</div>
+</template>
+</div>
+</template>
+<script src="assets/react.production.min.js"></script>
+<script src="assets/react-dom.production.min.js"></script>
+<script src="assets/dc-runtime.js"></script>
+<script>
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      lang: 'th', screen: 'profile', toast: '',
+      appts: this.seedAppts(), apptTab: 'up', showAppt: false, af: this.blankAppt('PV-A01'), nextAp: 123,
+      propType: 'all', selProp: '', salesType: 'all',
+      acts: this.seedActs(),
+      ovSession: 'OV-1024', ovs: this.seedOv(), of: { first: '', last: '', phone: '', email: '', line: '' },
+      trRound: 'TR-11', trs: this.seedTr(), tf: { name: '', phone: '' }
+    };
+  }
+
+  blankAppt(p) { return { name: '', phone: '', date: '2026-10-30', time: '10:00', people: '2', prop: p, note: '' }; }
+
+  seedProps() {
+    const V = 'villa', N = 'land';
+    return [
+      { id: 'PV-A01', type: V, model: 'A', bed: 3, bath: 3, land: 100, area: 220, price: 8900000, status: 'available', promo: ['ฟรีค่าโอน + ค่าส่วนกลาง 1 ปี', 'Free transfer fee + 1 year common fee'] },
+      { id: 'PV-A02', type: V, model: 'A', bed: 3, bath: 3, land: 100, area: 220, price: 8900000, status: 'sold', promo: '' },
+      { id: 'PV-A03', type: V, model: 'A', bed: 3, bath: 3, land: 110, area: 230, price: 9200000, status: 'sold', promo: '' },
+      { id: 'PV-B01', type: V, model: 'B', bed: 4, bath: 5, land: 150, area: 320, price: 12500000, status: 'sold', promo: '' },
+      { id: 'PV-B02', type: V, model: 'B', bed: 4, bath: 5, land: 155, area: 320, price: 12900000, status: 'available', promo: ['ส่วนลดเงินสด 300,000 บาท', 'Cash discount THB 300,000'] },
+      { id: 'PV-B03', type: V, model: 'B', bed: 4, bath: 5, land: 150, area: 320, price: 12700000, status: 'reserved', promo: '' },
+      { id: 'PV-C01', type: V, model: 'C', bed: 2, bath: 2, land: 80, area: 160, price: 6900000, status: 'available', promo: ['ผ่อนดาวน์ 0% นาน 12 เดือน', '0% down-payment plan for 12 months'] },
+      { id: 'PV-C02', type: V, model: 'C', bed: 2, bath: 2, land: 85, area: 165, price: 7400000, status: 'sold', promo: '' },
+      { id: 'LD-01', type: N, land: 200, price: 3600000, status: 'available', promo: ['ส่วนลด 5% เมื่อโอนภายใน 60 วัน', '5% off when transferred within 60 days'] },
+      { id: 'LD-02', type: N, land: 280, price: 5100000, status: 'sold', promo: '' },
+      { id: 'LD-03', type: N, land: 250, price: 4500000, status: 'available', promo: '' },
+      { id: 'LD-04', type: N, land: 230, price: 4200000, status: 'sold', promo: '' },
+      { id: 'LD-05', type: N, land: 220, price: 3950000, status: 'sold', promo: '' },
+      { id: 'LD-06', type: N, land: 260, price: 4600000, status: 'sold', promo: '' }
+    ];
+  }
+
+  seedAppts() {
+    return [
+      { id: 'AP-121', date: '2026-10-27', time: '13:00', name: ['คุณอดิศร ธนพัฒน์', 'Adisorn Thanapat'], phone: '081-774-2093', people: 2, prop: 'LD-01', st: 'pending', note: ['สนใจแปลงติดถนนเมน', 'Wants a plot on the main road'] },
+      { id: 'AP-118', date: '2026-10-25', time: '10:00', name: ['คุณวิภา เจริญสุข', 'Wipa Charoensuk'], phone: '086-120-4478', people: 3, prop: 'PV-B02', st: 'confirmed', note: ['มากับครอบครัว', 'Coming with family'] },
+      { id: 'AP-109', date: '2026-10-12', time: '15:00', name: ['คุณกมล สุขใจ', 'Kamon Sukjai'], phone: '089-930-1184', people: 4, prop: 'PV-A01', st: 'visited', note: ['ขอใบเสนอราคา', 'Asked for a quotation'] },
+      { id: 'AP-097', date: '2026-09-20', time: '10:00', name: ['คุณศิริพร ใจดี', 'Siriporn Jaidee'], phone: '092-117-5530', people: 2, prop: 'LD-03', st: 'visited', note: '' },
+      { id: 'AP-090', date: '2026-09-08', time: '14:00', name: ['คุณเอกชัย พงษ์ไทย', 'Ekkachai Pongthai'], phone: '085-662-0817', people: 2, prop: 'PV-C01', st: 'cancelled', note: ['ลูกค้าขอเลื่อนไม่มีกำหนด', 'Customer postponed'] },
+      { id: 'AP-064', date: '2026-06-02', time: '11:00', name: ['คุณวีระ สมบูรณ์', 'Weera Somboon'], phone: '083-905-2217', people: 3, prop: 'PV-B01', st: 'visited', note: ['ปิดการขายแล้ว ก.ย. 69', 'Closed in Sep 2026'] }
+    ];
+  }
+
+  seedActs() {
+    const office = ['สำนักงานขายโครงการ', 'Project sales office'];
+    return [
+      { id: 'ACT-11', date: '2026-11-25', title: ['Agent Day ประจำเดือน พ.ย.', 'Monthly Agent Day – November'], place: office, st: 'open' },
+      { id: 'ACT-10', date: '2026-10-28', title: ['Agent Day ประจำเดือน ต.ค.', 'Monthly Agent Day – October'], place: office, st: 'open' },
+      { id: 'ACT-09', date: '2026-09-24', title: ['อบรมเทคนิคการขายพูลวิลล่า', 'Pool villa sales workshop'], place: ['ออนไลน์ (Zoom)', 'Online (Zoom)'], st: 'attended' },
+      { id: 'ACT-08', date: '2026-08-27', title: ['Agent Day ประจำเดือน ส.ค.', 'Monthly Agent Day – August'], place: office, st: 'missed' },
+      { id: 'ACT-07', date: '2026-07-30', title: ['ทริปพาตัวแทนชมโครงการ', 'Agent site tour'], place: ['พื้นที่โครงการ', 'Project site'], st: 'attended' },
+      { id: 'ACT-06', date: '2026-06-25', title: ['Agent Day ประจำเดือน มิ.ย.', 'Monthly Agent Day – June'], place: office, st: 'attended' },
+      { id: 'ACT-05', date: '2026-05-28', title: ['Agent Day ประจำเดือน พ.ค.', 'Monthly Agent Day – May'], place: office, st: 'attended' }
+    ];
+  }
+
+  seedOv() {
+    return [
+      { name: ['ภานุวัฒน์ รักดี', 'Panuwat Rakdee'], phone: '081-552-0193', sdate: '2026-10-24', time: '19:00', st: 'registered' },
+      { name: ['ศุภชัย มั่นคง', 'Supachai Mankong'], phone: '086-301-7742', sdate: '2026-10-10', time: '19:00', st: 'attended' },
+      { name: ['จิราพร ทองคำ', 'Jiraporn Thongkham'], phone: '092-884-1205', sdate: '2026-10-10', time: '19:00', st: 'attended' },
+      { name: ['อรทัย สายบุญ', 'Orathai Saiboon'], phone: '089-447-6630', sdate: '2026-09-26', time: '19:00', st: 'absent' }
+    ];
+  }
+
+  seedTr() {
+    return [
+      { name: ['จิราพร ทองคำ', 'Jiraporn Thongkham'], phone: '092-884-1205', round: 'TR-11', rdate: '2026-11-08', st: 'registered' },
+      { name: ['ปิยะ ศักดิ์ดี', 'Piya Sakdee'], phone: '087-630-5524', round: 'TR-08', rdate: '2026-07-12', st: 'passed', code: 'AG-1018' }
+    ];
+  }
+
+  dict() {
+    return {
+      navAria: ['เมนูหลัก', 'Main menu'],
+      roleName: ['ตัวแทนฝ่ายขาย', 'Sales agent'],
+      commissionShort: ['ค่าคอมฯ', 'Comm.'],
+      grpRecruit: ['ชวนทีมงาน', 'RECRUIT TEAM'],
+      switchRole: ['เปลี่ยนบทบาท / ออกจากระบบ', 'Switch role / Sign out'],
+      sample: ['ข้อมูลในหน้านี้เป็นข้อมูลตัวอย่างสำหรับการนำเสนอเท่านั้น', 'All data on this page is sample data for presentation only.'],
+      n_profile: ['โปรไฟล์', 'Profile'], n_tree: ['ผังสายงาน', 'Team tree'], n_appt: ['นัดหมายชมโครงการ', 'Site visits'], n_sales: ['ประวัติการขายและค่าคอมฯ', 'Sales & commission'],
+      n_activity: ['กิจกรรมประจำเดือน', 'Monthly activities'], n_props: ['ข้อมูลทรัพย์', 'Listings'], n_overview: ['ลงทะเบียนฟัง Overview', 'Overview sign-up'], n_training: ['ลงทะเบียนอบรมตัวแทน', 'Agent training sign-up'],
+      p_profile: ['โปรไฟล์ของฉัน', 'My profile'], s_profile: ['ข้อมูลส่วนตัว ระดับค่าคอมมิชชัน และสัญญาตัวแทน', 'Personal details, commission tier and agent contract'],
+      p_tree: ['ผังสายงานของฉัน', 'My team tree'], s_tree: ['ตัวแทนขายที่คุณแนะนำเข้ามา และผู้ที่พวกเขาแนะนำต่อ', 'Agents you referred, and the agents they referred'],
+      p_appt: ['นัดหมายพาลูกค้าชมโครงการ', 'Customer site visits'], s_appt: ['ลงทะเบียนนัดหมายล่วงหน้า และดูประวัติการนัดหมาย', 'Book visits in advance and review past visits'],
+      p_sales: ['ประวัติการขายและค่าคอมมิชชัน', 'Sales history & commission'], s_sales: ['สัญญาพูลวิลล่าและที่ดินที่คุณปิดการขาย', 'Pool villa and land contracts you closed'],
+      p_activity: ['กิจกรรมประจำเดือน', 'Monthly activities'], s_activity: ['ประวัติการเข้าร่วมกิจกรรม ซึ่งเป็นเงื่อนไขการรับค่าคอมมิชชัน', 'Your attendance — a condition for receiving commission'],
+      p_props: ['ข้อมูลทรัพย์ของโครงการ', 'Project listings'], s_props: ['รูป รายละเอียด ราคาขาย และโปรโมชั่น สำหรับใช้แนะนำลูกค้า', 'Photos, details, prices and promotions to share with customers'],
+      p_overview: ['ลงทะเบียนฟัง Overview Online', 'Online overview sign-up'], s_overview: ['ชวนคนที่สนใจมาฟังภาพรวมโครงการ ก่อนตัดสินใจอบรมเป็นตัวแทน', 'Invite prospects to an online overview before they decide to train'],
+      p_training: ['ลงทะเบียนอบรมเป็นตัวแทนขาย', 'Agent training sign-up'], s_training: ['ส่งทีมงานเข้าอบรม เมื่อผ่านแล้วจะเป็นตัวแทนในสายงานของคุณ', 'Send recruits to training; once they pass they join your line'],
+      warnText: ['เดือนตุลาคมคุณยังไม่ได้ลงทะเบียนกิจกรรมประจำเดือน ต้องเข้าร่วมเพื่อรักษาสิทธิ์รับค่าคอมมิชชันของเดือนนี้', 'You have not signed up for an October activity yet. Attendance is required to keep this month’s commission.'],
+      warnBtn: ['ดูกิจกรรม', 'See activities'],
+      editProfile: ['แก้ไขข้อมูล', 'Edit profile'],
+      tierTitle: ['ระดับค่าคอมมิชชัน', 'Commission tier'], tierCurrentLbl: ['อัตราสำหรับสัญญาถัดไปของคุณ', 'rate for your next contract'],
+      teamProgress: ['สัญญารวมในสายงาน', 'Contracts closed in your line'],
+      fileTitle: ['ไฟล์สัญญาตัวแทนฝ่ายขาย', 'Agent contract file'],
+      fileMeta: ['ลงนาม 15 มี.ค. 2569 · อัตราเริ่มต้น 3% · PDF 1.2 MB', 'Signed 15 Mar 2026 · starting rate 3% · PDF 1.2 MB'],
+      viewFile: ['ดูไฟล์', 'View file'], download: ['ดาวน์โหลด', 'Download'],
+      treeTitle: ['ผังสายงาน', 'Team tree'], treeLegend: ['ปิดเอง = สัญญาที่ปิดเอง · สายงาน = รวมทุกคนใต้สายงาน', 'Own = own contracts · Line = everyone below'],
+      treeNote: ['ระดับค่าคอมมิชชันคำนวณจากจำนวนสัญญาที่ปิดได้รวมกันทั้งของคุณและทุกคนในสายงานใต้คุณ', 'Commission tier is based on contracts closed by you and everyone below you, combined.'],
+      uplineTag: ['ผู้แนะนำ', 'Referrer'], youTag: ['คุณ', 'You'],
+      newAppt: ['ลงทะเบียนนัดหมาย', 'Book a visit'],
+      fCust: ['ชื่อลูกค้า', 'Customer name'], fPhone: ['เบอร์โทร', 'Phone'], fDate: ['วันที่เข้าชม', 'Visit date'], fTime: ['เวลา', 'Time'], fPeople: ['จำนวนผู้เข้าชม', 'Visitors'],
+      fProp: ['ทรัพย์ที่สนใจ', 'Listing of interest'], fNote: ['หมายเหตุ', 'Note'], save: ['บันทึก', 'Save'], cancel: ['ยกเลิก', 'Cancel'],
+      apptEmpty: ['ยังไม่มีรายการ', 'Nothing here yet'],
+      ruleTitle: ['เงื่อนไขระดับค่าคอมมิชชัน (นับสัญญารวมในสายงาน)', 'Commission tiers (counted across your line)'],
+      filterType: ['กรองตามประเภท', 'Filter by type'],
+      cContract: ['เลขสัญญา', 'Contract'], cDate: ['วันที่', 'Date'], cProp: ['ทรัพย์', 'Listing'], cCust: ['ลูกค้า', 'Customer'], cPrice: ['ราคาขาย', 'Price'],
+      cSeq: ['ลำดับในสายงาน', 'Line no.'], cRate: ['อัตรา', 'Rate'], cComm: ['ค่าคอมฯ', 'Commission'], cStatus: ['สถานะ', 'Status'],
+      salesNote: ['ค่าคอมมิชชันจะจ่ายเมื่อคุณเข้าร่วมกิจกรรมประจำเดือนในเดือนที่ปิดการขาย', 'Commission is paid when you attended the monthly activity in the month of the sale.'],
+      actRule: ['ตัวแทนขายต้องเข้าร่วมกิจกรรมของบริษัทอย่างน้อยเดือนละ 1 ครั้ง เพื่อมีสิทธิ์รับค่าคอมมิชชันของสัญญาที่ปิดในเดือนนั้น', 'Agents must attend at least one company activity each month to receive commission on contracts closed that month.'],
+      monthsTitle: ['สถานะรายเดือน (6 เดือนล่าสุด)', 'Monthly status (last 6 months)'],
+      upcomingTitle: ['กิจกรรมที่กำลังจะมาถึง', 'Upcoming activities'], histTitle: ['ประวัติการเข้าร่วม', 'Attendance history'],
+      register: ['ลงทะเบียนเข้าร่วม', 'Sign up'], am_registered: ['ลงทะเบียนแล้ว', 'Signed up'],
+      cActivity: ['กิจกรรม', 'Activity'], cPlace: ['สถานที่', 'Location'], cResult: ['ผล', 'Result'], cRight: ['สิทธิ์ค่าคอมฯ', 'Commission eligibility'],
+      viewDetail: ['ดูรายละเอียด', 'View details'], detailTitle: ['รายละเอียดทรัพย์', 'Listing details'], close: ['ปิด', 'Close'],
+      promoLbl: ['โปรโมชั่น', 'Promotion'], bookVisit: ['นัดพาลูกค้าชม', 'Book a visit'], share: ['แชร์ให้ลูกค้า', 'Share with customer'],
+      ovIntro: ['ผู้ที่คุณลงทะเบียนให้จะถูกบันทึกเป็นทีมงานที่คุณแนะนำ เมื่อผ่านการอบรมจะเข้ามาอยู่ในผังสายงานของคุณ', 'People you register are recorded as your referrals. After passing training they join your team tree.'],
+      ovFormTitle: ['ลงทะเบียนผู้สนใจฟัง Overview Online', 'Register a prospect for the online overview'],
+      chooseSession: ['เลือกรอบ', 'Choose a session'],
+      fFirst: ['ชื่อ', 'First name'], fLast: ['นามสกุล', 'Last name'], fEmail: ['อีเมล', 'Email'], fLine: ['LINE ID', 'LINE ID'],
+      ovSubmit: ['ลงทะเบียน', 'Register'], myRegs: ['ทีมงานที่ลงทะเบียนฟัง Overview', 'Prospects registered for the overview'],
+      cName: ['ชื่อ-นามสกุล', 'Full name'], cSession: ['รอบ', 'Session'], cNext: ['ขั้นต่อไป', 'Next step'],
+      toTraining: ['ส่งเข้าอบรม', 'Send to training'],
+      trIntro: ['ผู้สมัครควรฟัง Overview Online มาก่อน หลังอบรมผ่าน เจ้าหน้าที่จะสร้างบัญชีตัวแทนให้ภายใต้สายงานของคุณ', 'Applicants should attend the online overview first. After passing, staff create their agent account under your line.'],
+      trFormTitle: ['ลงทะเบียนอบรมเป็นตัวแทนขาย', 'Register for agent training'], chooseRound: ['เลือกรุ่นอบรม', 'Choose a training round'],
+      quickFill: ['เลือกจากผู้ที่ฟัง Overview แล้ว:', 'Pick from overview attendees:'], trSubmit: ['ลงทะเบียนอบรม', 'Register'],
+      myTrainees: ['ทีมงานที่ลงทะเบียนอบรม', 'Recruits registered for training'], cRound: ['รุ่นอบรม', 'Round'], cOutcome: ['ผลลัพธ์', 'Outcome']
+    };
+  }
+
+  flash(msg) {
+    this.setState({ toast: msg });
+    clearTimeout(this._tt);
+    this._tt = setTimeout(() => this.setState({ toast: '' }), 2800);
+  }
+
+  componentWillUnmount() { clearTimeout(this._tt); }
+
+  renderVals() {
+    const s = this.state;
+    const li = s.lang === 'th' ? 0 : 1;
+    const TH = li === 0;
+    const D = this.dict();
+    const t = {};
+    Object.keys(D).forEach((k) => { t[k] = D[k][li]; });
+    const L = (v) => (Array.isArray(v) ? v[li] : (v || ''));
+    const TODAY = '2026-10-21';
+    const CUR = '2026-10';
+    const MTH = TH ? ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'] : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const yr = (y) => (TH ? y + 543 : y);
+    const fmtDate = (d) => { if (!d) return '-'; const p = String(d).split('-').map(Number); return p[2] + ' ' + MTH[p[1] - 1] + ' ' + yr(p[0]); };
+    const fmtMonth = (ym) => { const p = ym.split('-').map(Number); return MTH[p[1] - 1] + ' ' + String(yr(p[0])).slice(2); };
+    const baht = (n) => '฿' + Math.round(Number(n) || 0).toLocaleString('en-US');
+    const mil = (n) => (TH ? (n / 1e6).toFixed(1) + ' ล้านบาท' : '฿' + (n / 1e6).toFixed(1) + 'M');
+    const CH = { green: ['#D7EEDF', '#155B34'], blue: ['#DCE8FB', '#1D4E9E'], amber: ['#FCEFD9', '#8A4B00'], grey: ['#ECECEC', '#4F4F4F'], red: ['#FBE1DD', '#8E2B1E'] };
+    const chip = (k, label) => ({ bg: CH[k][0], fg: CH[k][1], label: label });
+    const pill = (on) => ({ pressed: on ? 'true' : 'false', bg: on ? '#12372A' : '#FFFFFF', fg: on ? '#FFFFFF' : '#1B2420', bd: on ? '#12372A' : '#CBD3CF' });
+    const rateFor = (n) => (n >= 9 ? 7 : (n >= 4 ? 5 : 3));
+    const setter = (key) => (field) => (e) => { const v = e.target.value; this.setState((st) => ({ [key]: Object.assign({}, st[key], { [field]: v }) })); };
+
+    // ---------- listings ----------
+    const props = this.seedProps();
+    const PM = {};
+    props.forEach((p) => { PM[p.id] = p; });
+    const DESC = {
+      A: ['พูลวิลล่าสองชั้น สระว่ายน้ำส่วนตัว 4×8 ม. ห้องนั่งเล่นเพดานสูง ที่จอดรถ 2 คัน', 'Two-storey villa with a private 4×8 m pool, double-height living room and 2 parking spaces.'],
+      B: ['พูลวิลล่าขนาดใหญ่ สระ 5×12 ม. ห้องนอนใหญ่พร้อมระเบียงชมวิว และห้องแม่บ้าน', 'Large villa with a 5×12 m pool, master suite with view balcony and a maid room.'],
+      C: ['พูลวิลล่าชั้นเดียวขนาดกะทัดรัด สระ 3×6 ม. เหมาะกับครอบครัวเล็ก', 'Compact single-storey villa with a 3×6 m pool, ideal for small families.'],
+      land: ['ที่ดินจัดสรรพร้อมสาธารณูปโภค ไฟฟ้า-ประปาถึงหน้าแปลง ถนนกว้าง 8 ม. ปลูกสร้างได้ทันที', 'Serviced plot with power and water at the boundary and an 8 m road — ready to build.']
+    };
+    const sqw = TH ? 'ตร.ว.' : 'sq.wah';
+    const sqm = TH ? 'ตร.ม.' : 'sq.m';
+    const propName = (p) => (p.type === 'villa'
+      ? (TH ? 'พูลวิลล่า แบบ ' + p.model + ' · ' + p.bed + ' ห้องนอน' : 'Pool Villa Type ' + p.model + ' · ' + p.bed + ' bed')
+      : (TH ? 'ที่ดินเปล่า ' + p.land + ' ตร.ว.' : 'Land plot · ' + p.land + ' sq.wah'));
+    const PST = { available: ['green', TH ? 'ว่าง' : 'Available'], reserved: ['amber', TH ? 'จองแล้ว' : 'Reserved'], sold: ['grey', TH ? 'ขายแล้ว' : 'Sold'] };
+    const decoProp = (p) => {
+      const villa = p.type === 'villa';
+      return {
+        id: p.id, name: propName(p), isVilla: villa, isLand: !villa,
+        spec: villa ? (p.bed + (TH ? ' นอน · ' : ' bed · ') + p.bath + (TH ? ' น้ำ · ' : ' bath · ') + p.land + ' ' + sqw + ' · ' + p.area + ' ' + sqm) : (p.land + ' ' + sqw + ' · ' + baht(p.price / p.land) + '/' + sqw),
+        priceText: baht(p.price), promo: L(p.promo), hasPromo: !!L(p.promo),
+        c: chip(PST[p.status][0], PST[p.status][1]),
+        bd: p.id === s.selProp ? '#12372A' : '#E1E6E3',
+        desc: L(DESC[villa ? p.model : 'land']),
+        canBook: p.status !== 'sold',
+        specs: villa
+          ? [{ k: TH ? 'ห้องนอน' : 'Bedrooms', v: String(p.bed) }, { k: TH ? 'ห้องน้ำ' : 'Bathrooms', v: String(p.bath) }, { k: TH ? 'ขนาดที่ดิน' : 'Land size', v: p.land + ' ' + sqw }, { k: TH ? 'พื้นที่ใช้สอย' : 'Usable area', v: p.area + ' ' + sqm }]
+          : [{ k: TH ? 'ขนาดที่ดิน' : 'Land size', v: p.land + ' ' + sqw }, { k: TH ? 'ราคาต่อ ตร.ว.' : 'Price per sq.wah', v: baht(p.price / p.land) }, { k: TH ? 'หน้ากว้างถนน' : 'Road width', v: TH ? '8 ม.' : '8 m' }, { k: TH ? 'สาธารณูปโภค' : 'Utilities', v: TH ? 'ไฟฟ้า ประปา' : 'Power, water' }],
+        open: () => this.setState({ selProp: p.id })
+      };
+    };
+    const order = { available: 0, reserved: 1, sold: 2 };
+    const propCards = props.filter((p) => s.propType === 'all' || p.type === s.propType)
+      .slice().sort((a, b) => order[a.status] - order[b.status]).map(decoProp);
+    const typeChips = (cur, setKey) => [['all', TH ? 'ทั้งหมด' : 'All'], ['villa', TH ? 'พูลวิลล่า' : 'Pool villas'], ['land', TH ? 'ที่ดิน' : 'Land']].map((x) => Object.assign(pill(cur === x[0]), {
+      label: x[1], pick: () => this.setState({ [setKey]: x[0] })
+    }));
+    const selP = PM[s.selProp];
+    const emptySp = { id: '', name: '', isVilla: true, isLand: false, priceText: '', promo: '', hasPromo: false, desc: '', specs: [], canBook: false, c: chip('grey', '') };
+
+    // ---------- team tree & tier ----------
+    const tree = { id: 'AG-1007', name: ['สมชาย วงศ์ดี', 'Somchai Wongdee'], own: 3, kids: [
+      { id: 'AG-1012', name: ['พิมพ์ชนก แสงทอง', 'Pimchanok Saengthong'], own: 2, kids: [
+        { id: 'AG-1020', name: ['ธนากร ศรีสุข', 'Thanakorn Srisuk'], own: 1, kids: [] },
+        { id: 'AG-1023', name: ['วรรณา บุญมา', 'Wanna Boonma'], own: 0, kids: [] }
+      ] },
+      { id: 'AG-1015', name: ['กิตติ พรหมมา', 'Kitti Phromma'], own: 1, kids: [
+        { id: 'AG-1031', name: ['มาลี ดวงแก้ว', 'Malee Duangkaew'], own: 0, kids: [] }
+      ] },
+      { id: 'AG-1018', name: ['ปิยะ ศักดิ์ดี', 'Piya Sakdee'], own: 0, kids: [] }
+    ] };
+    const sub = (n) => n.own + n.kids.reduce((a, k) => a + sub(k), 0);
+    const members = (n) => n.kids.reduce((a, k) => a + 1 + members(k), 0);
+    const TCH = { 3: ['#ECECEC', '#3D4843'], 5: ['#DCE8FB', '#1D4E9E'], 7: ['#FCEFD9', '#8A4B00'] };
+    const edge = (i, n) => (n === 1 ? { hl: '50%', hr: '50%' } : (i === 0 ? { hl: '50%', hr: '0' } : (i === n - 1 ? { hl: '0', hr: '50%' } : { hl: '0', hr: '0' })));
+    const statText = (n) => (TH ? 'ปิดเอง ' + n.own + ' · สายงาน ' + sub(n) : 'Own ' + n.own + ' · Line ' + sub(n));
+    const decoNode = (n, i, len) => {
+      const r = rateFor(sub(n) + 1);
+      return Object.assign({ code: n.id, name: L(n.name), stat: statText(n), tier: r + '%', tbg: TCH[r][0], tfg: TCH[r][1], hasKids: n.kids.length > 0, kids: n.kids.map((k, j) => decoNode(k, j, n.kids.length)) }, edge(i, len));
+    };
+    const teamClosed = sub(tree);
+    const myRate = rateFor(teamClosed + 1);
+    const meName = L(tree.name);
+
+    let progText;
+    let target;
+    if (teamClosed < 3) target = 3; else if (teamClosed < 8) target = 8; else target = 0;
+    if (target) {
+      const need = target - teamClosed;
+      const nextPct = target === 3 ? 5 : 7;
+      progText = TH ? 'อีก ' + need + ' สัญญาในสายงาน จะได้ ' + nextPct + '% ตั้งแต่สัญญาที่ ' + (target + 1) : need + ' more contract(s) in your line and you earn ' + nextPct + '% from contract #' + (target + 1);
+    } else {
+      progText = TH ? 'คุณอยู่ในระดับสูงสุดแล้ว' : 'You are at the top tier';
+    }
+    const tierDefs = [
+      { p: 3, range: TH ? 'สัญญาที่ 1–3' : 'Contracts 1–3', rule: TH ? 'อัตราเริ่มต้นตามสัญญาตัวแทน' : 'Starting rate in the agent contract' },
+      { p: 5, range: TH ? 'สัญญาที่ 4–8' : 'Contracts 4–8', rule: TH ? 'สายงานปิดครบ 3 สัญญา ได้ 5% ตั้งแต่สัญญาที่ 4' : 'After 3 contracts in your line, 5% from contract #4' },
+      { p: 7, range: TH ? 'สัญญาที่ 9 ขึ้นไป' : 'Contract 9+', rule: TH ? 'สายงานปิดครบ 8 สัญญา ได้ 7% ตั้งแต่สัญญาที่ 9' : 'After 8 contracts in your line, 7% from contract #9' }
+    ];
+    const tiers = tierDefs.map((d) => {
+      const on = d.p === myRate;
+      return { pct: d.p + '%', range: d.range, rule: d.rule, bd: on ? '#12372A' : '#E1E6E3', bg: on ? '#EEF5F1' : '#FFFFFF', fg: on ? '#12372A' : '#55625C' };
+    });
+
+    // ---------- sales ----------
+    const sales = [
+      { id: 'CT-2026-014', date: '2026-05-12', prop: 'PV-A02', cust: ['คุณนภา รัตนวงศ์', 'Napa Rattanawong'], price: 8900000, seq: 1, rate: 3, paidOn: '2026-06-15' },
+      { id: 'CT-2026-027', date: '2026-07-03', prop: 'LD-02', cust: ['คุณชัยวัฒน์ มีสุข', 'Chaiwat Meesuk'], price: 5100000, seq: 3, rate: 3, paidOn: '2026-08-15' },
+      { id: 'CT-2026-041', date: '2026-09-20', prop: 'PV-B01', cust: ['คุณวีระ สมบูรณ์', 'Weera Somboon'], price: 12500000, seq: 6, rate: 5, paidOn: '' }
+    ];
+    const comm = (x) => x.price * x.rate / 100;
+    const earned = sales.filter((x) => x.paidOn).reduce((a, x) => a + comm(x), 0);
+    const pending = sales.filter((x) => !x.paidOn).reduce((a, x) => a + comm(x), 0);
+    const salesRows = sales.filter((x) => s.salesType === 'all' || PM[x.prop].type === s.salesType).slice().reverse().map((x) => ({
+      id: x.id, dateText: fmtDate(x.date), prop: x.prop, propName: propName(PM[x.prop]), cust: L(x.cust), priceText: baht(x.price),
+      seq: '#' + x.seq, rate: x.rate + '%', commText: baht(comm(x)),
+      c: x.paidOn ? chip('green', (TH ? 'จ่ายแล้ว ' : 'Paid ') + fmtDate(x.paidOn)) : chip('amber', TH ? 'รอจ่าย' : 'Pending')
+    }));
+
+    // ---------- appointments ----------
+    const AST = { pending: ['amber', TH ? 'รอยืนยัน' : 'Awaiting confirmation'], confirmed: ['blue', TH ? 'ยืนยันแล้ว' : 'Confirmed'], visited: ['green', TH ? 'เข้าชมแล้ว' : 'Visited'], cancelled: ['grey', TH ? 'ยกเลิก' : 'Cancelled'], noshow: ['red', TH ? 'ไม่มาตามนัด' : 'No-show'] };
+    const isUp = (a) => a.st === 'pending' || a.st === 'confirmed';
+    const up = s.appts.filter(isUp).slice().sort((a, b) => (a.date > b.date ? 1 : -1));
+    const hist = s.appts.filter((a) => !isUp(a)).slice().sort((a, b) => (a.date < b.date ? 1 : -1));
+    const apptRows = (s.apptTab === 'up' ? up : hist).map((a) => {
+      const p = a.date.split('-').map(Number);
+      const pr = PM[a.prop];
+      return {
+        id: a.id, day: String(p[2]), mon: MTH[p[1] - 1] + ' ' + String(yr(p[0])).slice(2), name: L(a.name), phone: a.phone,
+        meta: a.time + (TH ? ' น.' : '') + ' · ' + a.people + (TH ? ' คน' : ' visitor(s)') + ' · ' + a.prop + (pr ? ' ' + propName(pr) : ''),
+        note: L(a.note), hasNote: !!L(a.note), c: chip(AST[a.st][0], AST[a.st][1])
+      };
+    });
+    const apptTabs = [['up', (TH ? 'กำลังจะถึง' : 'Upcoming') + ' (' + up.length + ')'], ['hist', (TH ? 'ประวัติ' : 'History') + ' (' + hist.length + ')']].map((x) => Object.assign(pill(s.apptTab === x[0]), {
+      label: x[1], pick: () => this.setState({ apptTab: x[0] })
+    }));
+    const setAfF = setter('af');
+
+    // ---------- activities ----------
+    const ymOf = (d) => d.slice(0, 7);
+    const monthsList = ['2026-05', '2026-06', '2026-07', '2026-08', '2026-09', '2026-10'];
+    const months = monthsList.map((m) => {
+      const inM = s.acts.filter((a) => ymOf(a.date) === m);
+      let c;
+      if (inM.some((a) => a.st === 'attended')) c = chip('green', TH ? 'เข้าร่วมแล้ว' : 'Attended');
+      else if (m < CUR) c = chip('red', TH ? 'ไม่ได้เข้าร่วม' : 'Missed');
+      else if (inM.some((a) => a.st === 'registered')) c = chip('blue', TH ? 'ลงทะเบียนแล้ว' : 'Signed up');
+      else c = chip('amber', TH ? 'ยังไม่ลงทะเบียน' : 'Not signed up');
+      return { label: fmtMonth(m), c: c };
+    });
+    const octOpen = s.acts.some((a) => ymOf(a.date) === CUR && a.st === 'open');
+    const actUp = s.acts.filter((a) => a.date >= TODAY).slice().sort((a, b) => (a.date > b.date ? 1 : -1)).map((a) => ({
+      title: L(a.title), place: L(a.place), dateText: fmtDate(a.date),
+      canRegister: a.st === 'open', isRegistered: a.st === 'registered',
+      register: () => {
+        this.setState({ acts: this.state.acts.map((x) => (x.id === a.id ? Object.assign({}, x, { st: 'registered' }) : x)) });
+        this.flash(TH ? 'ลงทะเบียนกิจกรรมเรียบร้อย' : 'Signed up for the activity');
+      }
+    }));
+    const actHist = s.acts.filter((a) => a.date < TODAY).map((a) => {
+      const ok = a.st === 'attended';
+      const mm = fmtMonth(ymOf(a.date));
+      return {
+        title: L(a.title), place: L(a.place), dateText: fmtDate(a.date),
+        c: ok ? chip('green', TH ? 'เข้าร่วม' : 'Attended') : chip('red', TH ? 'ไม่ได้เข้าร่วม' : 'Missed'),
+        right: ok ? (TH ? 'มีสิทธิ์รับค่าคอมฯ เดือน ' + mm : 'Eligible for ' + mm + ' commission') : (TH ? 'ไม่มีสิทธิ์รับค่าคอมฯ เดือน ' + mm : 'Not eligible for ' + mm + ' commission'),
+        rightFg: ok ? '#155B34' : '#8E2B1E'
+      };
+    });
+
+    // ---------- overview ----------
+    const SESS = [{ id: 'OV-1024', date: '2026-10-24', time: '19:00' }, { id: 'OV-1031', date: '2026-10-31', time: '19:00' }, { id: 'OV-1107', date: '2026-11-07', time: '10:00' }];
+    const ovSessions = SESS.map((o) => {
+      const on = s.ovSession === o.id;
+      return { date: fmtDate(o.date), sub: o.time + (TH ? ' น.' : '') + ' · Zoom · ' + (TH ? 'ประมาณ 1 ชม.' : 'about 1 hr'), pressed: on ? 'true' : 'false', bd: on ? '#12372A' : '#E1E6E3', bg: on ? '#EEF5F1' : '#FFFFFF', pick: () => this.setState({ ovSession: o.id }) };
+    });
+    const OVST = { registered: ['blue', TH ? 'ลงทะเบียนแล้ว' : 'Registered'], attended: ['green', TH ? 'เข้าฟังแล้ว' : 'Attended'], absent: ['grey', TH ? 'ไม่ได้เข้าฟัง' : 'Did not attend'] };
+    const trNames = s.trs.map((x) => L(x.name));
+    const ovRows = s.ovs.map((r) => {
+      const nm = L(r.name);
+      const inTr = trNames.indexOf(nm) !== -1;
+      const canF = r.st === 'attended' && !inTr;
+      return {
+        name: nm, phone: r.phone, session: fmtDate(r.sdate) + ' · ' + r.time, c: chip(OVST[r.st][0], OVST[r.st][1]),
+        canForward: canF, noAction: !canF,
+        nextText: inTr ? (TH ? 'ลงทะเบียนอบรมแล้ว' : 'Registered for training') : (r.st === 'registered' ? (TH ? 'รอเข้าฟัง' : 'Waiting for session') : '-'),
+        forward: () => this.setState({ screen: 'training', tf: { name: nm, phone: r.phone } })
+      };
+    });
+    const setOfF = setter('of');
+    const steps = [
+      { n: '1', label: TH ? 'ฟัง Overview Online' : 'Attend online overview', bg: '#FCEFD9', dot: '#8A4B00' },
+      { n: '2', label: TH ? 'อบรมเป็นตัวแทนขาย (2 วัน)' : 'Agent training (2 days)', bg: '#DCE8FB', dot: '#1D4E9E' },
+      { n: '3', label: TH ? 'เป็นตัวแทนในสายงานของคุณ' : 'Join your team line', bg: '#D7EEDF', dot: '#155B34' }
+    ];
+
+    // ---------- training ----------
+    const ROUNDS = [{ id: 'TR-11', d1: '2026-11-08', d2: '2026-11-09', seats: 30, taken: 18 }, { id: 'TR-12', d1: '2026-12-06', d2: '2026-12-07', seats: 30, taken: 6 }];
+    const rounds = ROUNDS.map((o) => {
+      const on = s.trRound === o.id;
+      const mine = s.trs.filter((x) => x.round === o.id).length;
+      const taken = o.taken + mine;
+      return {
+        id: o.id, dates: fmtDate(o.d1) + ' – ' + fmtDate(o.d2), place: TH ? 'ห้องอบรม สำนักงานขายโครงการ · 09:00–16:00 น.' : 'Training room, project sales office · 09:00–16:00',
+        seats: TH ? 'เหลือ ' + (o.seats - taken) + ' จาก ' + o.seats + ' ที่' : (o.seats - taken) + ' of ' + o.seats + ' seats left',
+        w: Math.round(taken / o.seats * 100) + '%', pressed: on ? 'true' : 'false', bd: on ? '#12372A' : '#E1E6E3', bg: on ? '#EEF5F1' : '#FFFFFF',
+        pick: () => this.setState({ trRound: o.id })
+      };
+    });
+    const quick = s.ovs.filter((r) => r.st === 'attended' && trNames.indexOf(L(r.name)) === -1).map((r) => ({
+      name: L(r.name), pick: () => this.setState({ tf: { name: L(r.name), phone: r.phone } })
+    }));
+    const TRST = { registered: ['blue', TH ? 'ลงทะเบียนแล้ว' : 'Registered'], passed: ['green', TH ? 'ผ่านการอบรม' : 'Passed'], failed: ['red', TH ? 'ไม่ผ่าน' : 'Did not pass'] };
+    const trRows = s.trs.map((r) => ({
+      name: L(r.name), phone: r.phone, round: r.round + ' · ' + fmtDate(r.rdate), c: chip(TRST[r.st][0], TRST[r.st][1]),
+      outcome: r.code ? (TH ? 'เป็นตัวแทนแล้ว ' : 'Now agent ') + r.code : (TH ? 'รออบรม' : 'Awaiting training')
+    }));
+    const setTfF = setter('tf');
+
+    // ---------- nav ----------
+    const ICON = {
+      profile: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5',
+      tree: 'M9 3h6v4H9zM3 17h6v4H3zM15 17h6v4h-6zM12 7v5M6 17v-5h12v5',
+      appt: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',
+      sales: 'M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5',
+      activity: 'M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z',
+      props: 'M3 11l9-7 9 7M5 10v10h14V10M10 20v-6h4v6',
+      overview: 'M3 6h13v12H3zM16 10l5-3v10l-5-3',
+      training: 'M2 9l10-5 10 5-10 5zM6 11v5c3 2.5 9 2.5 12 0v-5'
+    };
+    const navItem = (key) => {
+      const on = s.screen === key;
+      return { label: t['n_' + key], d: ICON[key], cur: on ? 'page' : 'false', bg: on ? '#E3A23B' : 'transparent', fg: on ? '#12372A' : '#E6EEEA', go: () => this.setState({ screen: key, selProp: key === 'props' ? s.selProp : '' }) };
+    };
+    const seg = (on) => ({ bg: on ? '#12372A' : '#FFFFFF', fg: on ? '#FFFFFF' : '#1B2420', pressed: on ? 'true' : 'false' });
+    const show = {};
+    ['profile', 'tree', 'appt', 'sales', 'activity', 'props', 'overview', 'training'].forEach((k) => { show[k] = s.screen === k; });
+
+    return {
+      t: t, show: show,
+      page: { title: t['p_' + s.screen], sub: t['s_' + s.screen] },
+      navMain: ['profile', 'tree', 'appt', 'sales', 'activity', 'props'].map(navItem),
+      navRecruit: ['overview', 'training'].map(navItem),
+      langBtn: { th: seg(TH), en: seg(!TH) },
+      setTh: () => this.setState({ lang: 'th' }), setEn: () => this.setState({ lang: 'en' }),
+      me: { name: meName, initial: meName.charAt(0), code: 'AG-1007', tier: myRate + '%' },
+      warn: { show: octOpen },
+      goActivity: () => this.setState({ screen: 'activity' }),
+
+      profileKpis: [
+        { label: TH ? 'สัญญาที่ปิดเอง' : 'Own contracts', value: String(sales.length) },
+        { label: TH ? 'สัญญารวมในสายงาน' : 'Contracts in your line', value: String(teamClosed) },
+        { label: TH ? 'ค่าคอมฯ ที่ได้รับแล้ว' : 'Commission received', value: baht(earned) },
+        { label: TH ? 'สมาชิกในสายงาน' : 'Team members', value: String(members(tree)) }
+      ],
+      profileInfo: [
+        { k: TH ? 'ชื่อ' : 'First name', v: TH ? 'สมชาย' : 'Somchai' },
+        { k: TH ? 'นามสกุล' : 'Last name', v: TH ? 'วงศ์ดี' : 'Wongdee' },
+        { k: TH ? 'รหัสตัวแทนฝ่ายขาย' : 'Agent code', v: 'AG-1007' },
+        { k: TH ? 'ระดับค่าคอมมิชชัน' : 'Commission tier', v: myRate + '%' },
+        { k: TH ? 'ผู้แนะนำ (อัปไลน์)' : 'Referrer (upline)', v: 'AG-1001 · ' + (TH ? 'อนันต์ ศรีวงศ์' : 'Anan Sriwong') },
+        { k: TH ? 'วันที่เริ่มเป็นตัวแทน' : 'Agent since', v: fmtDate('2026-03-15') },
+        { k: TH ? 'เบอร์โทร' : 'Phone', v: '089-111-2201' },
+        { k: TH ? 'อีเมล' : 'Email', v: 'somchai.w@example.com' },
+        { k: TH ? 'บัญชีรับค่าคอมฯ' : 'Commission account', v: TH ? 'กสิกรไทย ••••4521' : 'Kasikorn Bank ••••4521' }
+      ],
+      tiers: tiers,
+      prog: { label: teamClosed + ' / 8', w: Math.min(teamClosed / 8 * 100, 100) + '%', text: progText },
+      editProfile: () => this.flash(TH ? 'การแก้ไขข้อมูลจะเปิดใช้ในระบบจริง' : 'Editing will be available in the full system'),
+      viewFile: () => this.flash(TH ? 'เปิดไฟล์สัญญา (ตัวอย่าง)' : 'Opening contract file (sample)'),
+
+      treeKpis: [
+        { label: TH ? 'สมาชิกในสายงาน' : 'Team members', value: String(members(tree)) },
+        { label: TH ? 'สัญญารวมในสายงาน' : 'Contracts in your line', value: String(teamClosed) },
+        { label: TH ? 'ระดับค่าคอมฯ ปัจจุบัน' : 'Current tier', value: myRate + '%' }
+      ],
+      up: { code: 'AG-1001', name: TH ? 'อนันต์ ศรีวงศ์' : 'Anan Sriwong' },
+      root: { code: tree.id, name: meName, stat: statText(tree), tier: myRate + '%' },
+      l1: tree.kids.map((k, i) => decoNode(k, i, tree.kids.length)),
+
+      apptTabs: apptTabs, apptRows: apptRows, apptEmpty: apptRows.length === 0,
+      showAppt: s.showAppt, af: s.af,
+      setAf: { name: setAfF('name'), phone: setAfF('phone'), date: setAfF('date'), time: setAfF('time'), people: setAfF('people'), prop: setAfF('prop'), note: setAfF('note') },
+      timeOptions: ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00'],
+      propOptions: props.filter((p) => p.status !== 'sold').map((p) => ({ id: p.id, name: p.id + ' · ' + propName(p) })),
+      openAppt: () => this.setState({ showAppt: true, af: this.blankAppt('PV-A01') }),
+      closeAppt: () => this.setState({ showAppt: false }),
+      saveAppt: () => {
+        const f = this.state.af;
+        if (!f.name.trim() || !f.phone.trim() || !f.date) { this.flash(TH ? 'กรุณากรอกชื่อลูกค้า เบอร์โทร และวันที่' : 'Please enter customer name, phone and date'); return; }
+        const n = { id: 'AP-' + this.state.nextAp, date: f.date, time: f.time, name: f.name.trim(), phone: f.phone.trim(), people: f.people || '1', prop: f.prop, st: 'pending', note: f.note.trim() };
+        this.setState({ appts: [n].concat(this.state.appts), nextAp: this.state.nextAp + 1, showAppt: false, apptTab: 'up' });
+        this.flash(TH ? 'ส่งนัดหมายแล้ว รอเจ้าหน้าที่ยืนยัน' : 'Visit booked — awaiting staff confirmation');
+      },
+
+      salesKpis: [
+        { label: TH ? 'สัญญาที่ปิดได้' : 'Contracts closed', value: String(sales.length) },
+        { label: TH ? 'ยอดขายรวม' : 'Total sales', value: mil(sales.reduce((a, x) => a + x.price, 0)) },
+        { label: TH ? 'ค่าคอมฯ ได้รับแล้ว' : 'Commission received', value: baht(earned) },
+        { label: TH ? 'ค่าคอมฯ รอจ่าย' : 'Commission pending', value: baht(pending) }
+      ],
+      salesChips: typeChips(s.salesType, 'salesType'), salesRows: salesRows,
+
+      months: months, actUp: actUp, actHist: actHist,
+
+      propChips: typeChips(s.propType, 'propType'), propCards: propCards,
+      hasSelProp: !!selP, sp: selP ? decoProp(selP) : emptySp,
+      closeProp: () => this.setState({ selProp: '' }),
+      bookFromProp: () => this.setState({ screen: 'appt', showAppt: true, apptTab: 'up', af: this.blankAppt(this.state.selProp) }),
+      shareProp: () => this.flash(TH ? 'คัดลอกลิงก์ข้อมูลทรัพย์สำหรับส่งลูกค้าแล้ว (ตัวอย่าง)' : 'Listing link copied for your customer (sample)'),
+
+      steps: steps, ovSessions: ovSessions, of: s.of,
+      setOf: { first: setOfF('first'), last: setOfF('last'), phone: setOfF('phone'), email: setOfF('email'), line: setOfF('line') },
+      ovRows: ovRows,
+      saveOv: () => {
+        const f = this.state.of;
+        if (!f.first.trim() || !f.phone.trim()) { this.flash(TH ? 'กรุณากรอกชื่อและเบอร์โทร' : 'Please enter a name and phone'); return; }
+        const ses = SESS.find((o) => o.id === this.state.ovSession);
+        const n = { name: (f.first.trim() + ' ' + f.last.trim()).trim(), phone: f.phone.trim(), sdate: ses.date, time: ses.time, st: 'registered' };
+        this.setState({ ovs: [n].concat(this.state.ovs), of: { first: '', last: '', phone: '', email: '', line: '' } });
+        this.flash(TH ? 'ลงทะเบียนแล้ว ระบบจะส่งลิงก์ Zoom ให้ผู้สมัคร' : 'Registered — the Zoom link will be sent to the prospect');
+      },
+
+      rounds: rounds, quick: quick, hasQuick: quick.length > 0, tf: s.tf,
+      setTf: { name: setTfF('name'), phone: setTfF('phone') },
+      trRows: trRows,
+      saveTr: () => {
+        const f = this.state.tf;
+        if (!f.name.trim() || !f.phone.trim()) { this.flash(TH ? 'กรุณากรอกชื่อและเบอร์โทร' : 'Please enter a name and phone'); return; }
+        const r = ROUNDS.find((o) => o.id === this.state.trRound);
+        const n = { name: f.name.trim(), phone: f.phone.trim(), round: r.id, rdate: r.d1, st: 'registered' };
+        this.setState({ trs: [n].concat(this.state.trs), tf: { name: '', phone: '' } });
+        this.flash(TH ? 'ลงทะเบียนอบรมเรียบร้อย' : 'Registered for training');
+      },
+
+      hasToast: !!s.toast, toast: s.toast
+    };
+  }
+}
+
+DC.mount(Component);
+</script>
+</body>
+</html>

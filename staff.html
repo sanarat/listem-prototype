@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ListEm – เจ้าหน้าที่โครงการ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F5F4}
+a{color:#1D4E9E}a:hover{color:#12372A}
+button,input,select,textarea{font-family:inherit}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<template id="tpl">
+
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap; font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; color: #1B2420; background: #F3F5F4; font-size: 15px; line-height: 1.5">
+
+<nav aria-label="{{t.navAria}}" style="flex: 1 1 240px; box-sizing: border-box; background: #12372A; color: #FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: center; gap: 12px; padding: 0 8px">
+<svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true"><rect x="0" y="0" width="36" height="36" rx="9" fill="#E3A23B"></rect><path d="M8 25 L15 14 L19 19 L22 15 L28 25 Z" fill="none" stroke="#12372A" stroke-width="2.4" stroke-linejoin="round"></path><path d="M8 25 H28" stroke="#12372A" stroke-width="2.4" stroke-linecap="round"></path></svg>
+<div>
+<div style="font-weight: 700; font-size: 19px">ListEm</div>
+<div style="font-size: 12px; color: #B9CCC3">{{t.roleName}}</div>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.08); border-radius: 10px; padding: 12px">
+<div aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 50%; background: #9CC3D5; color: #12372A; display: flex; align-items: center; justify-content: center; font-weight: 700">{{user.initial}}</div>
+<div style="min-width: 0">
+<div style="font-weight: 600">{{user.name}}</div>
+<div style="font-size: 12px; color: #B9CCC3">{{t.roleName}}</div>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<template data-k="for" list="{{navGroups}}" as="g" hint-placeholder-count="3">
+<div style="font-size: 12px; color: #B9CCC3; padding: 12px 12px 4px">{{g.label}}</div>
+<template data-k="for" list="{{g.items}}" as="n" hint-placeholder-count="3">
+<button type="button" onClick="{{n.go}}" aria-current="{{n.cur}}" style="display: flex; align-items: center; gap: 12px; min-height: 42px; padding: 0 12px; border: 0; border-radius: 8px; cursor: pointer; text-align: left; font-size: 14px; font-weight: 500; background: {{n.bg}}; color: {{n.fg}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.d}}"></path></svg>{{n.label}}</button>
+</template>
+</template>
+</div>
+<a href="index.html" style="margin-top: auto; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; border-radius: 8px; color: #E6EEEA; text-decoration: none; font-size: 14px; border: 1px solid rgba(255,255,255,0.2)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"></path></svg>{{t.switchRole}}</a>
+</nav>
+
+<main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 28px clamp(16px, 3vw, 40px) 56px; display: flex; flex-direction: column; gap: 20px">
+<header style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+<div>
+<h1 style="margin: 0; font-size: 26px; font-weight: 700; color: #12372A; line-height: 1.3">{{page.title}}</h1>
+<p style="margin: 4px 0 0; color: #55625C">{{page.sub}}</p>
+</div>
+<div role="group" aria-label="Language" style="display: flex; border: 1px solid #CBD3CF; border-radius: 8px; overflow: hidden; background: #FFFFFF">
+<button type="button" onClick="{{setTh}}" aria-pressed="{{langBtn.th.pressed}}" style="min-width: 48px; min-height: 40px; border: 0; cursor: pointer; font-size: 13px; font-weight: 600; background: {{langBtn.th.bg}}; color: {{langBtn.th.fg}}">ไทย</button>
+<button type="button" onClick="{{setEn}}" aria-pressed="{{langBtn.en.pressed}}" style="min-width: 48px; min-height: 40px; border: 0; cursor: pointer; font-size: 13px; font-weight: 600; background: {{langBtn.en.bg}}; color: {{langBtn.en.fg}}">EN</button>
+</div>
+</header>
+<div role="note" style="background: #FFF8EA; border: 1px solid #EED6A2; color: #6B4A0E; border-radius: 8px; padding: 8px 12px; font-size: 13px">{{t.sample}}</div>
+
+<template data-k="if" value="{{hasKpis}}" hint-placeholder-val="{{ true }}">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px">
+<template data-k="for" list="{{kpis}}" as="k" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 16px 18px">
+<div style="font-size: 13px; color: #55625C">{{k.label}}</div>
+<div style="font-size: 26px; font-weight: 700; color: #12372A; font-variant-numeric: tabular-nums; line-height: 1.35">{{k.value}}</div>
+</div>
+</template>
+</div>
+</template>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<div role="group" aria-label="{{t.filter}}" style="display: flex; gap: 8px; flex-wrap: wrap">
+<template data-k="for" list="{{chips}}" as="f" hint-placeholder-count="4">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 40px; padding: 0 14px; border-radius: 999px; cursor: pointer; font-size: 13px; font-weight: 600; border: 1px solid {{f.bd}}; background: {{f.bg}}; color: {{f.fg}}">{{f.label}}</button>
+</template>
+</div>
+<template data-k="if" value="{{primary.show}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{primary.go}}" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>{{primary.label}}</button>
+</template>
+</div>
+
+<template data-k="if" value="{{show.props}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<template data-k="if" value="{{showPF}}" hint-placeholder-val="{{ false }}">
+<section aria-label="{{pfTitle}}" style="background: #FFFFFF; border: 1px solid #CBD3CF; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{pfTitle}}</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-id" style="font-size: 13px; font-weight: 600">{{t.fCode}} *</label><input id="pf-id" type="text" value="{{pf.id}}" onChange="{{setPf.id}}" disabled="{{pfLock}}" placeholder="PV-D01" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-type" style="font-size: 13px; font-weight: 600">{{t.fType}}</label><select id="pf-type" value="{{pf.type}}" onChange="{{setPf.type}}" style="min-height: 44px; padding: 0 10px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF"><template data-k="for" list="{{typeOptions}}" as="o" hint-placeholder-count="2"><option value="{{o.v}}">{{o.l}}</option></template></select></div>
+<template data-k="if" value="{{pfVilla}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-model" style="font-size: 13px; font-weight: 600">{{t.fModel}}</label><input id="pf-model" type="text" value="{{pf.model}}" onChange="{{setPf.model}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-bed" style="font-size: 13px; font-weight: 600">{{t.fBed}}</label><input id="pf-bed" type="number" min="1" value="{{pf.bed}}" onChange="{{setPf.bed}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-area" style="font-size: 13px; font-weight: 600">{{t.fArea}}</label><input id="pf-area" type="number" value="{{pf.area}}" onChange="{{setPf.area}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+</template>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-land" style="font-size: 13px; font-weight: 600">{{t.fLand}}</label><input id="pf-land" type="number" value="{{pf.land}}" onChange="{{setPf.land}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-price" style="font-size: 13px; font-weight: 600">{{t.fPrice}} *</label><input id="pf-price" type="text" inputmode="numeric" value="{{pf.price}}" onChange="{{setPf.price}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-status" style="font-size: 13px; font-weight: 600">{{t.cStatus}}</label><select id="pf-status" value="{{pf.status}}" onChange="{{setPf.status}}" style="min-height: 44px; padding: 0 10px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF"><template data-k="for" list="{{statusOptions}}" as="o" hint-placeholder-count="3"><option value="{{o.v}}">{{o.l}}</option></template></select></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-promo" style="font-size: 13px; font-weight: 600">{{t.fPromo}}</label><input id="pf-promo" type="text" value="{{pf.promo}}" onChange="{{setPf.promo}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; border: 1px dashed #B9C6C0; border-radius: 10px; padding: 12px">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#55625C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18v14H3zM3 16l5-5 4 4 3-3 6 6M15 9.5v.01"></path></svg>
+<div style="flex: 1 1 200px; font-size: 13px; color: #55625C">{{t.photoHint}}</div>
+<button type="button" onClick="{{uploadPhoto}}" style="min-height: 40px; padding: 0 14px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 13px; font-weight: 600; cursor: pointer">{{t.uploadPhoto}}</button>
+</div>
+<div style="display: flex; gap: 10px; flex-wrap: wrap">
+<button type="button" onClick="{{savePF}}" style="min-height: 44px; padding: 0 20px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">{{t.save}}</button>
+<button type="button" onClick="{{closePF}}" style="min-height: 44px; padding: 0 20px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #1B2420; font-size: 14px; font-weight: 600; cursor: pointer">{{t.cancel}}</button>
+</div>
+</section>
+</template>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{t.n_props}}" style="min-width: 900px">
+<div role="row" style="display: grid; grid-template-columns: 90px minmax(220px, 2fr) 130px minmax(200px, 1.6fr) 110px 100px; gap: 12px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{t.fCode}}</div><div role="columnheader">{{t.cListing}}</div><div role="columnheader">{{t.fPrice}}</div><div role="columnheader">{{t.fPromo}}</div><div role="columnheader">{{t.cStatus}}</div><div role="columnheader">{{t.cAction}}</div>
+</div>
+<template data-k="for" list="{{propRows}}" as="r" hint-placeholder-count="8">
+<div role="row" style="display: grid; grid-template-columns: 90px minmax(220px, 2fr) 130px minmax(200px, 1.6fr) 110px 100px; gap: 12px; padding: 8px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center">
+<div role="cell" style="font-weight: 600">{{r.id}}</div>
+<div role="cell"><div>{{r.name}}</div><div style="font-size: 12px; color: #55625C">{{r.spec}}</div></div>
+<div role="cell" style="font-variant-numeric: tabular-nums">{{r.priceText}}</div>
+<div role="cell" style="font-size: 13px; color: #6B3A00">{{r.promo}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.c.bg}}; color: {{r.c.fg}}">{{r.c.label}}</span></div>
+<div role="cell"><button type="button" onClick="{{r.edit}}" style="min-height: 40px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 13px; font-weight: 600; cursor: pointer">{{t.edit}}</button></div>
+</div>
+</template>
+</div>
+</div>
+</div>
+</template>
+
+<template data-k="if" value="{{show.agents}}" hint-placeholder-val="{{ false }}">
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{t.n_agents}}" style="min-width: 1180px">
+<div role="row" style="display: grid; grid-template-columns: 84px minmax(170px, 1.5fr) minmax(130px, 1fr) 100px 60px 64px 60px 130px 110px 110px 120px; gap: 10px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{t.fCode}}</div><div role="columnheader">{{t.cName}}</div><div role="columnheader">{{t.cUpline}}</div><div role="columnheader">{{t.cJoined}}</div><div role="columnheader">{{t.cOwn}}</div><div role="columnheader">{{t.cLine}}</div><div role="columnheader">{{t.cTier}}</div><div role="columnheader">{{t.cActMonth}}</div><div role="columnheader">{{t.cFile}}</div><div role="columnheader">{{t.cStatus}}</div><div role="columnheader">{{t.cAction}}</div>
+</div>
+<template data-k="for" list="{{agentRows}}" as="r" hint-placeholder-count="8">
+<div role="row" style="display: grid; grid-template-columns: 84px minmax(170px, 1.5fr) minmax(130px, 1fr) 100px 60px 64px 60px 130px 110px 110px 120px; gap: 10px; padding: 8px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center">
+<div role="cell" style="font-weight: 600">{{r.id}}</div>
+<div role="cell"><div style="font-weight: 600">{{r.name}}</div><div style="font-size: 12px; color: #55625C">{{r.phone}}</div></div>
+<div role="cell" style="font-size: 13px">{{r.up}}</div>
+<div role="cell" style="font-size: 13px">{{r.joined}}</div>
+<div role="cell" style="font-variant-numeric: tabular-nums">{{r.own}}</div>
+<div role="cell" style="font-variant-numeric: tabular-nums">{{r.line}}</div>
+<div role="cell" style="font-weight: 700; color: #12372A">{{r.tier}}</div>
+<div role="cell" style="font-size: 13px; font-weight: 600; color: {{r.actFg}}">{{r.act}}</div>
+<div role="cell"><button type="button" onClick="{{r.fileGo}}" style="min-height: 36px; padding: 0 10px; border: 1px solid {{r.fileBd}}; border-radius: 8px; background: #FFFFFF; color: {{r.fileFg}}; font-size: 12px; font-weight: 600; cursor: pointer">{{r.fileLabel}}</button></div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.c.bg}}; color: {{r.c.fg}}">{{r.c.label}}</span></div>
+<div role="cell"><button type="button" onClick="{{r.go}}" style="min-height: 40px; padding: 0 12px; border: 1px solid {{r.btnBd}}; border-radius: 8px; background: {{r.btnBg}}; color: {{r.btnFg}}; font-size: 13px; font-weight: 600; cursor: pointer">{{r.btn}}</button></div>
+</div>
+</template>
+</div>
+</div>
+</template>
+
+<template data-k="if" value="{{show.appts}}" hint-placeholder-val="{{ false }}">
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{t.n_appts}}" style="min-width: 1080px">
+<div role="row" style="display: grid; grid-template-columns: 76px 130px minmax(170px, 1.4fr) 60px minmax(150px, 1.2fr) minmax(140px, 1.1fr) 130px 220px; gap: 10px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{t.fCode}}</div><div role="columnheader">{{t.cWhen}}</div><div role="columnheader">{{t.cCust}}</div><div role="columnheader">{{t.cPeople}}</div><div role="columnheader">{{t.cListing}}</div><div role="columnheader">{{t.cAgent}}</div><div role="columnheader">{{t.cStatus}}</div><div role="columnheader">{{t.cAction}}</div>
+</div>
+<template data-k="for" list="{{apptRows}}" as="r" hint-placeholder-count="6">
+<div role="row" style="display: grid; grid-template-columns: 76px 130px minmax(170px, 1.4fr) 60px minmax(150px, 1.2fr) minmax(140px, 1.1fr) 130px 220px; gap: 10px; padding: 8px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center; min-height: 44px">
+<div role="cell" style="color: #55625C">{{r.id}}</div>
+<div role="cell"><div>{{r.date}}</div><div style="font-size: 12px; color: #55625C">{{r.time}}</div></div>
+<div role="cell"><div style="font-weight: 600">{{r.name}}</div><div style="font-size: 12px; color: #55625C">{{r.phone}}</div></div>
+<div role="cell">{{r.people}}</div>
+<div role="cell" style="font-size: 13px">{{r.prop}}</div>
+<div role="cell" style="font-size: 13px">{{r.agent}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.c.bg}}; color: {{r.c.fg}}">{{r.c.label}}</span></div>
+<div role="cell" style="display: flex; gap: 6px; flex-wrap: wrap">
+<template data-k="if" value="{{r.has1}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{r.go1}}" style="min-height: 36px; padding: 0 10px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 12px; font-weight: 600; cursor: pointer">{{r.l1}}</button></template>
+<template data-k="if" value="{{r.has2}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{r.go2}}" style="min-height: 36px; padding: 0 10px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #8E2B1E; font-size: 12px; font-weight: 600; cursor: pointer">{{r.l2}}</button></template>
+<template data-k="if" value="{{r.none}}" hint-placeholder-val="{{ false }}"><span style="color: #55625C">—</span></template>
+</div>
+</div>
+</template>
+</div>
+</div>
+</template>
+
+<template data-k="if" value="{{show.sales}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<template data-k="if" value="{{showSale}}" hint-placeholder-val="{{ false }}">
+<section aria-label="{{t.newSale}}" style="background: #FFFFFF; border: 1px solid #CBD3CF; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.newSale}}</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="sf-prop" style="font-size: 13px; font-weight: 600">{{t.cListing}} *</label><select id="sf-prop" value="{{sf.prop}}" onChange="{{pickSaleProp}}" style="min-height: 44px; padding: 0 10px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF"><option value="">{{t.choose}}</option><template data-k="for" list="{{saleProps}}" as="o" hint-placeholder-count="5"><option value="{{o.id}}">{{o.name}}</option></template></select></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="sf-cust" style="font-size: 13px; font-weight: 600">{{t.cCust}} *</label><input id="sf-cust" type="text" value="{{sf.cust}}" onChange="{{setSf.cust}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="sf-phone" style="font-size: 13px; font-weight: 600">{{t.fPhone}}</label><input id="sf-phone" type="tel" value="{{sf.phone}}" onChange="{{setSf.phone}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="sf-agent" style="font-size: 13px; font-weight: 600">{{t.cAgent}} *</label><select id="sf-agent" value="{{sf.agent}}" onChange="{{setSf.agent}}" style="min-height: 44px; padding: 0 10px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF"><template data-k="for" list="{{agentOptions}}" as="o" hint-placeholder-count="5"><option value="{{o.id}}">{{o.name}}</option></template></select></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="sf-price" style="font-size: 13px; font-weight: 600">{{t.fPrice}} *</label><input id="sf-price" type="text" inputmode="numeric" value="{{sf.price}}" onChange="{{setSf.price}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="sf-date" style="font-size: 13px; font-weight: 600">{{t.cContractDate}}</label><input id="sf-date" type="date" value="{{sf.date}}" onChange="{{setSf.date}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div id="sf-pay" style="font-size: 13px; font-weight: 600">{{t.cPayType}}</div>
+<div role="group" aria-labelledby="sf-pay" style="display: flex; gap: 8px">
+<template data-k="for" list="{{payTypes}}" as="p" hint-placeholder-count="2">
+<button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; border: 1px solid {{p.bd}}; background: {{p.bg}}; color: {{p.fg}}">{{p.label}}</button>
+</template>
+</div>
+</div>
+<template data-k="if" value="{{isInst}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="sf-inst" style="font-size: 13px; font-weight: 600">{{t.cInstCount}}</label><select id="sf-inst" value="{{sf.inst}}" onChange="{{setSf.inst}}" style="min-height: 44px; padding: 0 10px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF"><template data-k="for" list="{{instOptions}}" as="o" hint-placeholder-count="4"><option value="{{o.v}}">{{o.l}}</option></template></select></div>
+</template>
+</div>
+<template data-k="if" value="{{preview.show}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; gap: 8px 24px; background: #EEF5F1; border: 1px solid #BFD8C9; border-radius: 10px; padding: 12px 14px; font-size: 14px">
+<div><span style="color: #3D4843">{{t.pvSeq}}:</span> <strong>{{preview.seq}}</strong></div>
+<div><span style="color: #3D4843">{{t.pvRate}}:</span> <strong>{{preview.rate}}</strong></div>
+<div><span style="color: #3D4843">{{t.pvComm}}:</span> <strong>{{preview.comm}}</strong></div>
+<div><span style="color: #3D4843">{{t.pvInst}}:</span> <strong>{{preview.per}}</strong></div>
+</div>
+</template>
+<div style="display: flex; gap: 10px; flex-wrap: wrap">
+<button type="button" onClick="{{saveSale}}" style="min-height: 44px; padding: 0 20px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">{{t.save}}</button>
+<button type="button" onClick="{{closeSale}}" style="min-height: 44px; padding: 0 20px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #1B2420; font-size: 14px; font-weight: 600; cursor: pointer">{{t.cancel}}</button>
+</div>
+</section>
+</template>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{t.n_sales}}" style="min-width: 1100px">
+<div role="row" style="display: grid; grid-template-columns: 112px 100px minmax(170px, 1.4fr) minmax(140px, 1.1fr) minmax(140px, 1.1fr) 116px 130px 56px 104px; gap: 10px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{t.cContract}}</div><div role="columnheader">{{t.cDate}}</div><div role="columnheader">{{t.cListing}}</div><div role="columnheader">{{t.cCust}}</div><div role="columnheader">{{t.cAgent}}</div><div role="columnheader">{{t.fPrice}}</div><div role="columnheader">{{t.cPayType}}</div><div role="columnheader">{{t.cRate}}</div><div role="columnheader">{{t.cComm}}</div>
+</div>
+<template data-k="for" list="{{saleRows}}" as="r" hint-placeholder-count="8">
+<div role="row" style="display: grid; grid-template-columns: 112px 100px minmax(170px, 1.4fr) minmax(140px, 1.1fr) minmax(140px, 1.1fr) 116px 130px 56px 104px; gap: 10px; padding: 10px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center">
+<div role="cell" style="color: #55625C">{{r.id}}</div>
+<div role="cell">{{r.date}}</div>
+<div role="cell"><div style="font-weight: 600">{{r.prop}}</div><div style="font-size: 12px; color: #55625C">{{r.propName}}</div></div>
+<div role="cell">{{r.cust}}</div>
+<div role="cell" style="font-size: 13px">{{r.agent}}</div>
+<div role="cell" style="font-variant-numeric: tabular-nums">{{r.price}}</div>
+<div role="cell" style="font-size: 13px">{{r.pay}}</div>
+<div role="cell" style="font-weight: 700; color: #12372A">{{r.rate}}</div>
+<div role="cell" style="font-variant-numeric: tabular-nums">{{r.comm}}</div>
+</div>
+</template>
+</div>
+</div>
+</div>
+</template>
+
+<template data-k="if" value="{{show.payments}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<div style="flex: 999 1 560px; min-width: 0; overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{t.n_payments}}" style="min-width: 940px">
+<div role="row" style="display: grid; grid-template-columns: 120px minmax(150px, 1.2fr) 116px 140px minmax(150px, 1.2fr) 150px 140px; gap: 10px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{t.cContract}}</div><div role="columnheader">{{t.cCust}}</div><div role="columnheader">{{t.fPrice}}</div><div role="columnheader">{{t.cPayType}}</div><div role="columnheader">{{t.cPaid}}</div><div role="columnheader">{{t.cNextDue}}</div><div role="columnheader">{{t.cAction}}</div>
+</div>
+<template data-k="for" list="{{payRows}}" as="r" hint-placeholder-count="8">
+<div role="row" style="display: grid; grid-template-columns: 120px minmax(150px, 1.2fr) 116px 140px minmax(150px, 1.2fr) 150px 140px; gap: 10px; padding: 8px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center; background: {{r.rowBg}}">
+<div role="cell"><button type="button" onClick="{{r.open}}" style="min-height: 40px; padding: 0; border: 0; background: transparent; color: #1D4E9E; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 3px">{{r.id}}</button></div>
+<div role="cell"><div>{{r.cust}}</div><div style="font-size: 12px; color: #55625C">{{r.prop}}</div></div>
+<div role="cell" style="font-variant-numeric: tabular-nums">{{r.price}}</div>
+<div role="cell" style="font-size: 13px">{{r.type}}</div>
+<div role="cell"><div style="display: flex; justify-content: space-between; font-size: 12px; color: #3D4843"><span>{{r.paidText}}</span><span>{{r.count}}</span></div><div aria-hidden="true" style="height: 8px; border-radius: 4px; background: #EEF1EF; overflow: hidden; margin-top: 4px"><div style="height: 100%; width: {{r.w}}; background: #1F6B45"></div></div></div>
+<div role="cell" style="font-size: 13px; color: {{r.dueFg}}">{{r.due}}</div>
+<div role="cell">
+<template data-k="if" value="{{r.canPay}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{r.pay}}" style="min-height: 40px; padding: 0 12px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">{{t.recordPay}}</button></template>
+<template data-k="if" value="{{r.done}}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #D7EEDF; color: #155B34">{{t.fullyPaid}}</span></template>
+</div>
+</div>
+</template>
+</div>
+</div>
+<template data-k="if" value="{{hasPay}}" hint-placeholder-val="{{ false }}">
+<aside aria-label="{{t.schedule}}" style="flex: 1 1 300px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; gap: 8px; align-items: flex-start">
+<div>
+<div style="font-size: 12px; color: #55625C">{{sp.id}} · {{sp.prop}}</div>
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.schedule}}</h2>
+<div style="font-size: 13px; color: #3D4843">{{sp.cust}} · {{sp.type}}</div>
+</div>
+<button type="button" onClick="{{closePay}}" aria-label="{{t.close}}" style="flex: none; width: 40px; height: 40px; border: 1px solid #E1E6E3; border-radius: 8px; background: #FFFFFF; color: #3D4843; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+<template data-k="for" list="{{sp.rows}}" as="i" hint-placeholder-count="4">
+<li style="display: flex; align-items: center; gap: 10px; border: 1px solid #EEF1EF; border-radius: 8px; padding: 8px 10px">
+<span style="flex: none; width: 28px; height: 28px; border-radius: 50%; background: {{i.dotBg}}; color: {{i.dotFg}}; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700">{{i.n}}</span>
+<div style="flex: 1 1 auto; min-width: 0"><div style="font-weight: 600; font-variant-numeric: tabular-nums">{{i.amount}}</div><div style="font-size: 12px; color: #55625C">{{i.due}}</div></div>
+<span style="padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{i.c.bg}}; color: {{i.c.fg}}">{{i.c.label}}</span>
+</li>
+</template>
+</ol>
+<template data-k="if" value="{{sp.canPay}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{sp.pay}}" style="min-height: 44px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">{{t.recordPay}}</button></template>
+</aside>
+</template>
+</div>
+</template>
+
+<template data-k="if" value="{{show.commission}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div role="note" style="background: #DCE8FB; color: #163C78; border-radius: 10px; padding: 10px 14px; font-size: 14px">{{t.commRule}}</div>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{t.n_commission}}" style="min-width: 1100px">
+<div role="row" style="display: grid; grid-template-columns: 112px minmax(150px, 1.3fr) 76px 116px 56px 104px minmax(170px, 1.4fr) 130px 120px; gap: 10px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{t.cContract}}</div><div role="columnheader">{{t.cAgent}}</div><div role="columnheader">{{t.cMonth}}</div><div role="columnheader">{{t.fPrice}}</div><div role="columnheader">{{t.cRate}}</div><div role="columnheader">{{t.cComm}}</div><div role="columnheader">{{t.cCondition}}</div><div role="columnheader">{{t.cStatus}}</div><div role="columnheader">{{t.cAction}}</div>
+</div>
+<template data-k="for" list="{{commRows}}" as="r" hint-placeholder-count="8">
+<div role="row" style="display: grid; grid-template-columns: 112px minmax(150px, 1.3fr) 76px 116px 56px 104px minmax(170px, 1.4fr) 130px 120px; gap: 10px; padding: 8px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center; min-height: 44px">
+<div role="cell" style="color: #55625C">{{r.id}}</div>
+<div role="cell"><div style="font-weight: 600">{{r.agent}}</div><div style="font-size: 12px; color: #55625C">{{r.code}}</div></div>
+<div role="cell">{{r.month}}</div>
+<div role="cell" style="font-variant-numeric: tabular-nums">{{r.price}}</div>
+<div role="cell" style="font-weight: 700; color: #12372A">{{r.rate}}</div>
+<div role="cell" style="font-weight: 600; font-variant-numeric: tabular-nums">{{r.comm}}</div>
+<div role="cell" style="font-size: 13px; color: {{r.condFg}}">{{r.cond}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.c.bg}}; color: {{r.c.fg}}">{{r.c.label}}</span></div>
+<div role="cell">
+<template data-k="if" value="{{r.canPay}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{r.pay}}" style="min-height: 40px; padding: 0 12px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">{{t.markPaid}}</button></template>
+<template data-k="if" value="{{r.noPay}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: #55625C">{{r.paidOn}}</span></template>
+</div>
+</div>
+</template>
+</div>
+</div>
+</div>
+</template>
+
+<template data-k="if" value="{{show.activities}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<template data-k="if" value="{{showActForm}}" hint-placeholder-val="{{ false }}">
+<section aria-label="{{t.newAct}}" style="background: #FFFFFF; border: 1px solid #CBD3CF; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.newAct}}</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ac-title" style="font-size: 13px; font-weight: 600">{{t.cActivity}} *</label><input id="ac-title" type="text" value="{{actF.title}}" onChange="{{setActF.title}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ac-date" style="font-size: 13px; font-weight: 600">{{t.cDate}} *</label><input id="ac-date" type="date" value="{{actF.date}}" onChange="{{setActF.date}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ac-place" style="font-size: 13px; font-weight: 600">{{t.cPlace}}</label><input id="ac-place" type="text" value="{{actF.place}}" onChange="{{setActF.place}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+</div>
+<div style="display: flex; gap: 10px; flex-wrap: wrap">
+<button type="button" onClick="{{saveAct}}" style="min-height: 44px; padding: 0 20px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">{{t.save}}</button>
+<button type="button" onClick="{{closeAct}}" style="min-height: 44px; padding: 0 20px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #1B2420; font-size: 14px; font-weight: 600; cursor: pointer">{{t.cancel}}</button>
+</div>
+</section>
+</template>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<div style="flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<template data-k="for" list="{{actList}}" as="a" hint-placeholder-count="6">
+<button type="button" onClick="{{a.pick}}" aria-pressed="{{a.pressed}}" style="text-align: left; padding: 12px 14px; border-radius: 10px; cursor: pointer; border: 2px solid {{a.bd}}; background: {{a.bg}}; color: #1B2420; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 12px; color: #55625C">{{a.date}}</span>
+<span style="font-weight: 600; font-size: 14px">{{a.title}}</span>
+<span style="font-size: 12px; color: #3D4843">{{a.count}}</span>
+</button>
+</template>
+</div>
+<section style="flex: 999 1 460px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<div>
+<div style="font-size: 13px; color: #55625C">{{selAct.date}} · {{selAct.place}}</div>
+<h2 style="margin: 0; font-size: 18px; color: #12372A">{{selAct.title}}</h2>
+<div style="font-size: 14px; color: #3D4843">{{selAct.summary}}</div>
+</div>
+<div style="display: flex; flex-direction: column">
+<template data-k="for" list="{{attRows}}" as="r" hint-placeholder-count="8">
+<div style="display: flex; align-items: center; gap: 12px; padding: 6px 0; border-top: 1px solid #EEF1EF">
+<div style="flex: 1 1 auto; min-width: 0"><div style="font-weight: 600; font-size: 14px">{{r.name}}</div><div style="font-size: 12px; color: #55625C">{{r.code}}</div></div>
+<button type="button" onClick="{{r.toggle}}" aria-pressed="{{r.pressed}}" style="min-width: 132px; min-height: 40px; padding: 0 12px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; border: 1px solid {{r.bd}}; background: {{r.bg}}; color: {{r.fg}}">{{r.label}}</button>
+</div>
+</template>
+</div>
+</section>
+</div>
+</div>
+</template>
+
+<template data-k="if" value="{{show.overview}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 14px 18px">
+<div style="font-weight: 600; color: #12372A; flex: 1 1 100%">{{t.addSession}}</div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ns-date" style="font-size: 13px; font-weight: 600">{{t.cDate}}</label><input id="ns-date" type="date" value="{{newSess.date}}" onChange="{{setNs.date}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="ns-time" style="font-size: 13px; font-weight: 600">{{t.cTime}}</label><input id="ns-time" type="time" value="{{newSess.time}}" onChange="{{setNs.time}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<button type="button" onClick="{{addSession}}" style="min-height: 44px; padding: 0 18px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">{{t.addSessionBtn}}</button>
+</div>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{t.n_overview}}" style="min-width: 1040px">
+<div role="row" style="display: grid; grid-template-columns: minmax(160px, 1.3fr) 120px minmax(170px, 1.3fr) minmax(140px, 1.1fr) 140px 120px 210px; gap: 10px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{t.cName}}</div><div role="columnheader">{{t.fPhone}}</div><div role="columnheader">{{t.fEmail}}</div><div role="columnheader">{{t.cReferrer}}</div><div role="columnheader">{{t.cSession}}</div><div role="columnheader">{{t.cStatus}}</div><div role="columnheader">{{t.cAction}}</div>
+</div>
+<template data-k="for" list="{{ovRows}}" as="r" hint-placeholder-count="6">
+<div role="row" style="display: grid; grid-template-columns: minmax(160px, 1.3fr) 120px minmax(170px, 1.3fr) minmax(140px, 1.1fr) 140px 120px 210px; gap: 10px; padding: 8px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center; min-height: 44px">
+<div role="cell" style="font-weight: 600">{{r.name}}</div>
+<div role="cell">{{r.phone}}</div>
+<div role="cell" style="font-size: 13px; word-break: break-all">{{r.email}}</div>
+<div role="cell" style="font-size: 13px">{{r.ref}}</div>
+<div role="cell" style="font-size: 13px">{{r.session}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.c.bg}}; color: {{r.c.fg}}">{{r.c.label}}</span></div>
+<div role="cell" style="display: flex; gap: 6px; flex-wrap: wrap">
+<template data-k="if" value="{{r.open}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{r.attend}}" style="min-height: 36px; padding: 0 10px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 12px; font-weight: 600; cursor: pointer">{{t.markAttended}}</button>
+<button type="button" onClick="{{r.absent}}" style="min-height: 36px; padding: 0 10px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #8E2B1E; font-size: 12px; font-weight: 600; cursor: pointer">{{t.markAbsent}}</button>
+</template>
+<template data-k="if" value="{{r.closed}}" hint-placeholder-val="{{ false }}"><span style="color: #55625C">—</span></template>
+</div>
+</div>
+</template>
+</div>
+</div>
+</div>
+</template>
+
+<template data-k="if" value="{{show.training}}" hint-placeholder-val="{{ false }}">
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{t.n_training}}" style="min-width: 1000px">
+<div role="row" style="display: grid; grid-template-columns: minmax(160px, 1.3fr) 120px minmax(150px, 1.2fr) 150px 130px 240px; gap: 10px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{t.cName}}</div><div role="columnheader">{{t.fPhone}}</div><div role="columnheader">{{t.cReferrer}}</div><div role="columnheader">{{t.cRound}}</div><div role="columnheader">{{t.cStatus}}</div><div role="columnheader">{{t.cAction}}</div>
+</div>
+<template data-k="for" list="{{trRows}}" as="r" hint-placeholder-count="5">
+<div role="row" style="display: grid; grid-template-columns: minmax(160px, 1.3fr) 120px minmax(150px, 1.2fr) 150px 130px 240px; gap: 10px; padding: 8px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center; min-height: 44px">
+<div role="cell" style="font-weight: 600">{{r.name}}</div>
+<div role="cell">{{r.phone}}</div>
+<div role="cell" style="font-size: 13px">{{r.ref}}</div>
+<div role="cell" style="font-size: 13px">{{r.round}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.c.bg}}; color: {{r.c.fg}}">{{r.c.label}}</span></div>
+<div role="cell" style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center">
+<template data-k="if" value="{{r.isReg}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{r.pass}}" style="min-height: 36px; padding: 0 10px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 12px; font-weight: 600; cursor: pointer">{{t.markPass}}</button>
+<button type="button" onClick="{{r.fail}}" style="min-height: 36px; padding: 0 10px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #8E2B1E; font-size: 12px; font-weight: 600; cursor: pointer">{{t.markFail}}</button>
+</template>
+<template data-k="if" value="{{r.canCreate}}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{r.create}}" style="min-height: 36px; padding: 0 10px; border: 1px solid #12372A; border-radius: 8px; background: #EEF5F1; color: #12372A; font-size: 12px; font-weight: 600; cursor: pointer">{{t.createAgent}}</button>
+</template>
+<template data-k="if" value="{{r.hasNote}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #3D4843">{{r.note}}</span></template>
+</div>
+</div>
+</template>
+</div>
+</div>
+</template>
+
+</main>
+
+<template data-k="if" value="{{hasToast}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #12372A; color: #FFFFFF; padding: 12px 18px; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.18); font-size: 14px; z-index: 50; max-width: calc(100% - 32px)">{{toast}}</div>
+</template>
+</div>
+</template>
+<script src="assets/react.production.min.js"></script>
+<script src="assets/react-dom.production.min.js"></script>
+<script src="assets/dc-runtime.js"></script>
+<script>
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      lang: 'th', screen: 'props', toast: '',
+      props: this.seedProps(), fProps: 'all', showPF: false, pf: this.blankPF(),
+      agents: this.seedAgents(), fAgents: 'all',
+      contracts: this.seedContracts(), nextCt: 47,
+      appts: this.seedAppts(), fAppts: 'all',
+      fSales: 'all', showSale: false, sf: this.blankSale(),
+      fPay: 'all', selPay: '',
+      fComm: 'all',
+      acts: this.seedActs(), selAct: 'ACT-10', showActForm: false, actF: { title: '', date: '2026-11-25', place: '' }, nextAct: 12,
+      sessions: [{ id: 'OV-0926', date: '2026-09-26', time: '19:00' }, { id: 'OV-1010', date: '2026-10-10', time: '19:00' }, { id: 'OV-1024', date: '2026-10-24', time: '19:00' }, { id: 'OV-1031', date: '2026-10-31', time: '19:00' }],
+      ovRegs: this.seedOv(), fOverview: 'all', newSess: { date: '2026-11-14', time: '19:00' },
+      trRegs: this.seedTr(), fTraining: 'all', nextAg: 1036
+    };
+  }
+
+  blankPF() { return { mode: 'add', id: '', type: 'villa', model: 'A', bed: '3', area: '', land: '', price: '', status: 'available', promo: '' }; }
+  blankSale() { return { prop: '', cust: '', phone: '', agent: 'AG-1007', price: '', date: '2026-10-21', pay: 'full', inst: '6' }; }
+
+  seedProps() {
+    const V = 'villa', N = 'land';
+    return [
+      { id: 'PV-A01', type: V, model: 'A', bed: 3, bath: 3, land: 100, area: 220, price: 8900000, status: 'available', promo: ['ฟรีค่าโอน + ค่าส่วนกลาง 1 ปี', 'Free transfer fee + 1 year common fee'] },
+      { id: 'PV-A02', type: V, model: 'A', bed: 3, bath: 3, land: 100, area: 220, price: 8900000, status: 'sold', promo: '' },
+      { id: 'PV-A03', type: V, model: 'A', bed: 3, bath: 3, land: 110, area: 230, price: 9200000, status: 'sold', promo: '' },
+      { id: 'PV-B01', type: V, model: 'B', bed: 4, bath: 5, land: 150, area: 320, price: 12500000, status: 'sold', promo: '' },
+      { id: 'PV-B02', type: V, model: 'B', bed: 4, bath: 5, land: 155, area: 320, price: 12900000, status: 'available', promo: ['ส่วนลดเงินสด 300,000 บาท', 'Cash discount THB 300,000'] },
+      { id: 'PV-B03', type: V, model: 'B', bed: 4, bath: 5, land: 150, area: 320, price: 12700000, status: 'reserved', promo: '' },
+      { id: 'PV-C01', type: V, model: 'C', bed: 2, bath: 2, land: 80, area: 160, price: 6900000, status: 'available', promo: ['ผ่อนดาวน์ 0% นาน 12 เดือน', '0% down-payment plan for 12 months'] },
+      { id: 'PV-C02', type: V, model: 'C', bed: 2, bath: 2, land: 85, area: 165, price: 7400000, status: 'sold', promo: '' },
+      { id: 'LD-01', type: N, land: 200, price: 3600000, status: 'available', promo: ['ส่วนลด 5% เมื่อโอนภายใน 60 วัน', '5% off when transferred within 60 days'] },
+      { id: 'LD-02', type: N, land: 280, price: 5100000, status: 'sold', promo: '' },
+      { id: 'LD-03', type: N, land: 250, price: 4500000, status: 'available', promo: '' },
+      { id: 'LD-04', type: N, land: 230, price: 4200000, status: 'sold', promo: '' },
+      { id: 'LD-05', type: N, land: 220, price: 3950000, status: 'sold', promo: '' },
+      { id: 'LD-06', type: N, land: 260, price: 4600000, status: 'sold', promo: '' }
+    ];
+  }
+
+  seedAgents() {
+    return [
+      { id: 'AG-1001', name: ['อนันต์ ศรีวงศ์', 'Anan Sriwong'], up: '', joined: '2025-11-01', phone: '081-200-1001', st: 'active', file: true },
+      { id: 'AG-1007', name: ['สมชาย วงศ์ดี', 'Somchai Wongdee'], up: 'AG-1001', joined: '2026-03-15', phone: '089-111-2201', st: 'active', file: true },
+      { id: 'AG-1012', name: ['พิมพ์ชนก แสงทอง', 'Pimchanok Saengthong'], up: 'AG-1007', joined: '2026-04-20', phone: '089-111-2202', st: 'active', file: true },
+      { id: 'AG-1015', name: ['กิตติ พรหมมา', 'Kitti Phromma'], up: 'AG-1007', joined: '2026-05-10', phone: '089-111-2205', st: 'active', file: true },
+      { id: 'AG-1018', name: ['ปิยะ ศักดิ์ดี', 'Piya Sakdee'], up: 'AG-1007', joined: '2026-07-20', phone: '087-630-5524', st: 'active', file: true },
+      { id: 'AG-1020', name: ['ธนากร ศรีสุข', 'Thanakorn Srisuk'], up: 'AG-1012', joined: '2026-06-05', phone: '089-111-2203', st: 'active', file: true },
+      { id: 'AG-1023', name: ['วรรณา บุญมา', 'Wanna Boonma'], up: 'AG-1012', joined: '2026-08-01', phone: '089-111-2204', st: 'active', file: true },
+      { id: 'AG-1027', name: ['ประภาส ทองแท้', 'Prapas Thongtae'], up: 'AG-1001', joined: '2026-08-15', phone: '086-447-1027', st: 'suspended', file: true },
+      { id: 'AG-1031', name: ['มาลี ดวงแก้ว', 'Malee Duangkaew'], up: 'AG-1015', joined: '2026-09-01', phone: '090-118-6643', st: 'active', file: true }
+    ];
+  }
+
+  seedContracts() {
+    return [
+      { id: 'CT-2026-011', date: '2026-04-18', prop: 'LD-04', cust: ['คุณประเสริฐ ทองดี', 'Prasert Thongdee'], agent: 'AG-1001', price: 4200000, rate: 3, pay: 'full', inst: 1, paid: 1, commPaid: '2026-05-15' },
+      { id: 'CT-2026-014', date: '2026-05-12', prop: 'PV-A02', cust: ['คุณนภา รัตนวงศ์', 'Napa Rattanawong'], agent: 'AG-1007', price: 8900000, rate: 3, pay: 'inst', inst: 3, paid: 3, commPaid: '2026-06-15' },
+      { id: 'CT-2026-019', date: '2026-06-08', prop: 'LD-05', cust: ['คุณอรอุมา แก้วใส', 'Onuma Kaewsai'], agent: 'AG-1012', price: 3950000, rate: 3, pay: 'full', inst: 1, paid: 1, commPaid: '2026-07-15' },
+      { id: 'CT-2026-027', date: '2026-07-03', prop: 'LD-02', cust: ['คุณชัยวัฒน์ มีสุข', 'Chaiwat Meesuk'], agent: 'AG-1007', price: 5100000, rate: 3, pay: 'full', inst: 1, paid: 1, commPaid: '2026-08-15' },
+      { id: 'CT-2026-033', date: '2026-08-14', prop: 'PV-A03', cust: ['คุณสุภาวดี จันทร์เพ็ญ', 'Supawadee Chanpen'], agent: 'AG-1020', price: 9200000, rate: 3, pay: 'inst', inst: 4, paid: 3, commPaid: '' },
+      { id: 'CT-2026-035', date: '2026-08-22', prop: 'LD-06', cust: ['คุณรัชนี พูลผล', 'Ratchanee Poonpon'], agent: 'AG-1012', price: 4600000, rate: 3, pay: 'full', inst: 1, paid: 1, commPaid: '2026-09-15' },
+      { id: 'CT-2026-041', date: '2026-09-20', prop: 'PV-B01', cust: ['คุณวีระ สมบูรณ์', 'Weera Somboon'], agent: 'AG-1007', price: 12500000, rate: 5, pay: 'inst', inst: 6, paid: 2, commPaid: '' },
+      { id: 'CT-2026-046', date: '2026-10-09', prop: 'PV-C02', cust: ['คุณณัฐพล อินทร์แก้ว', 'Nattapon Inkaew'], agent: 'AG-1015', price: 7400000, rate: 3, pay: 'full', inst: 1, paid: 0, commPaid: '' }
+    ];
+  }
+
+  seedAppts() {
+    return [
+      { id: 'AP-122', date: '2026-10-26', time: '11:00', name: ['คุณปรีชา วงศ์สวัสดิ์', 'Preecha Wongsawat'], phone: '081-339-2251', people: 2, prop: 'PV-C01', agent: 'AG-1012', st: 'pending' },
+      { id: 'AP-121', date: '2026-10-27', time: '13:00', name: ['คุณอดิศร ธนพัฒน์', 'Adisorn Thanapat'], phone: '081-774-2093', people: 2, prop: 'LD-01', agent: 'AG-1007', st: 'pending' },
+      { id: 'AP-120', date: '2026-10-24', time: '14:00', name: ['คุณสมศรี แก้วกล้า', 'Somsri Kaewkla'], phone: '089-551-0042', people: 5, prop: 'PV-A01', agent: 'AG-1001', st: 'confirmed' },
+      { id: 'AP-119', date: '2026-10-22', time: '10:00', name: ['คุณธีรพงษ์ ใจกว้าง', 'Teerapong Jaikwang'], phone: '086-220-7781', people: 2, prop: 'LD-03', agent: 'AG-1015', st: 'confirmed' },
+      { id: 'AP-118', date: '2026-10-25', time: '10:00', name: ['คุณวิภา เจริญสุข', 'Wipa Charoensuk'], phone: '086-120-4478', people: 3, prop: 'PV-B02', agent: 'AG-1007', st: 'confirmed' },
+      { id: 'AP-115', date: '2026-10-18', time: '13:00', name: ['คุณนิภา ศรีสวัสดิ์', 'Nipa Srisawat'], phone: '092-660-3318', people: 3, prop: 'PV-B02', agent: 'AG-1020', st: 'noshow' },
+      { id: 'AP-109', date: '2026-10-12', time: '15:00', name: ['คุณกมล สุขใจ', 'Kamon Sukjai'], phone: '089-930-1184', people: 4, prop: 'PV-A01', agent: 'AG-1007', st: 'visited' }
+    ];
+  }
+
+  seedActs() {
+    const office = ['สำนักงานขายโครงการ', 'Project sales office'];
+    return [
+      { id: 'ACT-11', date: '2026-11-25', title: ['Agent Day ประจำเดือน พ.ย.', 'Monthly Agent Day – November'], place: office, att: [] },
+      { id: 'ACT-10', date: '2026-10-28', title: ['Agent Day ประจำเดือน ต.ค.', 'Monthly Agent Day – October'], place: office, att: [] },
+      { id: 'ACT-09', date: '2026-09-24', title: ['อบรมเทคนิคการขายพูลวิลล่า', 'Pool villa sales workshop'], place: ['ออนไลน์ (Zoom)', 'Online (Zoom)'], att: ['AG-1001', 'AG-1007', 'AG-1012', 'AG-1015', 'AG-1018', 'AG-1020', 'AG-1023', 'AG-1031'] },
+      { id: 'ACT-08', date: '2026-08-27', title: ['Agent Day ประจำเดือน ส.ค.', 'Monthly Agent Day – August'], place: office, att: ['AG-1001', 'AG-1012', 'AG-1015', 'AG-1018', 'AG-1023', 'AG-1027'] },
+      { id: 'ACT-07', date: '2026-07-30', title: ['ทริปพาตัวแทนชมโครงการ', 'Agent site tour'], place: ['พื้นที่โครงการ', 'Project site'], att: ['AG-1001', 'AG-1007', 'AG-1012', 'AG-1015', 'AG-1018', 'AG-1020'] },
+      { id: 'ACT-06', date: '2026-06-25', title: ['Agent Day ประจำเดือน มิ.ย.', 'Monthly Agent Day – June'], place: office, att: ['AG-1001', 'AG-1007', 'AG-1012', 'AG-1015', 'AG-1020'] },
+      { id: 'ACT-05', date: '2026-05-28', title: ['Agent Day ประจำเดือน พ.ค.', 'Monthly Agent Day – May'], place: office, att: ['AG-1001', 'AG-1007', 'AG-1012', 'AG-1015'] }
+    ];
+  }
+
+  seedOv() {
+    return [
+      { name: ['ภานุวัฒน์ รักดี', 'Panuwat Rakdee'], phone: '081-552-0193', email: 'panuwat.r@example.com', ref: 'AG-1007', ses: 'OV-1024', st: 'registered' },
+      { name: ['ดารุณี พึ่งบุญ', 'Darunee Phungboon'], phone: '085-901-7720', email: 'darunee.p@example.com', ref: 'AG-1012', ses: 'OV-1024', st: 'registered' },
+      { name: ['ศุภชัย มั่นคง', 'Supachai Mankong'], phone: '086-301-7742', email: 'supachai.m@example.com', ref: 'AG-1007', ses: 'OV-1010', st: 'attended' },
+      { name: ['จิราพร ทองคำ', 'Jiraporn Thongkham'], phone: '092-884-1205', email: 'jiraporn.t@example.com', ref: 'AG-1007', ses: 'OV-1010', st: 'attended' },
+      { name: ['ณรงค์ ศักดิ์ศรี', 'Narong Saksri'], phone: '081-663-4410', email: 'narong.s@example.com', ref: 'AG-1001', ses: 'OV-1010', st: 'attended' },
+      { name: ['อรทัย สายบุญ', 'Orathai Saiboon'], phone: '089-447-6630', email: 'orathai.s@example.com', ref: 'AG-1007', ses: 'OV-0926', st: 'absent' }
+    ];
+  }
+
+  seedTr() {
+    return [
+      { name: ['จิราพร ทองคำ', 'Jiraporn Thongkham'], phone: '092-884-1205', ref: 'AG-1007', round: 'TR-11', rdate: '2026-11-08', st: 'registered', code: '' },
+      { name: ['ณรงค์ ศักดิ์ศรี', 'Narong Saksri'], phone: '081-663-4410', ref: 'AG-1001', round: 'TR-11', rdate: '2026-11-08', st: 'registered', code: '' },
+      { name: ['เกศินี วงศ์ใหญ่', 'Kesinee Wongyai'], phone: '084-118-2290', ref: 'AG-1001', round: 'TR-10', rdate: '2026-10-11', st: 'passed', code: '' },
+      { name: ['ธีระ บุญยืน', 'Teera Boonyuen'], phone: '087-554-0921', ref: 'AG-1015', round: 'TR-10', rdate: '2026-10-11', st: 'failed', code: '' },
+      { name: ['ปิยะ ศักดิ์ดี', 'Piya Sakdee'], phone: '087-630-5524', ref: 'AG-1007', round: 'TR-08', rdate: '2026-07-12', st: 'passed', code: 'AG-1018' }
+    ];
+  }
+
+  dict() {
+    return {
+      navAria: ['เมนูหลัก', 'Main menu'], roleName: ['เจ้าหน้าที่โครงการ', 'Project staff'],
+      switchRole: ['เปลี่ยนบทบาท / ออกจากระบบ', 'Switch role / Sign out'],
+      sample: ['ข้อมูลในหน้านี้เป็นข้อมูลตัวอย่างสำหรับการนำเสนอเท่านั้น', 'All data on this page is sample data for presentation only.'],
+      filter: ['ตัวกรอง', 'Filter'],
+      n_props: ['ข้อมูลทรัพย์', 'Listings'], n_agents: ['ตัวแทนฝ่ายขาย', 'Sales agents'], n_appts: ['นัดหมายชมโครงการ', 'Site visits'],
+      n_sales: ['ปิดการขาย', 'Closings'], n_payments: ['รับเงินจากลูกค้า', 'Customer payments'], n_commission: ['จ่ายค่าคอมมิชชัน', 'Commission payouts'],
+      n_activities: ['กิจกรรมตัวแทน', 'Agent activities'], n_overview: ['Overview Online', 'Online overview'], n_training: ['อบรมตัวแทน', 'Agent training'],
+      fCode: ['รหัส', 'Code'], fType: ['ประเภท', 'Type'], fModel: ['แบบบ้าน', 'House type'], fBed: ['ห้องนอน', 'Bedrooms'], fArea: ['พื้นที่ใช้สอย (ตร.ม.)', 'Usable area (sq.m)'],
+      fLand: ['ขนาดที่ดิน (ตร.ว.)', 'Land size (sq.wah)'], fPrice: ['ราคาขาย', 'Price'], fPromo: ['โปรโมชั่น', 'Promotion'], fPhone: ['เบอร์โทร', 'Phone'], fEmail: ['อีเมล', 'Email'],
+      photoHint: ['รูปภาพทรัพย์ (JPG/PNG สูงสุด 10 รูป) จะแสดงในหน้าข้อมูลทรัพย์ของตัวแทนขาย', 'Listing photos (JPG/PNG, up to 10) appear on the agents’ listing page'],
+      uploadPhoto: ['อัปโหลดรูป', 'Upload photos'], save: ['บันทึก', 'Save'], cancel: ['ยกเลิก', 'Cancel'], edit: ['แก้ไข', 'Edit'], close: ['ปิด', 'Close'], choose: ['— เลือก —', '— Select —'],
+      cListing: ['ทรัพย์', 'Listing'], cStatus: ['สถานะ', 'Status'], cAction: ['จัดการ', 'Actions'], cName: ['ชื่อ-นามสกุล', 'Full name'],
+      cUpline: ['ผู้แนะนำ', 'Referrer'], cJoined: ['เริ่มเป็นตัวแทน', 'Joined'], cOwn: ['ปิดเอง', 'Own'], cLine: ['สายงาน', 'Line'], cTier: ['อัตรา', 'Tier'],
+      cActMonth: ['กิจกรรม ต.ค.', 'Oct activity'], cFile: ['ไฟล์สัญญา', 'Contract file'],
+      cWhen: ['วัน-เวลา', 'Date & time'], cCust: ['ลูกค้า', 'Customer'], cPeople: ['คน', 'Pax'], cAgent: ['ตัวแทนขาย', 'Agent'],
+      newSale: ['บันทึกการปิดการขาย', 'Record a closing'], cContractDate: ['วันที่ทำสัญญา', 'Contract date'], cPayType: ['รูปแบบการชำระ', 'Payment type'], cInstCount: ['จำนวนงวด', 'Installments'],
+      pvSeq: ['ลำดับสัญญาในสายงาน', 'Contract no. in agent’s line'], pvRate: ['อัตราค่าคอมฯ', 'Commission rate'], pvComm: ['ค่าคอมฯ', 'Commission'], pvInst: ['ยอดต่องวด', 'Per installment'],
+      cContract: ['เลขสัญญา', 'Contract'], cDate: ['วันที่', 'Date'], cRate: ['อัตรา', 'Rate'], cComm: ['ค่าคอมฯ', 'Commission'],
+      cPaid: ['ชำระแล้ว', 'Paid'], cNextDue: ['งวดถัดไป', 'Next due'], recordPay: ['บันทึกรับเงิน', 'Record payment'], fullyPaid: ['ชำระครบ', 'Fully paid'], schedule: ['ตารางผ่อนชำระ', 'Payment schedule'],
+      commRule: ['ค่าคอมมิชชันจ่ายได้เมื่อตัวแทนเข้าร่วมกิจกรรมในเดือนที่ปิดการขาย ถ้าเดือนนั้นไม่ได้เข้าร่วม ระบบจะระงับสิทธิ์อัตโนมัติ', 'Commission is payable only if the agent attended an activity in the month of the sale; otherwise it is held automatically.'],
+      cMonth: ['เดือน', 'Month'], cCondition: ['เงื่อนไขกิจกรรม', 'Activity condition'], markPaid: ['บันทึกการจ่าย', 'Mark as paid'],
+      newAct: ['สร้างกิจกรรมใหม่', 'New activity'], cActivity: ['ชื่อกิจกรรม', 'Activity'], cPlace: ['สถานที่', 'Location'],
+      addSession: ['เพิ่มรอบ Overview Online', 'Add an overview session'], cTime: ['เวลา', 'Time'], addSessionBtn: ['เพิ่มรอบ', 'Add session'],
+      cReferrer: ['ผู้แนะนำ', 'Referred by'], cSession: ['รอบ', 'Session'], markAttended: ['เข้าฟังแล้ว', 'Attended'], markAbsent: ['ไม่ได้เข้าฟัง', 'Absent'],
+      cRound: ['รุ่นอบรม', 'Round'], markPass: ['ผ่าน', 'Pass'], markFail: ['ไม่ผ่าน', 'Fail'], createAgent: ['สร้างบัญชีตัวแทน', 'Create agent account']
+    };
+  }
+
+  flash(msg) {
+    this.setState({ toast: msg });
+    clearTimeout(this._tt);
+    this._tt = setTimeout(() => this.setState({ toast: '' }), 3000);
+  }
+
+  componentWillUnmount() { clearTimeout(this._tt); }
+
+  renderVals() {
+    const s = this.state;
+    const TH = s.lang === 'th';
+    const li = TH ? 0 : 1;
+    const D = this.dict();
+    const t = {};
+    Object.keys(D).forEach((k) => { t[k] = D[k][li]; });
+    const L = (v) => (Array.isArray(v) ? v[li] : (v || ''));
+    const TODAY = '2026-10-21';
+    const CUR = '2026-10';
+    const MTH = TH ? ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'] : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const yr = (y) => (TH ? y + 543 : y);
+    const fmtDate = (d) => { if (!d) return '-'; const p = String(d).split('-').map(Number); return p[2] + ' ' + MTH[p[1] - 1] + ' ' + yr(p[0]); };
+    const fmtMonth = (ym) => { const p = ym.split('-').map(Number); return MTH[p[1] - 1] + ' ' + String(yr(p[0])).slice(2); };
+    const ymOf = (d) => String(d).slice(0, 7);
+    const pad = (n) => (n < 10 ? '0' + n : '' + n);
+    const addMonths = (d, k) => { const p = d.split('-').map(Number); let m = p[1] - 1 + k; const y = p[0] + Math.floor(m / 12); m = m % 12; return y + '-' + pad(m + 1) + '-' + pad(Math.min(p[2], 28)); };
+    const baht = (n) => '฿' + Math.round(Number(n) || 0).toLocaleString('en-US');
+    const mil = (n) => (TH ? (n / 1e6).toFixed(1) + ' ล้านบาท' : '฿' + (n / 1e6).toFixed(1) + 'M');
+    const num = (v) => Number(String(v).replace(/[^0-9.]/g, '')) || 0;
+    const CH = { green: ['#D7EEDF', '#155B34'], blue: ['#DCE8FB', '#1D4E9E'], amber: ['#FCEFD9', '#8A4B00'], grey: ['#ECECEC', '#4F4F4F'], red: ['#FBE1DD', '#8E2B1E'] };
+    const chip = (k, label) => ({ bg: CH[k][0], fg: CH[k][1], label: label });
+    const pill = (on) => ({ pressed: on ? 'true' : 'false', bg: on ? '#12372A' : '#FFFFFF', fg: on ? '#FFFFFF' : '#1B2420', bd: on ? '#12372A' : '#CBD3CF' });
+    const rateFor = (n) => (n >= 9 ? 7 : (n >= 4 ? 5 : 3));
+    const setter = (key) => (field) => (e) => { const v = e.target.value; this.setState((st) => ({ [key]: Object.assign({}, st[key], { [field]: v }) })); };
+    const upd = (key, match, patch) => this.setState((st) => ({ [key]: st[key].map((x) => (match(x) ? Object.assign({}, x, patch) : x)) }));
+
+    // ---------- lookups ----------
+    const PM = {};
+    s.props.forEach((p) => { PM[p.id] = p; });
+    const AM = {};
+    s.agents.forEach((a) => { AM[a.id] = a; });
+    const aName = (id) => (AM[id] ? L(AM[id].name) : id || '-');
+    const aLabel = (id) => (AM[id] ? id + ' · ' + L(AM[id].name) : '-');
+    const sqw = TH ? 'ตร.ว.' : 'sq.wah';
+    const propName = (p) => (!p ? '' : (p.type === 'villa'
+      ? (TH ? 'พูลวิลล่า แบบ ' + p.model + ' · ' + p.bed + ' ห้องนอน' : 'Pool Villa Type ' + p.model + ' · ' + p.bed + ' bed')
+      : (TH ? 'ที่ดินเปล่า ' + p.land + ' ตร.ว.' : 'Land plot · ' + p.land + ' sq.wah')));
+    const PST = { available: ['green', TH ? 'ว่าง' : 'Available'], reserved: ['amber', TH ? 'จองแล้ว' : 'Reserved'], sold: ['grey', TH ? 'ขายแล้ว' : 'Sold'] };
+
+    const kidsOf = {};
+    s.agents.forEach((a) => { if (a.up) { (kidsOf[a.up] = kidsOf[a.up] || []).push(a.id); } });
+    const subtree = (id) => [id].concat((kidsOf[id] || []).reduce((acc, k) => acc.concat(subtree(k)), []));
+    const lineCount = (id) => { const ids = subtree(id); return s.contracts.filter((c) => ids.indexOf(c.agent) !== -1).length; };
+    const ownCount = (id) => s.contracts.filter((c) => c.agent === id).length;
+    const attended = (id, ym) => s.acts.some((a) => ymOf(a.date) === ym && a.att.indexOf(id) !== -1);
+
+    const counted = (list, key, keys) => keys.map((k) => list.filter((x) => k === 'all' || x[key] === k).length);
+    const mkChips = (fKey, defs) => defs.map((d) => Object.assign(pill(s[fKey] === d[0]), { label: d[1] + (d[2] !== undefined ? ' · ' + d[2] : ''), pick: () => this.setState({ [fKey]: d[0] }) }));
+
+    let kpis = [];
+    let chips = [];
+    let primary = { show: false, label: '', go: () => {} };
+
+    // ---------- PROPERTIES ----------
+    const propRows = s.props.filter((p) => s.fProps === 'all' || p.type === s.fProps || p.status === s.fProps).map((p) => ({
+      id: p.id, name: propName(p),
+      spec: p.type === 'villa' ? (p.land + ' ' + sqw + ' · ' + p.area + (TH ? ' ตร.ม.' : ' sq.m')) : (p.land + ' ' + sqw),
+      priceText: baht(p.price), promo: L(p.promo) || '—', c: chip(PST[p.status][0], PST[p.status][1]),
+      edit: () => this.setState({ showPF: true, pf: { mode: 'edit', id: p.id, type: p.type, model: p.model || 'A', bed: String(p.bed || ''), area: String(p.area || ''), land: String(p.land), price: p.price.toLocaleString('en-US'), status: p.status, promo: L(p.promo) } })
+    }));
+    const setPfF = setter('pf');
+
+    // ---------- AGENTS ----------
+    const AGST = { active: ['green', TH ? 'ใช้งาน' : 'Active'], pending: ['amber', TH ? 'รออนุมัติ' : 'Pending approval'], suspended: ['grey', TH ? 'ระงับ' : 'Suspended'] };
+    const agentRows = s.agents.filter((a) => s.fAgents === 'all' || a.st === s.fAgents).map((a) => {
+      const line = lineCount(a.id);
+      const ok = attended(a.id, CUR);
+      const btn = a.st === 'pending' ? [TH ? 'อนุมัติ' : 'Approve', '#12372A', '#FFFFFF', '#12372A'] : (a.st === 'active' ? [TH ? 'ระงับ' : 'Suspend', '#FFFFFF', '#8E2B1E', '#CBD3CF'] : [TH ? 'เปิดใช้งาน' : 'Reactivate', '#FFFFFF', '#12372A', '#12372A']);
+      return {
+        id: a.id, name: L(a.name), phone: a.phone, up: a.up ? aLabel(a.up) : (TH ? '— (ต้นสาย)' : '— (top)'), joined: fmtDate(a.joined),
+        own: String(ownCount(a.id)), line: String(line), tier: rateFor(line + 1) + '%',
+        act: a.st === 'pending' ? '—' : (ok ? (TH ? 'เข้าร่วมแล้ว' : 'Attended') : (TH ? 'ยังไม่เข้าร่วม' : 'Not yet')), actFg: ok ? '#155B34' : '#8A4B00',
+        fileLabel: a.file ? (TH ? 'ดูไฟล์' : 'View') : (TH ? 'แนบไฟล์' : 'Attach'), fileFg: a.file ? '#12372A' : '#8A4B00', fileBd: a.file ? '#CBD3CF' : '#E3A23B',
+        fileGo: a.file ? () => this.flash(TH ? 'เปิดไฟล์สัญญา ' + a.id + ' (ตัวอย่าง)' : 'Opening contract for ' + a.id + ' (sample)') : () => { upd('agents', (x) => x.id === a.id, { file: true }); this.flash(TH ? 'แนบไฟล์สัญญาแล้ว' : 'Contract file attached'); },
+        c: chip(AGST[a.st][0], AGST[a.st][1]),
+        btn: btn[0], btnBg: btn[1], btnFg: btn[2], btnBd: btn[3],
+        go: () => {
+          if (a.st === 'pending') {
+            if (!a.file) { this.flash(TH ? 'กรุณาแนบไฟล์สัญญาตัวแทนก่อนอนุมัติ' : 'Attach the agent contract before approving'); return; }
+            upd('agents', (x) => x.id === a.id, { st: 'active' }); this.flash(TH ? 'อนุมัติ ' + a.id + ' แล้ว · อัตราเริ่มต้น 3%' : a.id + ' approved · starting rate 3%');
+          } else if (a.st === 'active') { upd('agents', (x) => x.id === a.id, { st: 'suspended' }); this.flash(TH ? 'ระงับบัญชีแล้ว' : 'Agent suspended'); } else { upd('agents', (x) => x.id === a.id, { st: 'active' }); this.flash(TH ? 'เปิดใช้งานแล้ว' : 'Agent reactivated'); }
+        }
+      };
+    });
+
+    // ---------- APPOINTMENTS ----------
+    const AST = { pending: ['amber', TH ? 'รอยืนยัน' : 'Awaiting'], confirmed: ['blue', TH ? 'ยืนยันแล้ว' : 'Confirmed'], visited: ['green', TH ? 'เข้าชมแล้ว' : 'Visited'], cancelled: ['grey', TH ? 'ยกเลิก' : 'Cancelled'], noshow: ['red', TH ? 'ไม่มาตามนัด' : 'No-show'] };
+    const apptRows = s.appts.filter((a) => s.fAppts === 'all' || a.st === s.fAppts).slice().sort((a, b) => (a.date > b.date ? -1 : 1)).map((a) => {
+      const setSt = (st, msg) => () => { upd('appts', (x) => x.id === a.id, { st: st }); this.flash(msg); };
+      let b1 = null; let b2 = null;
+      if (a.st === 'pending') { b1 = [TH ? 'ยืนยันนัด' : 'Confirm', setSt('confirmed', TH ? 'ยืนยันนัดแล้ว ระบบแจ้งตัวแทนขาย' : 'Confirmed — agent notified')]; b2 = [TH ? 'ยกเลิก' : 'Cancel', setSt('cancelled', TH ? 'ยกเลิกนัดแล้ว' : 'Visit cancelled')]; }
+      if (a.st === 'confirmed') { b1 = [TH ? 'เข้าชมแล้ว' : 'Visited', setSt('visited', TH ? 'บันทึกการเข้าชมแล้ว' : 'Visit recorded')]; b2 = [TH ? 'ไม่มา' : 'No-show', setSt('noshow', TH ? 'บันทึกว่าไม่มาตามนัด' : 'Marked as no-show')]; }
+      return {
+        id: a.id, date: fmtDate(a.date), time: a.time + (TH ? ' น.' : ''), name: L(a.name), phone: a.phone, people: String(a.people),
+        prop: a.prop + ' · ' + propName(PM[a.prop]), agent: aLabel(a.agent), c: chip(AST[a.st][0], AST[a.st][1]),
+        has1: !!b1, l1: b1 ? b1[0] : '', go1: b1 ? b1[1] : () => {}, has2: !!b2, l2: b2 ? b2[0] : '', go2: b2 ? b2[1] : () => {}, none: !b1
+      };
+    });
+
+    // ---------- SALES ----------
+    const payLabel = (c) => (c.pay === 'full' ? (TH ? 'จ่ายเต็มจำนวน' : 'Paid in full') : (TH ? 'แบ่งชำระ ' + c.inst + ' งวด' : c.inst + ' installments'));
+    const saleRows = s.contracts.filter((c) => s.fSales === 'all' || (PM[c.prop] && PM[c.prop].type === s.fSales)).slice().reverse().map((c) => ({
+      id: c.id, date: fmtDate(c.date), prop: c.prop, propName: propName(PM[c.prop]), cust: L(c.cust), agent: aLabel(c.agent),
+      price: baht(c.price), pay: payLabel(c), rate: c.rate + '%', comm: baht(c.price * c.rate / 100)
+    }));
+    const setSfF = setter('sf');
+    const sf = s.sf;
+    const sfPrice = num(sf.price);
+    const sfSeq = sf.agent ? lineCount(sf.agent) + 1 : 0;
+    const sfRate = rateFor(sfSeq);
+    const sfInst = sf.pay === 'full' ? 1 : Number(sf.inst);
+    const preview = {
+      show: !!(sf.agent && sfPrice), seq: '#' + sfSeq + (TH ? ' ในสายงาน ' : ' in line of ') + aName(sf.agent), rate: sfRate + '%',
+      comm: baht(sfPrice * sfRate / 100), per: sfInst === 1 ? baht(sfPrice) + (TH ? ' (งวดเดียว)' : ' (single)') : baht(sfPrice / sfInst) + ' × ' + sfInst
+    };
+
+    // ---------- PAYMENTS ----------
+    const perInst = (c) => c.price / c.inst;
+    const recordPay = (c) => () => {
+      if (c.paid >= c.inst) return;
+      upd('contracts', (x) => x.id === c.id, { paid: c.paid + 1 });
+      this.flash(TH ? 'บันทึกรับเงินงวดที่ ' + (c.paid + 1) + ' ' + baht(perInst(c)) + ' แล้ว' : 'Installment ' + (c.paid + 1) + ' of ' + baht(perInst(c)) + ' recorded');
+    };
+    const payFilter = (c) => s.fPay === 'all' || (s.fPay === 'outstanding' ? c.paid < c.inst : c.pay === s.fPay);
+    const payRows = s.contracts.filter(payFilter).slice().reverse().map((c) => {
+      const done = c.paid >= c.inst;
+      const due = done ? '' : addMonths(c.date, c.paid);
+      const over = !done && due < TODAY;
+      return {
+        id: c.id, cust: L(c.cust), prop: c.prop + ' · ' + propName(PM[c.prop]), price: baht(c.price), type: payLabel(c),
+        paidText: baht(perInst(c) * c.paid), count: c.paid + '/' + c.inst, w: Math.round(c.paid / c.inst * 100) + '%',
+        due: done ? '—' : fmtDate(due) + ' · ' + baht(perInst(c)) + (over ? (TH ? ' (เกินกำหนด)' : ' (overdue)') : ''), dueFg: over ? '#8E2B1E' : '#3D4843',
+        canPay: !done, done: done, pay: recordPay(c), rowBg: c.id === s.selPay ? '#EEF5F1' : '#FFFFFF',
+        open: () => this.setState({ selPay: c.id })
+      };
+    });
+    const selC = s.contracts.find((c) => c.id === s.selPay);
+    let sp = { id: '', prop: '', cust: '', type: '', rows: [], canPay: false, pay: () => {} };
+    if (selC) {
+      const rows = [];
+      for (let i = 0; i < selC.inst; i++) {
+        const d = addMonths(selC.date, i);
+        const paid = i < selC.paid;
+        const over = !paid && d < TODAY;
+        rows.push({
+          n: String(i + 1), amount: baht(perInst(selC)), due: (TH ? 'ครบกำหนด ' : 'Due ') + fmtDate(d),
+          c: paid ? chip('green', TH ? 'รับแล้ว' : 'Received') : (over ? chip('red', TH ? 'เกินกำหนด' : 'Overdue') : (i === selC.paid ? chip('amber', TH ? 'งวดถัดไป' : 'Next') : chip('grey', TH ? 'รอชำระ' : 'Upcoming'))),
+          dotBg: paid ? '#12372A' : '#FFFFFF', dotFg: paid ? '#FFFFFF' : '#55625C'
+        });
+      }
+      sp = { id: selC.id, prop: selC.prop, cust: L(selC.cust), type: payLabel(selC), rows: rows, canPay: selC.paid < selC.inst, pay: recordPay(selC) };
+    }
+
+    // ---------- COMMISSION ----------
+    const commState = (c) => { if (c.commPaid) return 'paid'; const m = ymOf(c.date); if (attended(c.agent, m)) return 'ready'; if (m >= CUR) return 'waiting'; return 'hold'; };
+    const CST = { paid: ['green', TH ? 'จ่ายแล้ว' : 'Paid'], ready: ['blue', TH ? 'พร้อมจ่าย' : 'Ready to pay'], waiting: ['amber', TH ? 'รอกิจกรรม' : 'Awaiting activity'], hold: ['red', TH ? 'ระงับสิทธิ์' : 'Held'] };
+    const commRows = s.contracts.filter((c) => s.fComm === 'all' || commState(c) === s.fComm).slice().reverse().map((c) => {
+      const st = commState(c);
+      const mm = fmtMonth(ymOf(c.date));
+      const ok = attended(c.agent, ymOf(c.date));
+      return {
+        id: c.id, agent: aName(c.agent), code: c.agent, month: mm, price: baht(c.price), rate: c.rate + '%', comm: baht(c.price * c.rate / 100),
+        cond: ok ? (TH ? 'เข้าร่วมกิจกรรม ' + mm + ' แล้ว' : 'Attended ' + mm + ' activity') : (st === 'waiting' ? (TH ? 'ยังไม่เข้าร่วมกิจกรรม ' + mm : 'No ' + mm + ' activity yet') : (c.commPaid ? '—' : (TH ? 'ไม่ได้เข้าร่วมกิจกรรม ' + mm : 'Missed ' + mm + ' activity'))),
+        condFg: ok ? '#155B34' : (st === 'waiting' ? '#8A4B00' : '#8E2B1E'),
+        c: chip(CST[st][0], CST[st][1]), canPay: st === 'ready', noPay: st !== 'ready',
+        paidOn: c.commPaid ? fmtDate(c.commPaid) : '—',
+        pay: () => { upd('contracts', (x) => x.id === c.id, { commPaid: TODAY }); this.flash(TH ? 'บันทึกการจ่ายค่าคอมฯ ' + baht(c.price * c.rate / 100) + ' ให้ ' + aName(c.agent) + ' แล้ว' : 'Commission of ' + baht(c.price * c.rate / 100) + ' paid to ' + aName(c.agent)); }
+      };
+    });
+
+    // ---------- ACTIVITIES ----------
+    const actList = s.acts.map((a) => {
+      const on = a.id === s.selAct;
+      return { date: fmtDate(a.date), title: L(a.title), count: (TH ? 'เข้าร่วม ' : 'Attended ') + a.att.length + (TH ? ' คน' : ''), pressed: on ? 'true' : 'false', bd: on ? '#12372A' : '#E1E6E3', bg: on ? '#EEF5F1' : '#FFFFFF', pick: () => this.setState({ selAct: a.id }) };
+    });
+    const curAct = s.acts.find((a) => a.id === s.selAct) || s.acts[0];
+    const eligibleAgents = s.agents.filter((a) => a.st !== 'pending');
+    const attRows = eligibleAgents.map((a) => {
+      const on = curAct.att.indexOf(a.id) !== -1;
+      return {
+        name: L(a.name), code: a.id + (a.st === 'suspended' ? (TH ? ' · ระงับ' : ' · suspended') : ''),
+        pressed: on ? 'true' : 'false', label: on ? (TH ? 'เข้าร่วมแล้ว' : 'Attended') : (TH ? 'ยังไม่เข้าร่วม' : 'Not attended'),
+        bg: on ? '#D7EEDF' : '#FFFFFF', fg: on ? '#155B34' : '#55625C', bd: on ? '#8CC5A2' : '#CBD3CF',
+        toggle: () => this.setState((st) => ({ acts: st.acts.map((x) => (x.id === curAct.id ? Object.assign({}, x, { att: on ? x.att.filter((i) => i !== a.id) : x.att.concat([a.id]) }) : x)) }))
+      };
+    });
+    const selAct = { title: L(curAct.title), date: fmtDate(curAct.date), place: L(curAct.place), summary: (TH ? 'เข้าร่วม ' : 'Attendance: ') + curAct.att.length + ' / ' + eligibleAgents.length + (TH ? ' คน · กดที่ปุ่มเพื่อเช็กชื่อ' : ' · tap a button to check in') };
+    const setActFF = setter('actF');
+
+    // ---------- OVERVIEW ----------
+    const SM = {};
+    s.sessions.forEach((x) => { SM[x.id] = x; });
+    const OVST = { registered: ['blue', TH ? 'ลงทะเบียน' : 'Registered'], attended: ['green', TH ? 'เข้าฟังแล้ว' : 'Attended'], absent: ['grey', TH ? 'ไม่ได้เข้าฟัง' : 'Absent'] };
+    const ovRows = s.ovRegs.filter((r) => s.fOverview === 'all' || r.ses === s.fOverview).map((r, i) => {
+      const ses = SM[r.ses];
+      const setSt = (st) => () => this.setState((stt) => ({ ovRegs: stt.ovRegs.map((x) => (x === r ? Object.assign({}, x, { st: st }) : x)) }));
+      return {
+        name: L(r.name), phone: r.phone, email: r.email, ref: aLabel(r.ref), session: ses ? fmtDate(ses.date) + ' · ' + ses.time : r.ses,
+        c: chip(OVST[r.st][0], OVST[r.st][1]), open: r.st === 'registered', closed: r.st !== 'registered', attend: setSt('attended'), absent: setSt('absent')
+      };
+    });
+    const setNsF = setter('newSess');
+
+    // ---------- TRAINING ----------
+    const TRST = { registered: ['blue', TH ? 'ลงทะเบียน' : 'Registered'], passed: ['green', TH ? 'ผ่าน' : 'Passed'], failed: ['red', TH ? 'ไม่ผ่าน' : 'Failed'] };
+    const trRows = s.trRegs.filter((r) => s.fTraining === 'all' || r.round === s.fTraining).map((r) => {
+      const setSt = (st) => () => this.setState((stt) => ({ trRegs: stt.trRegs.map((x) => (x === r ? Object.assign({}, x, { st: st }) : x)) }));
+      return {
+        name: L(r.name), phone: r.phone, ref: aLabel(r.ref), round: r.round + ' · ' + fmtDate(r.rdate), c: chip(TRST[r.st][0], TRST[r.st][1]),
+        isReg: r.st === 'registered', canCreate: r.st === 'passed' && !r.code, hasNote: !!r.code || r.st === 'failed',
+        note: r.code ? (TH ? 'เป็นตัวแทน ' : 'Agent ') + r.code : (TH ? 'สมัครรุ่นถัดไปได้' : 'May join a later round'),
+        pass: setSt('passed'), fail: setSt('failed'),
+        create: () => {
+          const id = 'AG-' + this.state.nextAg;
+          const na = { id: id, name: r.name, up: r.ref, joined: TODAY, phone: r.phone, st: 'pending', file: false };
+          this.setState((stt) => ({ agents: stt.agents.concat([na]), nextAg: stt.nextAg + 1, trRegs: stt.trRegs.map((x) => (x === r ? Object.assign({}, x, { code: id }) : x)) }));
+          this.flash(TH ? 'สร้างบัญชี ' + id + ' ใต้สายงาน ' + r.ref + ' แล้ว · รออนุมัติในหน้าตัวแทนขาย' : id + ' created under ' + r.ref + ' · approve it on the Agents page');
+        }
+      };
+    });
+
+    // ---------- per-screen KPIs / chips / primary ----------
+    const sc = s.screen;
+    if (sc === 'props') {
+      const n = (f) => s.props.filter(f).length;
+      kpis = [
+        { label: TH ? 'ทรัพย์ทั้งหมด' : 'Total listings', value: String(s.props.length) },
+        { label: TH ? 'ว่าง' : 'Available', value: String(n((p) => p.status === 'available')) },
+        { label: TH ? 'จองแล้ว' : 'Reserved', value: String(n((p) => p.status === 'reserved')) },
+        { label: TH ? 'ขายแล้ว' : 'Sold', value: String(n((p) => p.status === 'sold')) }
+      ];
+      chips = mkChips('fProps', [['all', TH ? 'ทั้งหมด' : 'All'], ['villa', TH ? 'พูลวิลล่า' : 'Pool villas'], ['land', TH ? 'ที่ดิน' : 'Land'], ['available', TH ? 'ว่าง' : 'Available'], ['sold', TH ? 'ขายแล้ว' : 'Sold']]);
+      primary = { show: true, label: TH ? 'เพิ่มทรัพย์' : 'Add listing', go: () => this.setState({ showPF: true, pf: this.blankPF() }) };
+    } else if (sc === 'agents') {
+      const c = counted(s.agents, 'st', ['all', 'active', 'pending', 'suspended']);
+      kpis = [
+        { label: TH ? 'ตัวแทนทั้งหมด' : 'All agents', value: String(c[0]) },
+        { label: TH ? 'ใช้งานอยู่' : 'Active', value: String(c[1]) },
+        { label: TH ? 'รออนุมัติ' : 'Pending approval', value: String(c[2]) },
+        { label: TH ? 'ยังไม่เข้ากิจกรรม ต.ค.' : 'No Oct activity yet', value: String(s.agents.filter((a) => a.st === 'active' && !attended(a.id, CUR)).length) }
+      ];
+      chips = mkChips('fAgents', [['all', TH ? 'ทั้งหมด' : 'All', c[0]], ['active', TH ? 'ใช้งาน' : 'Active', c[1]], ['pending', TH ? 'รออนุมัติ' : 'Pending', c[2]], ['suspended', TH ? 'ระงับ' : 'Suspended', c[3]]]);
+    } else if (sc === 'appts') {
+      const c = counted(s.appts, 'st', ['all', 'pending', 'confirmed', 'visited', 'noshow', 'cancelled']);
+      kpis = [
+        { label: TH ? 'รอยืนยัน' : 'Awaiting', value: String(c[1]) },
+        { label: TH ? 'ยืนยันแล้ว (กำลังจะถึง)' : 'Confirmed (upcoming)', value: String(c[2]) },
+        { label: TH ? 'เข้าชมแล้ว' : 'Visited', value: String(c[3]) },
+        { label: TH ? 'ไม่มาตามนัด' : 'No-shows', value: String(c[4]) }
+      ];
+      chips = mkChips('fAppts', [['all', TH ? 'ทั้งหมด' : 'All', c[0]], ['pending', TH ? 'รอยืนยัน' : 'Awaiting', c[1]], ['confirmed', TH ? 'ยืนยันแล้ว' : 'Confirmed', c[2]], ['visited', TH ? 'เข้าชมแล้ว' : 'Visited', c[3]], ['noshow', TH ? 'ไม่มา' : 'No-show', c[4]], ['cancelled', TH ? 'ยกเลิก' : 'Cancelled', c[5]]]);
+    } else if (sc === 'sales') {
+      const v = s.contracts.filter((c) => PM[c.prop] && PM[c.prop].type === 'villa').length;
+      kpis = [
+        { label: TH ? 'สัญญาทั้งหมด' : 'Contracts', value: String(s.contracts.length) },
+        { label: TH ? 'ยอดขายรวม' : 'Total sales', value: mil(s.contracts.reduce((a, c) => a + c.price, 0)) },
+        { label: TH ? 'พูลวิลล่า' : 'Pool villas', value: String(v) },
+        { label: TH ? 'ที่ดิน' : 'Land', value: String(s.contracts.length - v) }
+      ];
+      chips = mkChips('fSales', [['all', TH ? 'ทั้งหมด' : 'All'], ['villa', TH ? 'พูลวิลล่า' : 'Pool villas'], ['land', TH ? 'ที่ดิน' : 'Land']]);
+      primary = { show: true, label: t.newSale, go: () => this.setState({ showSale: true, sf: this.blankSale() }) };
+    } else if (sc === 'payments') {
+      const got = s.contracts.reduce((a, c) => a + perInst(c) * c.paid, 0);
+      const total = s.contracts.reduce((a, c) => a + c.price, 0);
+      kpis = [
+        { label: TH ? 'รับเงินแล้ว' : 'Collected', value: mil(got) },
+        { label: TH ? 'ค้างรับ' : 'Outstanding', value: mil(total - got) },
+        { label: TH ? 'สัญญาแบ่งชำระ' : 'Installment contracts', value: String(s.contracts.filter((c) => c.pay === 'inst').length) },
+        { label: TH ? 'ยังชำระไม่ครบ' : 'Not fully paid', value: String(s.contracts.filter((c) => c.paid < c.inst).length) }
+      ];
+      chips = mkChips('fPay', [['all', TH ? 'ทั้งหมด' : 'All'], ['full', TH ? 'จ่ายเต็มจำนวน' : 'Paid in full'], ['inst', TH ? 'แบ่งชำระ' : 'Installments'], ['outstanding', TH ? 'ค้างชำระ' : 'Outstanding']]);
+    } else if (sc === 'commission') {
+      const sum = (st) => s.contracts.filter((c) => commState(c) === st).reduce((a, c) => a + c.price * c.rate / 100, 0);
+      kpis = [
+        { label: TH ? 'พร้อมจ่าย' : 'Ready to pay', value: baht(sum('ready')) },
+        { label: TH ? 'รอกิจกรรมเดือนนี้' : 'Awaiting this month’s activity', value: baht(sum('waiting')) },
+        { label: TH ? 'ระงับสิทธิ์' : 'Held', value: baht(sum('hold')) },
+        { label: TH ? 'จ่ายแล้วทั้งหมด' : 'Paid to date', value: baht(sum('paid')) }
+      ];
+      chips = mkChips('fComm', [['all', TH ? 'ทั้งหมด' : 'All'], ['ready', TH ? 'พร้อมจ่าย' : 'Ready'], ['waiting', TH ? 'รอกิจกรรม' : 'Awaiting'], ['hold', TH ? 'ระงับ' : 'Held'], ['paid', TH ? 'จ่ายแล้ว' : 'Paid']]);
+    } else if (sc === 'activities') {
+      primary = { show: true, label: t.newAct, go: () => this.setState({ showActForm: true }) };
+    } else if (sc === 'overview') {
+      const c = s.sessions.map((x) => s.ovRegs.filter((r) => r.ses === x.id).length);
+      chips = mkChips('fOverview', [['all', TH ? 'ทุกรอบ' : 'All sessions', s.ovRegs.length]].concat(s.sessions.map((x, i) => [x.id, fmtDate(x.date), c[i]])));
+      kpis = [
+        { label: TH ? 'ผู้ลงทะเบียนทั้งหมด' : 'Registrations', value: String(s.ovRegs.length) },
+        { label: TH ? 'เข้าฟังแล้ว' : 'Attended', value: String(s.ovRegs.filter((r) => r.st === 'attended').length) },
+        { label: TH ? 'รอเข้าฟัง' : 'Upcoming', value: String(s.ovRegs.filter((r) => r.st === 'registered').length) },
+        { label: TH ? 'รอบที่เปิด' : 'Sessions', value: String(s.sessions.length) }
+      ];
+    } else if (sc === 'training') {
+      chips = mkChips('fTraining', [['all', TH ? 'ทุกรุ่น' : 'All rounds'], ['TR-11', 'TR-11 · ' + fmtDate('2026-11-08')], ['TR-10', 'TR-10 · ' + fmtDate('2026-10-11')], ['TR-08', 'TR-08']]);
+      kpis = [
+        { label: TH ? 'ลงทะเบียนรุ่นถัดไป (TR-11)' : 'Registered for TR-11', value: String(s.trRegs.filter((r) => r.round === 'TR-11').length) + ' / 30' },
+        { label: TH ? 'ผ่านการอบรม' : 'Passed', value: String(s.trRegs.filter((r) => r.st === 'passed').length) },
+        { label: TH ? 'รอสร้างบัญชี' : 'Awaiting account', value: String(s.trRegs.filter((r) => r.st === 'passed' && !r.code).length) },
+        { label: TH ? 'ไม่ผ่าน' : 'Failed', value: String(s.trRegs.filter((r) => r.st === 'failed').length) }
+      ];
+    }
+
+    // ---------- nav ----------
+    const ICON = {
+      props: 'M3 11l9-7 9 7M5 10v10h14V10M10 20v-6h4v6',
+      appts: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',
+      sales: 'M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5',
+      payments: 'M3 7h18v13H3zM3 7l3-4h12l3 4M16 13h2',
+      commission: 'M12 3v18M17 7H9.5a3 3 0 0 0 0 6h5a3 3 0 0 1 0 6H6',
+      agents: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M17 4.5a3 3 0 0 1 0 6M18 14c2.4.5 3.5 2.6 3.5 6',
+      activities: 'M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z',
+      overview: 'M3 6h13v12H3zM16 10l5-3v10l-5-3',
+      training: 'M2 9l10-5 10 5-10 5zM6 11v5c3 2.5 9 2.5 12 0v-5'
+    };
+    const navItem = (key) => {
+      const on = sc === key;
+      return { label: t['n_' + key], d: ICON[key], cur: on ? 'page' : 'false', bg: on ? '#E3A23B' : 'transparent', fg: on ? '#12372A' : '#E6EEEA', go: () => this.setState({ screen: key }) };
+    };
+    const PAGES = {
+      props: [TH ? 'จัดการข้อมูลทรัพย์ของโครงการ' : 'Manage project listings', TH ? 'พูลวิลล่าและที่ดิน รูป รายละเอียด ราคา และโปรโมชั่น' : 'Pool villas and land — photos, details, prices and promotions'],
+      agents: [TH ? 'จัดการตัวแทนฝ่ายขาย' : 'Manage sales agents', TH ? 'สายงาน ระดับค่าคอมฯ ไฟล์สัญญา และการอนุมัติ' : 'Lines, commission tiers, contracts and approvals'],
+      appts: [TH ? 'จัดการนัดหมายลูกค้าชมโครงการ' : 'Manage site visits', TH ? 'ยืนยันนัด และบันทึกผลการเข้าชม' : 'Confirm bookings and record outcomes'],
+      sales: [TH ? 'จัดการข้อมูลการปิดการขาย' : 'Manage closings', TH ? 'สัญญาซื้อขายพูลวิลล่าและที่ดิน ระบบคำนวณอัตราค่าคอมฯ ให้อัตโนมัติ' : 'Pool villa and land contracts — commission rate is calculated automatically'],
+      payments: [TH ? 'จัดการการรับเงินจากลูกค้า' : 'Manage customer payments', TH ? 'ทั้งแบบจ่ายเต็มจำนวนและแบบแบ่งชำระ' : 'Paid-in-full and installment contracts'],
+      commission: [TH ? 'จัดการการจ่ายค่าคอมมิชชัน' : 'Manage commission payouts', TH ? 'ตรวจเงื่อนไขกิจกรรมและบันทึกการจ่ายให้ตัวแทน' : 'Check activity conditions and record payouts'],
+      activities: [TH ? 'จัดการการเข้าร่วมกิจกรรมของตัวแทน' : 'Manage agent activity attendance', TH ? 'การเช็กชื่อมีผลต่อสิทธิ์รับค่าคอมฯ ของเดือนนั้นทันที' : 'Check-ins immediately affect that month’s commission eligibility'],
+      overview: [TH ? 'จัดการการเข้าฟัง Overview Online' : 'Manage online overview', TH ? 'รอบนำเสนอ ผู้ลงทะเบียน และการเข้าฟัง' : 'Sessions, registrants and attendance'],
+      training: [TH ? 'จัดการการอบรมเป็นตัวแทนขาย' : 'Manage agent training', TH ? 'บันทึกผลอบรม และสร้างบัญชีตัวแทนใต้สายงานผู้แนะนำ' : 'Record results and create agent accounts under the referrer'],
+    };
+    const show = {};
+    Object.keys(PAGES).forEach((k) => { show[k] = sc === k; });
+    const seg = (on) => ({ bg: on ? '#12372A' : '#FFFFFF', fg: on ? '#FFFFFF' : '#1B2420', pressed: on ? 'true' : 'false' });
+    const userName = TH ? 'กาญจนา มีชัย' : 'Kanjana Meechai';
+
+    return {
+      t: t, show: show, page: { title: PAGES[sc][0], sub: PAGES[sc][1] },
+      user: { name: userName, initial: userName.charAt(0) },
+      navGroups: [
+        { label: TH ? 'ข้อมูลโครงการ' : 'PROJECT', items: ['props'].map(navItem) },
+        { label: TH ? 'การขายและการเงิน' : 'SALES & FINANCE', items: ['appts', 'sales', 'payments', 'commission'].map(navItem) },
+        { label: TH ? 'ตัวแทนฝ่ายขาย' : 'SALES AGENTS', items: ['agents', 'activities', 'overview', 'training'].map(navItem) }
+      ],
+      langBtn: { th: seg(TH), en: seg(!TH) },
+      setTh: () => this.setState({ lang: 'th' }), setEn: () => this.setState({ lang: 'en' }),
+      kpis: kpis, hasKpis: kpis.length > 0, chips: chips, primary: primary,
+
+      propRows: propRows, showPF: s.showPF, pf: s.pf, pfLock: s.pf.mode === 'edit', pfVilla: s.pf.type === 'villa',
+      pfTitle: s.pf.mode === 'edit' ? (TH ? 'แก้ไขทรัพย์ ' : 'Edit listing ') + s.pf.id : (TH ? 'เพิ่มทรัพย์ใหม่' : 'New listing'),
+      setPf: { id: setPfF('id'), type: setPfF('type'), model: setPfF('model'), bed: setPfF('bed'), area: setPfF('area'), land: setPfF('land'), price: setPfF('price'), status: setPfF('status'), promo: setPfF('promo') },
+      typeOptions: [{ v: 'villa', l: TH ? 'พูลวิลล่า' : 'Pool villa' }, { v: 'land', l: TH ? 'ที่ดิน' : 'Land' }],
+      statusOptions: [{ v: 'available', l: PST.available[1] }, { v: 'reserved', l: PST.reserved[1] }, { v: 'sold', l: PST.sold[1] }],
+      uploadPhoto: () => this.flash(TH ? 'การอัปโหลดรูปจะเปิดใช้ในระบบจริง' : 'Photo upload will be available in the full system'),
+      closePF: () => this.setState({ showPF: false }),
+      savePF: () => {
+        const f = this.state.pf;
+        const id = f.id.trim().toUpperCase();
+        if (!id || !num(f.price)) { this.flash(TH ? 'กรุณากรอกรหัสและราคา' : 'Please enter a code and price'); return; }
+        const villa = f.type === 'villa';
+        const rec = { id: id, type: f.type, model: villa ? (f.model || 'A') : undefined, bed: villa ? num(f.bed) || 3 : undefined, bath: villa ? num(f.bed) || 3 : undefined, area: villa ? num(f.area) : undefined, land: num(f.land), price: num(f.price), status: f.status, promo: f.promo.trim() };
+        if (f.mode === 'edit') {
+          this.setState((st) => ({ props: st.props.map((p) => (p.id === id ? Object.assign({}, p, rec) : p)), showPF: false }));
+          this.flash(TH ? 'บันทึกการแก้ไข ' + id + ' แล้ว' : id + ' updated');
+        } else {
+          if (this.state.props.some((p) => p.id === id)) { this.flash(TH ? 'รหัสนี้มีอยู่แล้ว' : 'This code already exists'); return; }
+          this.setState((st) => ({ props: [rec].concat(st.props), showPF: false }));
+          this.flash(TH ? 'เพิ่มทรัพย์ ' + id + ' แล้ว ตัวแทนขายจะเห็นทันที' : id + ' added — visible to agents now');
+        }
+      },
+
+      agentRows: agentRows, apptRows: apptRows,
+
+      saleRows: saleRows, showSale: s.showSale, sf: sf,
+      setSf: { cust: setSfF('cust'), phone: setSfF('phone'), agent: setSfF('agent'), price: setSfF('price'), date: setSfF('date'), inst: setSfF('inst') },
+      pickSaleProp: (e) => { const v = e.target.value; const p = this.state.props.find((x) => x.id === v); this.setState((st) => ({ sf: Object.assign({}, st.sf, { prop: v, price: p ? p.price.toLocaleString('en-US') : st.sf.price }) })); },
+      saleProps: s.props.filter((p) => p.status !== 'sold').map((p) => ({ id: p.id, name: p.id + ' · ' + propName(p) })),
+      agentOptions: s.agents.filter((a) => a.st === 'active').map((a) => ({ id: a.id, name: a.id + ' · ' + L(a.name) })),
+      payTypes: [['full', TH ? 'จ่ายเต็มจำนวน' : 'Pay in full'], ['inst', TH ? 'แบ่งชำระ' : 'Installments']].map((x) => Object.assign(pill(sf.pay === x[0]), { label: x[1], pick: () => this.setState((st) => ({ sf: Object.assign({}, st.sf, { pay: x[0] }) })) })),
+      isInst: sf.pay === 'inst',
+      instOptions: ['3', '6', '12', '24'].map((v) => ({ v: v, l: v + (TH ? ' งวด (รายเดือน)' : ' monthly') })),
+      preview: preview,
+      closeSale: () => this.setState({ showSale: false }),
+      saveSale: () => {
+        const f = this.state.sf;
+        const price = num(f.price);
+        if (!f.prop || !f.cust.trim() || !f.agent || !price) { this.flash(TH ? 'กรุณาเลือกทรัพย์ ตัวแทน และกรอกชื่อลูกค้ากับราคา' : 'Please choose a listing and agent, and enter customer and price'); return; }
+        const rate = rateFor(lineCount(f.agent) + 1);
+        const id = 'CT-2026-0' + this.state.nextCt;
+        const c = { id: id, date: f.date || TODAY, prop: f.prop, cust: f.cust.trim(), agent: f.agent, price: price, rate: rate, pay: f.pay, inst: f.pay === 'full' ? 1 : Number(f.inst), paid: 0, commPaid: '' };
+        this.setState((st) => ({ contracts: st.contracts.concat([c]), nextCt: st.nextCt + 1, showSale: false, props: st.props.map((p) => (p.id === f.prop ? Object.assign({}, p, { status: 'sold' }) : p)) }));
+        this.flash(TH ? 'บันทึกสัญญา ' + id + ' แล้ว · ค่าคอมฯ ' + rate + '% · ' + f.prop + ' เปลี่ยนเป็นขายแล้ว' : id + ' saved · ' + rate + '% commission · ' + f.prop + ' marked sold');
+      },
+
+      payRows: payRows, hasPay: !!selC, sp: sp, closePay: () => this.setState({ selPay: '' }),
+      commRows: commRows,
+
+      actList: actList, selAct: selAct, attRows: attRows, showActForm: s.showActForm, actF: s.actF,
+      setActF: { title: setActFF('title'), date: setActFF('date'), place: setActFF('place') },
+      closeAct: () => this.setState({ showActForm: false }),
+      saveAct: () => {
+        const f = this.state.actF;
+        if (!f.title.trim() || !f.date) { this.flash(TH ? 'กรุณากรอกชื่อกิจกรรมและวันที่' : 'Please enter a title and date'); return; }
+        const id = 'ACT-' + this.state.nextAct;
+        const a = { id: id, date: f.date, title: f.title.trim(), place: f.place.trim() || (TH ? 'สำนักงานขายโครงการ' : 'Project sales office'), att: [] };
+        this.setState((st) => ({ acts: [a].concat(st.acts).sort((x, y) => (x.date < y.date ? 1 : -1)), nextAct: st.nextAct + 1, selAct: id, showActForm: false, actF: { title: '', date: '2026-11-25', place: '' } }));
+        this.flash(TH ? 'สร้างกิจกรรมแล้ว ตัวแทนขายลงทะเบียนได้ทันที' : 'Activity created — agents can sign up now');
+      },
+
+      ovRows: ovRows, newSess: s.newSess, setNs: { date: setNsF('date'), time: setNsF('time') },
+      addSession: () => {
+        const f = this.state.newSess;
+        if (!f.date) return;
+        const id = 'OV-' + f.date.slice(5, 7) + f.date.slice(8, 10);
+        if (this.state.sessions.some((x) => x.id === id)) { this.flash(TH ? 'มีรอบในวันนี้แล้ว' : 'A session already exists on that date'); return; }
+        this.setState((st) => ({ sessions: st.sessions.concat([{ id: id, date: f.date, time: f.time }]).sort((x, y) => (x.date > y.date ? 1 : -1)) }));
+        this.flash(TH ? 'เพิ่มรอบ ' + fmtDate(f.date) + ' แล้ว' : 'Session on ' + fmtDate(f.date) + ' added');
+      },
+
+      trRows: trRows,
+      hasToast: !!s.toast, toast: s.toast
+    };
+  }
+}
+
+DC.mount(Component);
+</script>
+</body>
+</html>
