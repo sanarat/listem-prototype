@@ -516,6 +516,70 @@ button,input,select,textarea{font-family:inherit}
 </div>
 </template>
 
+<template data-k="if" value="{{show.calendar}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<section aria-label="{{cal.title}}" style="flex: 999 1 620px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px">
+<div style="display: flex; align-items: center; gap: 6px">
+<button type="button" onClick="{{cal.prev}}" aria-label="{{cal.prevLbl}}" style="width: 40px; height: 40px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
+<h2 style="margin: 0; font-size: 20px; color: #12372A; min-width: 170px; text-align: center">{{cal.title}}</h2>
+<button type="button" onClick="{{cal.next}}" aria-label="{{cal.nextLbl}}" style="width: 40px; height: 40px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+<button type="button" onClick="{{cal.today}}" style="min-height: 40px; padding: 0 14px; margin-left: 4px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap">{{cal.todayLbl}}</button>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: #3D4843">
+<template data-k="for" list="{{cal.legend}}" as="l" hint-placeholder-count="4">
+<span style="display: flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 50%; background: {{l.c}}"></span>{{l.label}}</span>
+</template>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px">
+<template data-k="for" list="{{cal.dow}}" as="d" hint-placeholder-count="7">
+<div style="text-align: center; font-size: 12px; font-weight: 600; color: #55625C; padding: 4px 0">{{d}}</div>
+</template>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<template data-k="for" list="{{cal.weeks}}" as="wk" hint-placeholder-count="5">
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px">
+<template data-k="for" list="{{wk.days}}" as="d" hint-placeholder-count="7">
+<button type="button" onClick="{{d.pick}}" aria-label="{{d.aria}}" aria-pressed="{{d.sel}}" style="min-height: {{cal.cellH}}; min-width: 0; padding: 5px; border-radius: 8px; border: {{d.border}}; background: {{d.bg}}; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 3px; overflow: hidden; color: {{d.fg}}">
+<span style="font-size: 13px; font-weight: {{d.fw}}">{{d.n}}</span>
+<template data-k="if" value="{{cal.full}}" hint-placeholder-val="{{ true }}">
+<template data-k="for" list="{{d.evs}}" as="e" hint-placeholder-count="2">
+<span style="display: block; width: 100%; box-sizing: border-box; font-size: 11px; line-height: 1.35; padding: 2px 5px; border-radius: 4px; background: {{e.bg}}; color: {{e.fg}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{e.short}}</span>
+</template>
+<template data-k="if" value="{{d.hasMore}}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; font-weight: 600; color: #3D4843">{{d.more}}</span></template>
+</template>
+<template data-k="if" value="{{cal.compact}}" hint-placeholder-val="{{ false }}">
+<span style="display: flex; flex-wrap: wrap; gap: 3px"><template data-k="for" list="{{d.dots}}" as="dt" hint-placeholder-count="2"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: {{dt}}"></span></template></span>
+</template>
+</button>
+</template>
+</div>
+</template>
+</div>
+</section>
+<aside aria-label="{{cal.selTitle}}" style="flex: 1 1 300px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px">
+<div>
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{cal.selTitle}}</h2>
+<div style="font-size: 13px; color: #55625C">{{cal.selSub}}</div>
+</div>
+<template data-k="for" list="{{cal.dayEvents}}" as="e" hint-placeholder-count="3">
+<div style="border: 1px solid #E1E6E3; border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; background: {{e.cardBg}}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px">
+<span style="font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums">{{e.time}}</span>
+<span style="padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; background: {{e.tbg}}; color: {{e.tfg}}">{{e.typeLabel}}</span>
+<template data-k="if" value="{{e.hasSt}}" hint-placeholder-val="{{ false }}"><span style="padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; background: {{e.st.bg}}; color: {{e.st.fg}}">{{e.st.label}}</span></template>
+</div>
+<div style="font-weight: 600; font-size: 14px">{{e.title}}</div>
+<div style="font-size: 12px; color: #55625C">{{e.sub}}</div>
+<button type="button" onClick="{{e.go}}" style="align-self: flex-start; min-height: 36px; padding: 0 10px; margin-top: 2px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 12px; font-weight: 600; cursor: pointer">{{e.goLabel}}</button>
+</div>
+</template>
+<template data-k="if" value="{{cal.noDay}}" hint-placeholder-val="{{ false }}"><div style="padding: 20px 0; text-align: center; color: #55625C">{{cal.emptyDay}}</div></template>
+</aside>
+</div>
+</template>
+
 <template data-k="if" value="{{show.actsum}}" hint-placeholder-val="{{ false }}">
 <div style="display: flex; flex-direction: column; gap: 16px">
 <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 14px 18px">
@@ -761,10 +825,11 @@ class Component extends DCLogic {
       fPay: 'all', selPay: '',
       fComm: 'all',
       acts: this.seedActs(), selAct: 'ACT-10', showActForm: false, actF: { title: '', date: '2026-11-25', place: '' }, nextAct: 12,
-      sessions: [{ id: 'OV-0704', date: '2026-07-04', time: '19:00' }, { id: 'OV-0725', date: '2026-07-25', time: '19:00' }, { id: 'OV-0829', date: '2026-08-29', time: '19:00' }, { id: 'OV-0926', date: '2026-09-26', time: '19:00' }, { id: 'OV-1010', date: '2026-10-10', time: '19:00' }, { id: 'OV-1024', date: '2026-10-24', time: '19:00' }, { id: 'OV-1031', date: '2026-10-31', time: '19:00' }],
+      sessions: [{ id: 'OV-0627', date: '2026-06-27', time: '19:00' }, { id: 'OV-0725', date: '2026-07-25', time: '19:00' }, { id: 'OV-0829', date: '2026-08-29', time: '19:00' }, { id: 'OV-0926', date: '2026-09-26', time: '19:00' }, { id: 'OV-1010', date: '2026-10-10', time: '19:00' }, { id: 'OV-1107', date: '2026-11-07', time: '19:00' }, { id: 'OV-1205', date: '2026-12-05', time: '19:00' }],
       ovRegs: this.seedOv(), fOverview: 'all', newSess: { date: '2026-11-14', time: '19:00' },
       trRegs: this.seedTr(), fTraining: 'all', nextAg: 1036, cumAgent: 'AG-1007', cumF: 'all', ovPaid: { 'CT-2026-027|AG-1001': '2026-08-15' },
-      actAgent: 'AG-1007', actScope: 'all', weekly: this.seedWeekly(), rounds2: this.seedRounds()
+      actAgent: 'AG-1007', actScope: 'all', weekly: this.seedWeekly(), rounds2: this.seedRounds(),
+      calMonth: '2026-10', calSel: '2026-10-21', calF: { visit: true, training: true, overview: true, weekly: true }
     };
   }
 
@@ -852,8 +917,8 @@ class Component extends DCLogic {
 
   seedOv() {
     return [
-      { name: ['ภานุวัฒน์ รักดี', 'Panuwat Rakdee'], phone: '081-552-0193', email: 'panuwat.r@example.com', ref: 'AG-1007', ses: 'OV-1024', st: 'registered' },
-      { name: ['ดารุณี พึ่งบุญ', 'Darunee Phungboon'], phone: '085-901-7720', email: 'darunee.p@example.com', ref: 'AG-1012', ses: 'OV-1024', st: 'registered' },
+      { name: ['ภานุวัฒน์ รักดี', 'Panuwat Rakdee'], phone: '081-552-0193', email: 'panuwat.r@example.com', ref: 'AG-1007', ses: 'OV-1107', st: 'registered' },
+      { name: ['ดารุณี พึ่งบุญ', 'Darunee Phungboon'], phone: '085-901-7720', email: 'darunee.p@example.com', ref: 'AG-1012', ses: 'OV-1107', st: 'registered' },
       { name: ['ศุภชัย มั่นคง', 'Supachai Mankong'], phone: '086-301-7742', email: 'supachai.m@example.com', ref: 'AG-1007', ses: 'OV-1010', st: 'attended' },
       { name: ['จิราพร ทองคำ', 'Jiraporn Thongkham'], phone: '092-884-1205', email: 'jiraporn.t@example.com', ref: 'AG-1007', ses: 'OV-1010', st: 'attended' },
       { name: ['ณรงค์ ศักดิ์ศรี', 'Narong Saksri'], phone: '081-663-4410', email: 'narong.s@example.com', ref: 'AG-1001', ses: 'OV-1010', st: 'attended' },
@@ -863,7 +928,7 @@ class Component extends DCLogic {
       { name: ['เกศินี วงศ์ใหญ่', 'Kesinee Wongyai'], phone: '084-118-2290', email: 'kesinee.w@example.com', ref: 'AG-1001', ses: 'OV-0829', st: 'attended' },
       { name: ['ธีระ บุญยืน', 'Teera Boonyuen'], phone: '087-554-0921', email: 'teera.b@example.com', ref: 'AG-1015', ses: 'OV-0829', st: 'attended' },
       { name: ['มาลี ดวงแก้ว', 'Malee Duangkaew'], phone: '090-118-6643', email: 'malee.d@example.com', ref: 'AG-1015', ses: 'OV-0725', st: 'attended' },
-      { name: ['ปิยะ ศักดิ์ดี', 'Piya Sakdee'], phone: '087-630-5524', email: 'piya.s@example.com', ref: 'AG-1007', ses: 'OV-0704', st: 'attended' }
+      { name: ['ปิยะ ศักดิ์ดี', 'Piya Sakdee'], phone: '087-630-5524', email: 'piya.s@example.com', ref: 'AG-1007', ses: 'OV-0627', st: 'attended' }
     ];
   }
 
@@ -913,7 +978,7 @@ class Component extends DCLogic {
       filter: ['ตัวกรอง', 'Filter'],
       n_props: ['ข้อมูลทรัพย์', 'Listings'], n_agents: ['ตัวแทนฝ่ายขาย', 'Sales agents'], n_appts: ['นัดหมายชมโครงการ', 'Site visits'],
       n_sales: ['ปิดการขาย', 'Closings'], n_payments: ['รับเงินจากลูกค้า', 'Customer payments'], n_commission: ['จ่ายค่าคอมมิชชัน', 'Commission payouts'],
-      n_activities: ['กิจกรรมตัวแทน', 'Agent activities'], n_overview: ['Overview Online', 'Online overview'], n_training: ['อบรมตัวแทน', 'Agent training'], n_contracts: ['สัญญาสะสมตัวแทน', 'Agent contract counts'], n_tree: ['ผังสายงานตัวแทน', 'Agent tree'], n_actsum: ['ภาพรวมกิจกรรม', 'Activity overview'],
+      n_activities: ['กิจกรรมตัวแทน', 'Agent activities'], n_overview: ['Overview Online', 'Online overview'], n_training: ['อบรมตัวแทน', 'Agent training'], n_contracts: ['สัญญาสะสมตัวแทน', 'Agent contract counts'], n_tree: ['ผังสายงานตัวแทน', 'Agent tree'], n_actsum: ['ภาพรวมกิจกรรม', 'Activity overview'], n_calendar: ['ปฏิทินกิจกรรม', 'Calendar'],
       pickAgent: ['ดูกิจกรรมของ', 'Show activities for'], pickHint: ['เลือกตัวแทนเพื่อดูกิจกรรมแยก ติดตัว / สายงาน หรือเลือก "ทั้งโครงการ" เพื่อดูรวมทุกคน · เช็กชื่อฟังแชร์ความรู้วันพุธได้ในข้อ 4', 'Pick an agent to split personal vs line activity, or "Whole project" for everyone · check in Wednesday sessions in part 4'],
       fCode: ['รหัส', 'Code'], fType: ['ประเภท', 'Type'], fModel: ['แบบบ้าน', 'House type'], fBed: ['ห้องนอน', 'Bedrooms'], fArea: ['พื้นที่ใช้สอย (ตร.ม.)', 'Usable area (sq.m)'],
       fLand: ['ขนาดที่ดิน (ตร.ว.)', 'Land size (sq.wah)'], fPrice: ['ราคาขาย', 'Price'], fPromo: ['โปรโมชั่น', 'Promotion'], fPhone: ['เบอร์โทร', 'Phone'], fEmail: ['อีเมล', 'Email'],
@@ -1462,7 +1527,7 @@ class Component extends DCLogic {
           s2: TH ? '2. ลงทะเบียนอบรมเป็นตัวแทนฝ่ายขาย (แยกตามรอบ)' : '2. Agent training sign-ups (by round)',
           s3: TH ? '3. ลงทะเบียนพาลูกค้าเข้าชมโครงการ' : '3. Customer site visits',
           s4: TH ? '4. ฟังกิจกรรมแชร์ความรู้ออนไลน์ (ทุกวันพุธ)' : '4. Online knowledge sharing (every Wednesday)',
-          s4note: TH ? 'ออนไลน์ผ่าน Zoom ทุกวันพุธ 19:00 น. · เข้าฟังอย่างน้อย 1 ครั้งในเดือน นับเป็นกิจกรรมของเดือนนั้น ได้สิทธิ์รับค่าคอมมิชชัน' : 'Online via Zoom every Wednesday 19:00 · attending at least once in a month counts as that month’s activity for commission eligibility',
+          s4note: TH ? 'ออนไลน์ผ่าน Zoom ทุกวันพุธ 19:00–21:00 น. · เข้าฟังอย่างน้อย 1 ครั้งในเดือน นับเป็นกิจกรรมของเดือนนั้น ได้สิทธิ์รับค่าคอมมิชชัน' : 'Online via Zoom every Wednesday 19:00–21:00 · attending at least once in a month counts as that month’s activity for commission eligibility',
           s5: TH ? '5. มาอบรมเป็นตัวแทนฝ่ายขายรอบไหนบ้าง และพาทีมงานมากี่คน' : '5. Training rounds attended and team members brought',
           name: TH ? 'ชื่อ' : 'Name', date: TH ? 'วันที่' : 'Date', by: o.all ? (TH ? 'ตัวแทนผู้พามา' : 'Agent') : (TH ? 'ติดตัว / สายงาน' : 'Personal / line'), status: TH ? 'สถานะ' : 'Status',
           cust: TH ? 'ลูกค้า' : 'Customer', prop: TH ? 'ทรัพย์' : 'Listing', topic: TH ? 'หัวข้อ' : 'Topic', res: o.all ? (TH ? 'ผู้เข้าร่วม' : 'Attendance') : (TH ? 'การเข้าฟัง' : 'Attendance'),
@@ -1488,6 +1553,98 @@ class Component extends DCLogic {
         weekly: s.weekly, rounds: s.rounds2
       }
     });
+    // ---------- calendar ----------
+    const CT = {
+      visit: { c: '#1F6B45', bg: '#D7EEDF', fg: '#155B34', label: TH ? 'นัดชมโครงการ' : 'Site visit' },
+      training: { c: '#C98A1B', bg: '#FCEFD9', fg: '#8A4B00', label: TH ? 'อบรมตัวแทน' : 'Agent training' },
+      overview: { c: '#4A7FD4', bg: '#DCE8FB', fg: '#1D4E9E', label: TH ? 'Overview Online' : 'Online overview' },
+      weekly: { c: '#8E6BBF', bg: '#ECE4F7', fg: '#5B3E8F', label: TH ? 'แชร์ความรู้วันพุธ' : 'Wednesday sharing' }
+    };
+    const addH = (tm, hh) => { const p = tm.split(':').map(Number); return pad(p[0] + hh) + ':' + pad(p[1]); };
+    const cy = Number(s.calMonth.slice(0, 4));
+    const cm = Number(s.calMonth.slice(5, 7));
+    const dim = new Date(cy, cm, 0).getDate();
+    const evs = [];
+    s.appts.forEach((a) => {
+      evs.push({ date: a.date, start: a.time, end: addH(a.time, 1), type: 'visit', title: (TH ? 'ชมโครงการ · ' : 'Site visit · ') + L(a.name),
+        sub: a.prop + ' · ' + propName(PM[a.prop]) + ' · ' + a.people + (TH ? ' คน · ' : ' pax · ') + aLabel(a.agent), st: chip(AST[a.st][0], AST[a.st][1]), go: 'appts', short: L(a.name).replace('คุณ', '') });
+    });
+    s.rounds2.forEach((r) => {
+      const n = s.trRegs.filter((x) => x.round === r.id).length;
+      [r.d1, r.d2].forEach((d, i) => evs.push({ date: d, start: '09:00', end: '16:00', type: 'training', title: (TH ? 'อบรมตัวแทนขาย ' : 'Agent training ') + r.id + (TH ? ' (วันที่ ' : ' (day ') + (i + 1) + '/2)',
+        sub: (TH ? 'ห้องอบรม สำนักงานขายโครงการ · ผู้เข้าอบรม ' : 'Sales office training room · trainees: ') + n + (TH ? ' คน' : ''), st: null, go: 'training', short: (TH ? 'อบรม ' : 'Training ') + r.id }));
+    });
+    s.sessions.forEach((x) => {
+      const n = s.ovRegs.filter((r) => r.ses === x.id).length;
+      evs.push({ date: x.date, start: x.time, end: addH(x.time, 2), type: 'overview', title: 'Overview Online (2 ' + (TH ? 'ชั่วโมง)' : 'hours)'),
+        sub: 'Zoom · ' + (TH ? 'ผู้ลงทะเบียน ' : 'registrants: ') + n + (TH ? ' คน' : ''), st: null, go: 'overview', short: 'Overview' });
+    });
+    const wkByDate = {};
+    s.weekly.forEach((w) => { wkByDate[w.date] = w; });
+    s.weekly.forEach((w) => {
+      const past = w.date <= TODAY;
+      evs.push({ date: w.date, start: '19:00', end: '21:00', type: 'weekly', title: (TH ? 'แชร์ความรู้: ' : 'Sharing: ') + L(w.title),
+        sub: 'Zoom · ' + (past ? (TH ? 'เข้าฟัง ' : 'attended: ') + w.att.length : (TH ? 'ลงทะเบียน ' : 'signed up: ') + w.reg.length) + (TH ? ' คน' : ''), st: null, go: 'actsum', short: TH ? 'แชร์ความรู้' : 'Sharing' });
+    });
+    for (let d = 1; d <= dim; d++) {
+      const ds = cy + '-' + pad(cm) + '-' + pad(d);
+      if (new Date(cy, cm - 1, d).getDay() === 3 && ds >= '2026-09-02' && !wkByDate[ds]) {
+        evs.push({ date: ds, start: '19:00', end: '21:00', type: 'weekly', title: TH ? 'แชร์ความรู้: (รอประกาศหัวข้อ)' : 'Sharing: (topic to be announced)', sub: TH ? 'Zoom · ทุกวันพุธ' : 'Zoom · every Wednesday', st: null, go: 'actsum', short: TH ? 'แชร์ความรู้' : 'Sharing' });
+      }
+    }
+    const shown = evs.filter((e) => s.calF[e.type]);
+    const byStart = (a, b) => (a.start > b.start ? 1 : -1);
+    const first = new Date(cy, cm - 1, 1);
+    const off = (first.getDay() + 6) % 7;
+    const totalCells = Math.ceil((off + dim) / 7) * 7;
+    const ymd = (dt) => dt.getFullYear() + '-' + pad(dt.getMonth() + 1) + '-' + pad(dt.getDate());
+    const weeks = [];
+    for (let i = 0; i < totalCells; i += 7) {
+      const days = [];
+      for (let j = 0; j < 7; j++) {
+        const dt = new Date(cy, cm - 1, 1 - off + i + j);
+        const ds = ymd(dt);
+        const inM = dt.getMonth() === cm - 1;
+        const list = shown.filter((e) => e.date === ds).sort(byStart);
+        const sel = ds === s.calSel;
+        const isToday = ds === TODAY;
+        days.push({
+          n: String(dt.getDate()), aria: fmtDate(ds) + ' · ' + list.length + (TH ? ' กิจกรรม' : ' events'), sel: sel ? 'true' : 'false',
+          bg: sel ? '#EEF5F1' : (inM ? '#FFFFFF' : '#F4F6F5'), border: sel ? '2px solid #12372A' : (isToday ? '2px solid #E3A23B' : '1px solid #E1E6E3'),
+          fg: inM ? '#1B2420' : '#66706B', fw: isToday ? '800' : '600',
+          evs: list.slice(0, 3).map((e) => ({ short: e.start + ' ' + e.short, bg: CT[e.type].bg, fg: CT[e.type].fg })),
+          hasMore: list.length > 3, more: '+' + (list.length - 3) + (TH ? ' รายการ' : ' more'), dots: list.slice(0, 6).map((e) => CT[e.type].c),
+          pick: () => this.setState({ calSel: ds, calMonth: ds.slice(0, 7) })
+        });
+      }
+      weeks.push({ days: days });
+    }
+    const MFULL = TH ? ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'] : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const DOWF = TH ? ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'] : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const shiftM = (k) => { let y = cy; let m = cm + k; if (m < 1) { m = 12; y--; } if (m > 12) { m = 1; y++; } return y + '-' + pad(m); };
+    const selDate = new Date(Number(s.calSel.slice(0, 4)), Number(s.calSel.slice(5, 7)) - 1, Number(s.calSel.slice(8, 10)));
+    const dayList = shown.filter((e) => e.date === s.calSel).sort(byStart);
+    const monthCount = (k) => evs.filter((e) => e.type === k && e.date.slice(0, 7) === s.calMonth).length;
+    const cal = {
+      title: MFULL[cm - 1] + ' ' + (TH ? cy + 543 : cy), prevLbl: TH ? 'เดือนก่อนหน้า' : 'Previous month', nextLbl: TH ? 'เดือนถัดไป' : 'Next month', todayLbl: TH ? 'วันนี้' : 'Today',
+      prev: () => this.setState({ calMonth: shiftM(-1) }), next: () => this.setState({ calMonth: shiftM(1) }), today: () => this.setState({ calMonth: CUR, calSel: TODAY }),
+      legend: ['visit', 'training', 'overview', 'weekly'].map((k) => ({ label: CT[k].label, c: CT[k].c })),
+      dow: TH ? ['จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.', 'อา.'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      weeks: weeks, full: !s.narrow, compact: !!s.narrow, cellH: s.narrow ? '52px' : '108px',
+      selTitle: (TH ? 'วัน' : '') + DOWF[selDate.getDay()] + (TH ? 'ที่ ' : ', ') + fmtDate(s.calSel),
+      selSub: dayList.length ? dayList.length + (TH ? ' กิจกรรม' : ' events') : '',
+      dayEvents: dayList.map((e) => ({
+        time: e.start + '–' + e.end + (TH ? ' น.' : ''), typeLabel: CT[e.type].label, tbg: CT[e.type].bg, tfg: CT[e.type].fg, cardBg: '#FFFFFF',
+        title: e.title, sub: e.sub, hasSt: !!e.st, st: e.st || chip('grey', ''), goLabel: TH ? 'ไปหน้าจัดการ ›' : 'Manage ›',
+        go: () => { this.setState({ screen: e.go }); window.scrollTo(0, 0); }
+      })),
+      noDay: dayList.length === 0, emptyDay: TH ? 'ไม่มีกิจกรรมในวันนี้' : 'No events on this day'
+    };
+    const calChips = ['visit', 'training', 'overview', 'weekly'].map((k) => Object.assign(pill(!!s.calF[k]), {
+      label: CT[k].label + ' · ' + monthCount(k), pick: () => this.setState((st) => ({ calF: Object.assign({}, st.calF, { [k]: !st.calF[k] }) }))
+    }));
+    const calKpis = ['visit', 'training', 'overview', 'weekly'].map((k) => ({ label: CT[k].label + (TH ? ' (เดือนนี้)' : ' (this month)'), value: String(monthCount(k)) }));
+
     const actAgentOptions = [{ id: 'ALL', name: TH ? 'ทั้งโครงการ (ทุกตัวแทน)' : 'Whole project (all agents)' }].concat(s.agents.filter((a) => a.st !== 'pending').map((a) => ({ id: a.id, name: a.id + ' · ' + L(a.name) })));
 
     // ---------- per-screen KPIs / chips / primary ----------
@@ -1502,6 +1659,9 @@ class Component extends DCLogic {
       ];
       chips = mkChips('fProps', [['all', TH ? 'ทั้งหมด' : 'All'], ['villa', TH ? 'พูลวิลล่า' : 'Pool villas'], ['land', TH ? 'ที่ดิน' : 'Land'], ['available', TH ? 'ว่าง' : 'Available'], ['sold', TH ? 'ขายแล้ว' : 'Sold']]);
       primary = { show: true, label: TH ? 'เพิ่มทรัพย์' : 'Add listing', go: () => this.setState({ showPF: true, pf: this.blankPF() }) };
+    } else if (sc === 'calendar') {
+      kpis = calKpis;
+      chips = calChips;
     } else if (sc === 'tree') {
       const biggest = s.agents.slice().sort((x, y) => lineCount(y.id) - lineCount(x.id))[0];
       kpis = [
@@ -1588,6 +1748,7 @@ class Component extends DCLogic {
       contracts: 'M4 20V11M10 20V5M16 20v-7M2 20h20',
       tree: 'M9 3h6v4H9zM3 17h6v4H3zM15 17h6v4h-6zM12 7v5M6 17v-5h12v5',
       actsum: 'M3 12h4l3-8 4 16 3-8h4',
+      calendar: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4M8 14h2M12 14h2M16 14h2M8 17h2M12 17h2',
       agents: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M17 4.5a3 3 0 0 1 0 6M18 14c2.4.5 3.5 2.6 3.5 6',
       activities: 'M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z',
       overview: 'M3 6h13v12H3zM16 10l5-3v10l-5-3',
@@ -1600,6 +1761,7 @@ class Component extends DCLogic {
     const PAGES = {
       props: [TH ? 'จัดการข้อมูลทรัพย์ของโครงการ' : 'Manage project listings', TH ? 'พูลวิลล่าและที่ดิน รูป รายละเอียด ราคา และโปรโมชั่น' : 'Pool villas and land — photos, details, prices and promotions'],
       agents: [TH ? 'จัดการตัวแทนฝ่ายขาย' : 'Manage sales agents', TH ? 'สายงาน ระดับค่าคอมฯ ไฟล์สัญญา และการอนุมัติ' : 'Lines, commission tiers, contracts and approvals'],
+      calendar: [TH ? 'ปฏิทินกิจกรรมโครงการ' : 'Project calendar', TH ? 'นัดลูกค้าชมโครงการ · อบรมตัวแทน · Overview Online เดือนละครั้ง · แชร์ความรู้ทุกวันพุธ 19:00–21:00' : 'Site visits · agent training · monthly online overview · Wednesday sharing 19:00–21:00'],
       actsum: [TH ? 'ภาพรวมกิจกรรมตัวแทน' : 'Agent activity overview', TH ? 'Overview · อบรม · พาลูกค้าเข้าชม · แชร์ความรู้วันพุธ · การมาร่วมอบรม แยกติดตัว / สายงาน' : 'Overview · training · site visits · Wednesday sessions · training attendance, split personal / line'],
       tree: [TH ? 'ผังสายงานตัวแทนฝ่ายขาย' : 'Sales agent tree', TH ? 'ความสัมพันธ์ผู้แนะนำของตัวแทนทุกคน พร้อมยอดสัญญาและระดับค่าคอมฯ' : 'Referral structure of every agent, with contract counts and tiers'],
       contracts: [TH ? 'สัญญาสะสมของตัวแทนขาย' : 'Agent contract counts', TH ? 'ดูยอดที่ขายเองและที่ทีมขายของทุกคน ซึ่งใช้นับระดับค่าคอมมิชชัน' : 'Own vs team contracts for every agent — used for commission tiers'],
@@ -1620,7 +1782,7 @@ class Component extends DCLogic {
       t: t, show: show, page: { title: PAGES[sc][0], sub: PAGES[sc][1] },
       user: { name: userName, initial: userName.charAt(0) },
       navGroups: [
-        { label: TH ? 'ข้อมูลโครงการ' : 'PROJECT', items: ['props'].map(navItem) },
+        { label: TH ? 'ข้อมูลโครงการ' : 'PROJECT', items: ['props', 'calendar'].map(navItem) },
         { label: TH ? 'การขายและการเงิน' : 'SALES & FINANCE', items: ['appts', 'sales', 'payments', 'commission'].map(navItem) },
         { label: TH ? 'ตัวแทนฝ่ายขาย' : 'SALES AGENTS', items: ['agents', 'tree', 'contracts', 'activities', 'actsum', 'overview', 'training'].map(navItem) }
       ],
@@ -1701,6 +1863,7 @@ class Component extends DCLogic {
 
       trRows: trRows,
       cum: cum, cx: cx, allCum: allCum, tx: tx,
+      cal: cal,
       ad: ad, actAgent: s.actAgent, actAgentOptions: actAgentOptions, pickActAgent: (e) => this.setState({ actAgent: e.target.value, actScope: 'all' }),
       hasToast: !!s.toast, toast: s.toast,
       narrow: !!s.narrow,

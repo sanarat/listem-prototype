@@ -831,7 +831,7 @@ class Component extends DCLogic {
       appts: this.seedAppts(), apptTab: 'up', showAppt: false, af: this.blankAppt('PV-A01'), nextAp: 123,
       propType: 'all', selProp: '', salesType: 'all',
       acts: this.seedActs(),
-      ovSession: 'OV-1024', ovs: this.seedOv(), of: { first: '', last: '', phone: '', email: '', line: '' },
+      ovSession: 'OV-1107', ovs: this.seedOv(), of: { first: '', last: '', phone: '', email: '', line: '' },
       trRound: 'TR-11', trs: this.seedTr(), tf: { name: '', phone: '' }, cumF: 'all', actScope: 'all', wkReg: {}
     };
   }
@@ -884,11 +884,11 @@ class Component extends DCLogic {
 
   seedOv() {
     return [
-      { name: ['ภานุวัฒน์ รักดี', 'Panuwat Rakdee'], phone: '081-552-0193', sdate: '2026-10-24', time: '19:00', st: 'registered' },
+      { name: ['ภานุวัฒน์ รักดี', 'Panuwat Rakdee'], phone: '081-552-0193', sdate: '2026-11-07', time: '19:00', st: 'registered' },
       { name: ['ศุภชัย มั่นคง', 'Supachai Mankong'], phone: '086-301-7742', sdate: '2026-10-10', time: '19:00', st: 'attended' },
       { name: ['จิราพร ทองคำ', 'Jiraporn Thongkham'], phone: '092-884-1205', sdate: '2026-10-10', time: '19:00', st: 'attended' },
       { name: ['อรทัย สายบุญ', 'Orathai Saiboon'], phone: '089-447-6630', sdate: '2026-09-26', time: '19:00', st: 'absent' },
-      { name: ['ปิยะ ศักดิ์ดี', 'Piya Sakdee'], phone: '087-630-5524', sdate: '2026-07-04', time: '19:00', st: 'attended' }
+      { name: ['ปิยะ ศักดิ์ดี', 'Piya Sakdee'], phone: '087-630-5524', sdate: '2026-06-27', time: '19:00', st: 'attended' }
     ];
   }
 
@@ -1259,10 +1259,10 @@ class Component extends DCLogic {
     });
 
     // ---------- overview ----------
-    const SESS = [{ id: 'OV-1024', date: '2026-10-24', time: '19:00' }, { id: 'OV-1031', date: '2026-10-31', time: '19:00' }, { id: 'OV-1107', date: '2026-11-07', time: '10:00' }];
+    const SESS = [{ id: 'OV-1107', date: '2026-11-07', time: '19:00' }, { id: 'OV-1205', date: '2026-12-05', time: '19:00' }];
     const ovSessions = SESS.map((o) => {
       const on = s.ovSession === o.id;
-      return { date: fmtDate(o.date), sub: o.time + (TH ? ' น.' : '') + ' · Zoom · ' + (TH ? 'ประมาณ 1 ชม.' : 'about 1 hr'), pressed: on ? 'true' : 'false', bd: on ? '#12372A' : '#E1E6E3', bg: on ? '#EEF5F1' : '#FFFFFF', pick: () => this.setState({ ovSession: o.id }) };
+      return { date: fmtDate(o.date), sub: (TH ? '19:00–21:00 น.' : '19:00–21:00') + ' · Zoom · ' + (TH ? '2 ชั่วโมง (จัดเดือนละครั้ง)' : '2 hours (monthly)'), pressed: on ? 'true' : 'false', bd: on ? '#12372A' : '#E1E6E3', bg: on ? '#EEF5F1' : '#FFFFFF', pick: () => this.setState({ ovSession: o.id }) };
     });
     const OVST = { registered: ['blue', TH ? 'ลงทะเบียนแล้ว' : 'Registered'], attended: ['green', TH ? 'เข้าฟังแล้ว' : 'Attended'], absent: ['grey', TH ? 'ไม่ได้เข้าฟัง' : 'Did not attend'] };
     const trNames = s.trs.map((x) => L(x.name));
@@ -1462,7 +1462,7 @@ class Component extends DCLogic {
           s2: TH ? '2. ลงทะเบียนอบรมเป็นตัวแทนฝ่ายขาย (แยกตามรอบ)' : '2. Agent training sign-ups (by round)',
           s3: TH ? '3. ลงทะเบียนพาลูกค้าเข้าชมโครงการ' : '3. Customer site visits',
           s4: TH ? '4. ฟังกิจกรรมแชร์ความรู้ออนไลน์ (ทุกวันพุธ)' : '4. Online knowledge sharing (every Wednesday)',
-          s4note: TH ? 'ออนไลน์ผ่าน Zoom ทุกวันพุธ 19:00 น. · เข้าฟังอย่างน้อย 1 ครั้งในเดือน นับเป็นกิจกรรมของเดือนนั้น ได้สิทธิ์รับค่าคอมมิชชัน' : 'Online via Zoom every Wednesday 19:00 · attending at least once in a month counts as that month’s activity for commission eligibility',
+          s4note: TH ? 'ออนไลน์ผ่าน Zoom ทุกวันพุธ 19:00–21:00 น. · เข้าฟังอย่างน้อย 1 ครั้งในเดือน นับเป็นกิจกรรมของเดือนนั้น ได้สิทธิ์รับค่าคอมมิชชัน' : 'Online via Zoom every Wednesday 19:00–21:00 · attending at least once in a month counts as that month’s activity for commission eligibility',
           s5: TH ? '5. มาอบรมเป็นตัวแทนฝ่ายขายรอบไหนบ้าง และพาทีมงานมากี่คน' : '5. Training rounds attended and team members brought',
           name: TH ? 'ชื่อ' : 'Name', date: TH ? 'วันที่' : 'Date', by: o.all ? (TH ? 'ตัวแทนผู้พามา' : 'Agent') : (TH ? 'ติดตัว / สายงาน' : 'Personal / line'), status: TH ? 'สถานะ' : 'Status',
           cust: TH ? 'ลูกค้า' : 'Customer', prop: TH ? 'ทรัพย์' : 'Listing', topic: TH ? 'หัวข้อ' : 'Topic', res: o.all ? (TH ? 'ผู้เข้าร่วม' : 'Attendance') : (TH ? 'การเข้าฟัง' : 'Attendance'),
@@ -1476,7 +1476,7 @@ class Component extends DCLogic {
       { name: ['ธีระ บุญยืน', 'Teera Boonyuen'], ref: 'AG-1015', date: '2026-08-29', st: 'attended' },
       { name: ['วีรยุทธ ชัยมงคล', 'Weerayut Chaimongkol'], ref: 'AG-1012', date: '2026-09-26', st: 'attended' },
       { name: ['สมพร ใจงาม', 'Somporn Jai-ngam'], ref: 'AG-1020', date: '2026-10-10', st: 'attended' },
-      { name: ['ดารุณี พึ่งบุญ', 'Darunee Phungboon'], ref: 'AG-1012', date: '2026-10-24', st: 'registered' }
+      { name: ['ดารุณี พึ่งบุญ', 'Darunee Phungboon'], ref: 'AG-1012', date: '2026-11-07', st: 'registered' }
     ];
     const LINE_TR = [
       { name: ['มาลี ดวงแก้ว', 'Malee Duangkaew'], ref: 'AG-1015', round: 'TR-09', rdate: '2026-08-09', st: 'passed', code: 'AG-1031' },
