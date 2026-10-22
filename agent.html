@@ -206,6 +206,91 @@ button,input,select,textarea{font-family:inherit}
 </div>
 </template>
 
+<template data-k="if" value="{{show.contracts}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div role="group" aria-label="{{cx.aria}}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px">
+<template data-k="for" list="{{cum.cards}}" as="k" hint-placeholder-count="3">
+<button type="button" onClick="{{k.pick}}" aria-pressed="{{k.pressed}}" style="text-align: left; cursor: pointer; background: {{k.bg}}; border: 2px solid {{k.bd}}; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 2px; color: #1B2420">
+<span style="font-size: 13px; color: #55625C">{{k.label}}</span>
+<span style="font-size: 30px; font-weight: 700; color: #12372A; line-height: 1.3; font-variant-numeric: tabular-nums">{{k.value}}</span>
+<span style="font-size: 12px; font-weight: 600; color: {{k.subFg}}">{{k.sub}}</span>
+</button>
+</template>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 10px; padding: 10px 14px; font-size: 14px; color: #3D4843">{{cum.nextText}}</div>
+<template data-k="if" value="{{cum.showMembers}}" hint-placeholder-val="{{ false }}">
+<section style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{cum.membersTitle}}</h2>
+<template data-k="for" list="{{cum.members}}" as="m" hint-placeholder-count="4">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px">
+<div aria-hidden="true" style="flex: none; width: 36px; height: 36px; border-radius: 50%; background: #D7EEDF; color: #155B34; display: flex; align-items: center; justify-content: center; font-weight: 700">{{m.initial}}</div>
+<div style="flex: 1 1 180px; min-width: 0"><div style="font-weight: 600">{{m.name}} <span style="font-weight: 400; font-size: 12px; color: #55625C">{{m.code}}</span></div><div style="font-size: 12px; color: #55625C">{{m.meta}}</div></div>
+<div style="flex: 2 1 200px; display: flex; align-items: center; gap: 10px">
+<div aria-hidden="true" style="flex: 1 1 auto; height: 10px; border-radius: 5px; background: #EEF1EF; overflow: hidden"><div style="height: 100%; width: {{m.w}}; background: #E3A23B"></div></div>
+<div style="flex: none; min-width: 72px; text-align: right; font-weight: 700; color: {{m.fg}}">{{m.count}} {{cx.unit}}</div>
+</div>
+</div>
+</template>
+<template data-k="if" value="{{cum.noMembers}}" hint-placeholder-val="{{ false }}"><div style="color: #55625C">{{cx.noTeam}}</div></template>
+</section>
+</template>
+<section style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: baseline">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{cx.chartTitle}}</h2>
+<div style="display: flex; gap: 14px; font-size: 12px; color: #3D4843">
+<span style="display: flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 3px; background: #12372A"></span>{{cx.ownLbl}}</span>
+<span style="display: flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 3px; background: #E3A23B"></span>{{cx.teamLbl}}</span>
+</div>
+</div>
+<div style="overflow-x: auto">
+<div style="min-width: 420px">
+<div role="img" aria-label="{{cum.chartAria}}" style="position: relative; height: 240px; border-bottom: 1px solid #CBD3CF">
+<template data-k="for" list="{{cum.lines}}" as="g" hint-placeholder-count="2">
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: {{g.b}}; border-top: 1px dashed {{g.c}}"><span style="position: absolute; left: 4px; top: -18px; font-size: 11px; font-weight: 600; color: {{g.c}}; background: #FFFFFF; padding: 0 4px">{{g.label}}</span></div>
+</template>
+<div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: flex-end; gap: 12px; padding: 0 12px">
+<template data-k="for" list="{{cum.cols}}" as="c" hint-placeholder-count="6">
+<div style="flex: 1 1 0; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center">
+<div style="font-size: 13px; font-weight: 700; color: #12372A; position: relative; z-index: 1">{{c.total}}</div>
+<div style="width: 100%; max-width: 52px; height: {{c.teamH}}; background: #E3A23B; border-radius: 4px 4px 0 0"></div>
+<div style="width: 100%; max-width: 52px; height: {{c.ownH}}; background: #12372A"></div>
+</div>
+</template>
+</div>
+</div>
+<div style="display: flex; gap: 12px; padding: 6px 12px 0">
+<template data-k="for" list="{{cum.cols}}" as="c" hint-placeholder-count="6">
+<div style="flex: 1 1 0; text-align: center; font-size: 12px; color: #55625C">{{c.label}}</div>
+</template>
+</div>
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; color: #55625C">{{cx.chartNote}}</p>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{cx.ledgerTitle}}</h2>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{cx.ledgerTitle}}" style="min-width: 700px">
+<div role="row" style="display: grid; grid-template-columns: 70px 120px minmax(200px, 1.6fr) 100px 110px 130px; gap: 12px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{cx.h.seq}}</div><div role="columnheader">{{cx.h.date}}</div><div role="columnheader">{{cx.h.who}}</div><div role="columnheader">{{cx.h.prop}}</div><div role="columnheader">{{cx.h.kind}}</div><div role="columnheader">{{cx.h.rate}}</div>
+</div>
+<template data-k="for" list="{{cum.rows}}" as="r" hint-placeholder-count="5">
+<div role="row" style="display: grid; grid-template-columns: 70px 120px minmax(200px, 1.6fr) 100px 110px 130px; gap: 12px; padding: 10px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center">
+<div role="cell" style="font-weight: 700; color: #12372A">{{r.seq}}</div>
+<div role="cell">{{r.date}}</div>
+<div role="cell"><div style="font-weight: 600">{{r.who}}</div><div style="font-size: 12px; color: #55625C">{{r.code}}</div></div>
+<div role="cell">{{r.prop}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.c.bg}}; color: {{r.c.fg}}">{{r.c.label}}</span></div>
+<div role="cell" style="font-weight: 600">{{r.rateAt}}</div>
+</div>
+</template>
+<template data-k="if" value="{{cum.noRows}}" hint-placeholder-val="{{ false }}"><div style="padding: 24px; text-align: center; color: #55625C; border-top: 1px solid #EEF1EF">{{cx.empty}}</div></template>
+</div>
+</div>
+</section>
+</div>
+</template>
+
 <template data-k="if" value="{{show.appt}}" hint-placeholder-val="{{ false }}">
 <div style="display: flex; flex-direction: column; gap: 16px">
 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
@@ -276,6 +361,7 @@ button,input,select,textarea{font-family:inherit}
 </template>
 </div>
 </section>
+<h2 style="margin: 8px 0 0; font-size: 18px; color: #12372A">{{ov.ownTitle}}</h2>
 <div role="group" aria-label="{{t.filterType}}" style="display: flex; gap: 8px; flex-wrap: wrap">
 <template data-k="for" list="{{salesChips}}" as="f" hint-placeholder-count="3">
 <button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 40px; padding: 0 16px; border-radius: 999px; cursor: pointer; font-size: 13px; font-weight: 600; border: 1px solid {{f.bd}}; background: {{f.bg}}; color: {{f.fg}}">{{f.label}}</button>
@@ -302,6 +388,38 @@ button,input,select,textarea{font-family:inherit}
 </div>
 </div>
 <p style="margin: 0; font-size: 13px; color: #55625C">{{t.salesNote}}</p>
+<h2 style="margin: 12px 0 0; font-size: 18px; color: #12372A">{{ov.title}}</h2>
+<section style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 16px 20px; display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 15px; color: #12372A">{{ov.ruleTitle}}</h3>
+<ol style="margin: 0; padding-left: 20px; font-size: 14px; color: #3D4843; display: flex; flex-direction: column; gap: 4px">
+<template data-k="for" list="{{ov.rules}}" as="x" hint-placeholder-count="4"><li>{{x}}</li></template>
+</ol>
+<div style="background: #F7F9F8; border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #3D4843">{{ov.example}}</div>
+</section>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{ov.title}}" style="min-width: 1240px">
+<div role="row" style="display: grid; grid-template-columns: 112px 100px minmax(160px, 1.2fr) 110px 64px 72px 90px minmax(170px, 1.3fr) 80px 100px 160px; gap: 10px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{ov.h.ct}}</div><div role="columnheader">{{ov.h.date}}</div><div role="columnheader">{{ov.h.seller}}</div><div role="columnheader">{{ov.h.price}}</div><div role="columnheader">{{ov.h.sRate}}</div><div role="columnheader">{{ov.h.top}}</div><div role="columnheader">{{ov.h.diff}}</div><div role="columnheader">{{ov.h.split}}</div><div role="columnheader">{{ov.h.mine}}</div><div role="columnheader">{{ov.h.amount}}</div><div role="columnheader">{{ov.h.status}}</div>
+</div>
+<template data-k="for" list="{{ov.rows}}" as="r" hint-placeholder-count="3">
+<div role="row" style="display: grid; grid-template-columns: 112px 100px minmax(160px, 1.2fr) 110px 64px 72px 90px minmax(170px, 1.3fr) 80px 100px 160px; gap: 10px; padding: 10px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center">
+<div role="cell" style="color: #55625C">{{r.id}}</div>
+<div role="cell">{{r.dateText}}</div>
+<div role="cell"><div style="font-weight: 600">{{r.seller}}</div><div style="font-size: 12px; color: #55625C">{{r.sellerSub}}</div></div>
+<div role="cell" style="font-variant-numeric: tabular-nums">{{r.price}}</div>
+<div role="cell">{{r.sRate}}</div>
+<div role="cell">{{r.top}}</div>
+<div role="cell">{{r.diff}}</div>
+<div role="cell" style="font-size: 12px; color: #3D4843">{{r.split}}</div>
+<div role="cell" style="font-weight: 700; color: #12372A">{{r.mine}}</div>
+<div role="cell" style="font-weight: 600; font-variant-numeric: tabular-nums">{{r.amount}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.c.bg}}; color: {{r.c.fg}}">{{r.c.label}}</span></div>
+</div>
+</template>
+<template data-k="if" value="{{ov.noRows}}" hint-placeholder-val="{{ false }}"><div style="padding: 24px; text-align: center; color: #55625C; border-top: 1px solid #EEF1EF">{{ov.empty}}</div></template>
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; color: #55625C">{{ov.note}}</p>
 </div>
 </template>
 
@@ -353,6 +471,158 @@ button,input,select,textarea{font-family:inherit}
 <div role="cell" style="color: #3D4843">{{a.place}}</div>
 <div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{a.c.bg}}; color: {{a.c.fg}}">{{a.c.label}}</span></div>
 <div role="cell" style="font-size: 13px; color: {{a.rightFg}}">{{a.right}}</div>
+</div>
+</template>
+</div>
+</div>
+</section>
+</div>
+</template>
+
+<template data-k="if" value="{{show.actsum}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<template data-k="if" value="{{ad.showScope}}" hint-placeholder-val="{{ true }}">
+<div role="group" aria-label="{{ad.t.scope}}" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+<span style="font-size: 13px; color: #55625C">{{ad.t.scope}}</span>
+<template data-k="for" list="{{ad.scopes}}" as="f" hint-placeholder-count="3">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 40px; padding: 0 16px; border-radius: 999px; cursor: pointer; font-size: 13px; font-weight: 600; border: 1px solid {{f.bd}}; background: {{f.bg}}; color: {{f.fg}}">{{f.label}}</button>
+</template>
+</div>
+</template>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px">
+<template data-k="for" list="{{ad.kpis}}" as="k" hint-placeholder-count="5">
+<div style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 14px 16px">
+<div style="font-size: 13px; color: #55625C">{{k.label}}</div>
+<div style="font-size: 26px; font-weight: 700; color: #12372A; line-height: 1.35; font-variant-numeric: tabular-nums">{{k.value}}</div>
+<div style="font-size: 12px; color: #3D4843">{{k.sub}}</div>
+</div>
+</template>
+</div>
+<section style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: baseline">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{ad.t.chart}}</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: #3D4843">
+<template data-k="for" list="{{ad.legend}}" as="l" hint-placeholder-count="4">
+<span style="display: flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 3px; background: {{l.c}}"></span>{{l.label}}</span>
+</template>
+</div>
+</div>
+<div style="overflow-x: auto">
+<div style="min-width: 560px">
+<div role="img" aria-label="{{ad.chartAria}}" style="height: 220px; display: flex; align-items: flex-end; gap: 20px; padding: 0 8px; border-bottom: 1px solid #CBD3CF">
+<template data-k="for" list="{{ad.groups}}" as="g" hint-placeholder-count="5">
+<div style="flex: 1 1 0; height: 100%; display: flex; align-items: flex-end; justify-content: center; gap: 4px">
+<template data-k="for" list="{{g.bars}}" as="b" hint-placeholder-count="4">
+<div style="flex: 0 1 24px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center">
+<div style="font-size: 11px; font-weight: 700; color: #3D4843">{{b.v}}</div>
+<div style="width: 100%; height: {{b.h}}; background: {{b.c}}; border-radius: 3px 3px 0 0"></div>
+</div>
+</template>
+</div>
+</template>
+</div>
+<div style="display: flex; gap: 20px; padding: 6px 8px 0">
+<template data-k="for" list="{{ad.groups}}" as="g" hint-placeholder-count="5">
+<div style="flex: 1 1 0; text-align: center; font-size: 12px; color: #55625C">{{g.label}}</div>
+</template>
+</div>
+</div>
+</div>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{ad.t.s1}}</h2>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{ad.t.s1}}" style="min-width: 640px">
+<div role="row" style="display: grid; grid-template-columns: minmax(170px, 1.4fr) 130px minmax(180px, 1.3fr) 130px; gap: 12px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{ad.t.name}}</div><div role="columnheader">{{ad.t.date}}</div><div role="columnheader">{{ad.t.by}}</div><div role="columnheader">{{ad.t.status}}</div>
+</div>
+<template data-k="for" list="{{ad.ovRows}}" as="r" hint-placeholder-count="5">
+<div role="row" style="display: grid; grid-template-columns: minmax(170px, 1.4fr) 130px minmax(180px, 1.3fr) 130px; gap: 12px; padding: 10px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center">
+<div role="cell" style="font-weight: 600">{{r.name}}</div>
+<div role="cell">{{r.date}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.tag.bg}}; color: {{r.tag.fg}}">{{r.tag.label}}</span></div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.st.bg}}; color: {{r.st.fg}}">{{r.st.label}}</span></div>
+</div>
+</template>
+<template data-k="if" value="{{ad.noOv}}" hint-placeholder-val="{{ false }}"><div style="padding: 20px; text-align: center; color: #55625C; border-top: 1px solid #EEF1EF">{{ad.t.empty}}</div></template>
+</div>
+</div>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{ad.t.s2}}</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px">
+<template data-k="for" list="{{ad.trRounds}}" as="rd" hint-placeholder-count="3">
+<article style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; gap: 8px; align-items: baseline"><div><div style="font-weight: 700; color: #12372A">{{rd.id}}</div><div style="font-size: 12px; color: #55625C">{{rd.dates}}</div></div><div style="font-size: 13px; font-weight: 600">{{rd.count}}</div></div>
+<template data-k="for" list="{{rd.people}}" as="pp" hint-placeholder-count="2">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; border-top: 1px solid #EEF1EF; padding-top: 8px">
+<div style="flex: 1 1 140px; min-width: 0"><div style="font-weight: 600; font-size: 14px">{{pp.name}}</div><div style="font-size: 12px; color: #55625C">{{pp.sub}}</div></div>
+<span style="padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{pp.tag.bg}}; color: {{pp.tag.fg}}">{{pp.tag.label}}</span>
+<span style="padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{pp.st.bg}}; color: {{pp.st.fg}}">{{pp.st.label}}</span>
+</div>
+</template>
+</article>
+</template>
+</div>
+<template data-k="if" value="{{ad.noTr}}" hint-placeholder-val="{{ false }}"><div style="padding: 20px; text-align: center; color: #55625C; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px">{{ad.t.empty}}</div></template>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{ad.t.s3}}</h2>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{ad.t.s3}}" style="min-width: 860px">
+<div role="row" style="display: grid; grid-template-columns: 150px minmax(160px, 1.3fr) minmax(190px, 1.5fr) minmax(170px, 1.3fr) 130px; gap: 12px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{ad.t.date}}</div><div role="columnheader">{{ad.t.cust}}</div><div role="columnheader">{{ad.t.prop}}</div><div role="columnheader">{{ad.t.by}}</div><div role="columnheader">{{ad.t.status}}</div>
+</div>
+<template data-k="for" list="{{ad.visitRows}}" as="r" hint-placeholder-count="5">
+<div role="row" style="display: grid; grid-template-columns: 150px minmax(160px, 1.3fr) minmax(190px, 1.5fr) minmax(170px, 1.3fr) 130px; gap: 12px; padding: 10px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center">
+<div role="cell">{{r.date}}</div>
+<div role="cell" style="font-weight: 600">{{r.cust}}</div>
+<div role="cell" style="font-size: 13px">{{r.prop}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.tag.bg}}; color: {{r.tag.fg}}">{{r.tag.label}}</span></div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.st.bg}}; color: {{r.st.fg}}">{{r.st.label}}</span></div>
+</div>
+</template>
+<template data-k="if" value="{{ad.noVis}}" hint-placeholder-val="{{ false }}"><div style="padding: 20px; text-align: center; color: #55625C; border-top: 1px solid #EEF1EF">{{ad.t.empty}}</div></template>
+</div>
+</div>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{ad.t.s4}}</h2>
+<div style="font-size: 13px; color: #163C78; background: #DCE8FB; border-radius: 8px; padding: 8px 12px">{{ad.t.s4note}}</div>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{ad.t.s4}}" style="min-width: 820px">
+<div role="row" style="display: grid; grid-template-columns: 120px minmax(220px, 2fr) 150px 120px 170px; gap: 12px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{ad.t.date}}</div><div role="columnheader">{{ad.t.topic}}</div><div role="columnheader">{{ad.t.res}}</div><div role="columnheader">{{ad.t.lineCol}}</div><div role="columnheader">{{ad.t.action}}</div>
+</div>
+<template data-k="for" list="{{ad.weeklyRows}}" as="r" hint-placeholder-count="6">
+<div role="row" style="display: grid; grid-template-columns: 120px minmax(220px, 2fr) 150px 120px 170px; gap: 12px; padding: 8px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center; min-height: 44px">
+<div role="cell">{{r.date}}</div>
+<div role="cell" style="font-weight: 600">{{r.title}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.res.bg}}; color: {{r.res.fg}}">{{r.res.label}}</span></div>
+<div role="cell">{{r.lineTxt}}</div>
+<div role="cell">
+<template data-k="if" value="{{r.hasAct}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{r.act}}" style="min-height: 36px; padding: 0 12px; border: 1px solid #12372A; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 12px; font-weight: 600; cursor: pointer">{{r.actLabel}}</button></template>
+<template data-k="if" value="{{r.noAct}}" hint-placeholder-val="{{ true }}"><span style="color: #55625C">—</span></template>
+</div>
+</div>
+</template>
+</div>
+</div>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{ad.t.s5}}</h2>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{ad.t.s5}}" style="min-width: 860px">
+<div role="row" style="display: grid; grid-template-columns: 80px 200px 170px minmax(180px, 1.3fr) minmax(200px, 1.5fr); gap: 12px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{ad.t.round}}</div><div role="columnheader">{{ad.t.date}}</div><div role="columnheader">{{ad.t.join}}</div><div role="columnheader">{{ad.t.own}}</div><div role="columnheader">{{ad.t.line}}</div>
+</div>
+<template data-k="for" list="{{ad.roundRows}}" as="r" hint-placeholder-count="4">
+<div role="row" style="display: grid; grid-template-columns: 80px 200px 170px minmax(180px, 1.3fr) minmax(200px, 1.5fr); gap: 12px; padding: 10px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center">
+<div role="cell" style="font-weight: 700; color: #12372A">{{r.id}}</div>
+<div role="cell" style="font-size: 13px">{{r.dates}}</div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.c.bg}}; color: {{r.c.fg}}">{{r.c.label}}</span></div>
+<div role="cell"><div style="font-weight: 700">{{r.ownN}}</div><div style="font-size: 12px; color: #55625C">{{r.ownNames}}</div></div>
+<div role="cell"><div style="font-weight: 700">{{r.lineN}}</div><div style="font-size: 12px; color: #55625C">{{r.lineNames}}</div></div>
 </div>
 </template>
 </div>
@@ -562,7 +832,7 @@ class Component extends DCLogic {
       propType: 'all', selProp: '', salesType: 'all',
       acts: this.seedActs(),
       ovSession: 'OV-1024', ovs: this.seedOv(), of: { first: '', last: '', phone: '', email: '', line: '' },
-      trRound: 'TR-11', trs: this.seedTr(), tf: { name: '', phone: '' }
+      trRound: 'TR-11', trs: this.seedTr(), tf: { name: '', phone: '' }, cumF: 'all', actScope: 'all', wkReg: {}
     };
   }
 
@@ -617,7 +887,8 @@ class Component extends DCLogic {
       { name: ['ภานุวัฒน์ รักดี', 'Panuwat Rakdee'], phone: '081-552-0193', sdate: '2026-10-24', time: '19:00', st: 'registered' },
       { name: ['ศุภชัย มั่นคง', 'Supachai Mankong'], phone: '086-301-7742', sdate: '2026-10-10', time: '19:00', st: 'attended' },
       { name: ['จิราพร ทองคำ', 'Jiraporn Thongkham'], phone: '092-884-1205', sdate: '2026-10-10', time: '19:00', st: 'attended' },
-      { name: ['อรทัย สายบุญ', 'Orathai Saiboon'], phone: '089-447-6630', sdate: '2026-09-26', time: '19:00', st: 'absent' }
+      { name: ['อรทัย สายบุญ', 'Orathai Saiboon'], phone: '089-447-6630', sdate: '2026-09-26', time: '19:00', st: 'absent' },
+      { name: ['ปิยะ ศักดิ์ดี', 'Piya Sakdee'], phone: '087-630-5524', sdate: '2026-07-04', time: '19:00', st: 'attended' }
     ];
   }
 
@@ -625,6 +896,31 @@ class Component extends DCLogic {
     return [
       { name: ['จิราพร ทองคำ', 'Jiraporn Thongkham'], phone: '092-884-1205', round: 'TR-11', rdate: '2026-11-08', st: 'registered' },
       { name: ['ปิยะ ศักดิ์ดี', 'Piya Sakdee'], phone: '087-630-5524', round: 'TR-08', rdate: '2026-07-12', st: 'passed', code: 'AG-1018' }
+    ];
+  }
+
+  seedWeekly() {
+    return [
+      { id: 'WK-01', date: '2026-09-02', title: ['เทคนิคปิดการขายพูลวิลล่า', 'Closing techniques for pool villas'], att: ['AG-1001', 'AG-1007', 'AG-1012', 'AG-1015', 'AG-1020'], reg: [] },
+      { id: 'WK-02', date: '2026-09-09', title: ['อ่านผังโครงการและโฉนดที่ดิน', 'Reading site plans and title deeds'], att: ['AG-1007', 'AG-1012', 'AG-1018', 'AG-1023'], reg: [] },
+      { id: 'WK-03', date: '2026-09-16', title: ['สินเชื่อบ้านและการยื่นกู้', 'Home loans and applications'], att: ['AG-1001', 'AG-1007', 'AG-1015', 'AG-1020', 'AG-1031'], reg: [] },
+      { id: 'WK-04', date: '2026-09-23', title: ['การตลาดออนไลน์สำหรับตัวแทน', 'Online marketing for agents'], att: ['AG-1012', 'AG-1018', 'AG-1020', 'AG-1023'], reg: [] },
+      { id: 'WK-05', date: '2026-09-30', title: ['ภาษีและค่าธรรมเนียมการโอน', 'Transfer taxes and fees'], att: ['AG-1001', 'AG-1007', 'AG-1012', 'AG-1015', 'AG-1031'], reg: [] },
+      { id: 'WK-06', date: '2026-10-07', title: ['รับมือข้อโต้แย้งของลูกค้า', 'Handling customer objections'], att: ['AG-1012', 'AG-1015', 'AG-1020'], reg: [] },
+      { id: 'WK-07', date: '2026-10-14', title: ['ถ่ายรูปและวิดีโอทรัพย์ให้น่าสนใจ', 'Shooting listing photos and video'], att: ['AG-1001', 'AG-1015', 'AG-1018', 'AG-1023', 'AG-1031'], reg: [] },
+      { id: 'WK-08', date: '2026-10-21', title: ['อัปเดตโปรโมชั่นไตรมาส 4', 'Q4 promotion update'], att: ['AG-1012', 'AG-1020', 'AG-1031'], reg: [] },
+      { id: 'WK-09', date: '2026-10-28', title: ['เคสศึกษา: ลูกค้าต่างชาติ', 'Case study: foreign buyers'], att: [], reg: ['AG-1012', 'AG-1015'] },
+      { id: 'WK-10', date: '2026-11-04', title: ['เตรียมเอกสารวันโอนกรรมสิทธิ์', 'Preparing transfer-day documents'], att: [], reg: ['AG-1001'] }
+    ];
+  }
+
+  seedRounds() {
+    return [
+      { id: 'TR-08', d1: '2026-07-12', d2: '2026-07-13', att: ['AG-1001', 'AG-1007'], reg: [] },
+      { id: 'TR-09', d1: '2026-08-09', d2: '2026-08-10', att: ['AG-1007', 'AG-1015'], reg: [] },
+      { id: 'TR-10', d1: '2026-10-11', d2: '2026-10-12', att: ['AG-1001', 'AG-1012', 'AG-1015'], reg: [] },
+      { id: 'TR-11', d1: '2026-11-08', d2: '2026-11-09', att: [], reg: ['AG-1001', 'AG-1007'] },
+      { id: 'TR-12', d1: '2026-12-06', d2: '2026-12-07', att: [], reg: [] }
     ];
   }
 
@@ -637,7 +933,9 @@ class Component extends DCLogic {
       switchRole: ['เปลี่ยนบทบาท / ออกจากระบบ', 'Switch role / Sign out'],
       sample: ['ข้อมูลในหน้านี้เป็นข้อมูลตัวอย่างสำหรับการนำเสนอเท่านั้น', 'All data on this page is sample data for presentation only.'],
       n_profile: ['โปรไฟล์', 'Profile'], n_tree: ['ผังสายงาน', 'Team tree'], n_appt: ['นัดหมายชมโครงการ', 'Site visits'], n_sales: ['ประวัติการขายและค่าคอมฯ', 'Sales & commission'],
-      n_activity: ['กิจกรรมประจำเดือน', 'Monthly activities'], n_props: ['ข้อมูลทรัพย์', 'Listings'], n_overview: ['ลงทะเบียนฟัง Overview', 'Overview sign-up'], n_training: ['ลงทะเบียนอบรมตัวแทน', 'Agent training sign-up'],
+      n_activity: ['กิจกรรมประจำเดือน', 'Monthly activities'], n_props: ['ข้อมูลทรัพย์', 'Listings'], n_overview: ['ลงทะเบียนฟัง Overview', 'Overview sign-up'], n_training: ['ลงทะเบียนอบรมตัวแทน', 'Agent training sign-up'], n_contracts: ['สัญญาสะสม', 'Contract count'], n_actsum: ['ภาพรวมกิจกรรม', 'Activity overview'],
+      p_actsum: ['ภาพรวมกิจกรรมของฉันและสายงาน', 'My and my line’s activities'], s_actsum: ['แยกได้ว่าเป็นกิจกรรมที่ทำเอง (ติดตัว) หรือคนในสายงานทำ', 'Split into what you did personally and what your line did'],
+      p_contracts: ['สัญญาสะสมของสายงาน', 'Contracts counted in your line'], s_contracts: ['แยกยอดที่คุณขายเองกับที่คนในทีมขาย ซึ่งใช้นับระดับค่าคอมมิชชัน', 'Your own contracts vs your team’s — used to set your commission tier'],
       p_profile: ['โปรไฟล์ของฉัน', 'My profile'], s_profile: ['ข้อมูลส่วนตัว ระดับค่าคอมมิชชัน และสัญญาตัวแทน', 'Personal details, commission tier and agent contract'],
       p_tree: ['ผังสายงานของฉัน', 'My team tree'], s_tree: ['ตัวแทนขายที่คุณแนะนำเข้ามา และผู้ที่พวกเขาแนะนำต่อ', 'Agents you referred, and the agents they referred'],
       p_appt: ['นัดหมายพาลูกค้าชมโครงการ', 'Customer site visits'], s_appt: ['ลงทะเบียนนัดหมายล่วงหน้า และดูประวัติการนัดหมาย', 'Book visits in advance and review past visits'],
@@ -646,7 +944,7 @@ class Component extends DCLogic {
       p_props: ['ข้อมูลทรัพย์ของโครงการ', 'Project listings'], s_props: ['รูป รายละเอียด ราคาขาย และโปรโมชั่น สำหรับใช้แนะนำลูกค้า', 'Photos, details, prices and promotions to share with customers'],
       p_overview: ['ลงทะเบียนฟัง Overview Online', 'Online overview sign-up'], s_overview: ['ชวนคนที่สนใจมาฟังภาพรวมโครงการ ก่อนตัดสินใจอบรมเป็นตัวแทน', 'Invite prospects to an online overview before they decide to train'],
       p_training: ['ลงทะเบียนอบรมเป็นตัวแทนขาย', 'Agent training sign-up'], s_training: ['ส่งทีมงานเข้าอบรม เมื่อผ่านแล้วจะเป็นตัวแทนในสายงานของคุณ', 'Send recruits to training; once they pass they join your line'],
-      warnText: ['เดือนตุลาคมคุณยังไม่ได้ลงทะเบียนกิจกรรมประจำเดือน ต้องเข้าร่วมเพื่อรักษาสิทธิ์รับค่าคอมมิชชันของเดือนนี้', 'You have not signed up for an October activity yet. Attendance is required to keep this month’s commission.'],
+      warnText: ['เดือนตุลาคมคุณยังไม่ได้เข้าร่วมกิจกรรมประจำเดือนหรือฟังแชร์ความรู้วันพุธ ลงทะเบียนอย่างน้อย 1 กิจกรรมเพื่อรักษาสิทธิ์รับค่าคอมมิชชันของเดือนนี้', 'You have not joined an October monthly activity or Wednesday session yet. Sign up for at least one to keep this month’s commission.'],
       warnBtn: ['ดูกิจกรรม', 'See activities'],
       editProfile: ['แก้ไขข้อมูล', 'Edit profile'],
       tierTitle: ['ระดับค่าคอมมิชชัน', 'Commission tier'], tierCurrentLbl: ['อัตราสำหรับสัญญาถัดไปของคุณ', 'rate for your next contract'],
@@ -666,7 +964,7 @@ class Component extends DCLogic {
       cContract: ['เลขสัญญา', 'Contract'], cDate: ['วันที่', 'Date'], cProp: ['ทรัพย์', 'Listing'], cCust: ['ลูกค้า', 'Customer'], cPrice: ['ราคาขาย', 'Price'],
       cSeq: ['ลำดับในสายงาน', 'Line no.'], cRate: ['อัตรา', 'Rate'], cComm: ['ค่าคอมฯ', 'Commission'], cStatus: ['สถานะ', 'Status'],
       salesNote: ['ค่าคอมมิชชันจะจ่ายเมื่อคุณเข้าร่วมกิจกรรมประจำเดือนในเดือนที่ปิดการขาย', 'Commission is paid when you attended the monthly activity in the month of the sale.'],
-      actRule: ['ตัวแทนขายต้องเข้าร่วมกิจกรรมของบริษัทอย่างน้อยเดือนละ 1 ครั้ง เพื่อมีสิทธิ์รับค่าคอมมิชชันของสัญญาที่ปิดในเดือนนั้น', 'Agents must attend at least one company activity each month to receive commission on contracts closed that month.'],
+      actRule: ['ตัวแทนขายต้องเข้าร่วมกิจกรรมอย่างน้อยเดือนละ 1 ครั้ง (กิจกรรมประจำเดือน หรือฟังแชร์ความรู้ออนไลน์วันพุธ) เพื่อมีสิทธิ์รับค่าคอมมิชชันของสัญญาที่ปิดในเดือนนั้น', 'Agents must attend at least one activity each month (the monthly activity or a Wednesday online session) to receive commission on contracts closed that month.'],
       monthsTitle: ['สถานะรายเดือน (6 เดือนล่าสุด)', 'Monthly status (last 6 months)'],
       upcomingTitle: ['กิจกรรมที่กำลังจะมาถึง', 'Upcoming activities'], histTitle: ['ประวัติการเข้าร่วม', 'Attendance history'],
       register: ['ลงทะเบียนเข้าร่วม', 'Sign up'], am_registered: ['ลงทะเบียนแล้ว', 'Signed up'],
@@ -817,6 +1115,87 @@ class Component extends DCLogic {
     const comm = (x) => x.price * x.rate / 100;
     const earned = sales.filter((x) => x.paidOn).reduce((a, x) => a + comm(x), 0);
     const pending = sales.filter((x) => !x.paidOn).reduce((a, x) => a + comm(x), 0);
+
+    // ---------- commission engine: own sale + team share (7% budget) ----------
+    const commEngine = (contracts, upOf) => {
+      const list = contracts.slice().sort((a, b) => (a.date === b.date ? (a.id > b.id ? 1 : -1) : (a.date > b.date ? 1 : -1)));
+      const ancestors = (id) => { const out = []; let u = upOf[id]; let g = 0; while (u && g < 50) { out.push(u); u = upOf[u]; g++; } return out; };
+      const inLine = (agentId, sellerId) => sellerId === agentId || ancestors(sellerId).indexOf(agentId) !== -1;
+      const done = [];
+      const by = {};
+      list.forEach((c) => {
+        const before = (agentId) => done.filter((d) => inLine(agentId, d.agent)).length;
+        const sRate = rateFor(before(c.agent) + 1);
+        const ups = ancestors(c.agent).slice(0, 4).map((u, i) => ({ id: u, lvl: i + 1, rate: rateFor(before(u) + 1) }));
+        const top = ups.reduce((m, u) => Math.max(m, u.rate), 0);
+        const diff = Math.max(0, top - sRate);
+        const share = ups.length ? diff / ups.length : 0;
+        const allocs = [{ agent: c.agent, kind: 'own', lvl: 0, pct: sRate, amount: c.price * sRate / 100 }]
+          .concat(diff > 0 ? ups.map((u) => ({ agent: u.id, kind: 'ov', lvl: u.lvl, pct: share, amount: c.price * share / 100 })) : []);
+        by[c.id] = { sRate: sRate, top: top, diff: diff, ups: ups, share: share, allocs: allocs };
+        done.push(c);
+      });
+      return { list: list, by: by };
+    };
+    const fmtPct = (p) => (Math.round(p * 100) / 100) + '%';
+    const ALL_CT = [
+      { id: 'CT-2026-011', date: '2026-04-18', agent: 'AG-1001', price: 4200000 },
+      { id: 'CT-2026-014', date: '2026-05-12', agent: 'AG-1007', price: 8900000 },
+      { id: 'CT-2026-019', date: '2026-06-08', agent: 'AG-1012', price: 3950000 },
+      { id: 'CT-2026-027', date: '2026-07-03', agent: 'AG-1007', price: 5100000 },
+      { id: 'CT-2026-033', date: '2026-08-14', agent: 'AG-1020', price: 9200000 },
+      { id: 'CT-2026-035', date: '2026-08-22', agent: 'AG-1012', price: 4600000 },
+      { id: 'CT-2026-041', date: '2026-09-20', agent: 'AG-1007', price: 12500000 },
+      { id: 'CT-2026-046', date: '2026-10-09', agent: 'AG-1015', price: 7400000 }
+    ];
+    const UPOF = { 'AG-1007': 'AG-1001', 'AG-1012': 'AG-1007', 'AG-1015': 'AG-1007', 'AG-1018': 'AG-1007', 'AG-1020': 'AG-1012', 'AG-1023': 'AG-1012', 'AG-1031': 'AG-1015', 'AG-1027': 'AG-1001' };
+    const NM = { 'AG-1001': ['อนันต์ ศรีวงศ์', 'Anan Sriwong'], 'AG-1012': ['พิมพ์ชนก แสงทอง', 'Pimchanok Saengthong'], 'AG-1015': ['กิตติ พรหมมา', 'Kitti Phromma'], 'AG-1018': ['ปิยะ ศักดิ์ดี', 'Piya Sakdee'], 'AG-1020': ['ธนากร ศรีสุข', 'Thanakorn Srisuk'], 'AG-1023': ['วรรณา บุญมา', 'Wanna Boonma'], 'AG-1031': ['มาลี ดวงแก้ว', 'Malee Duangkaew'] };
+    const nm = (id) => (id === 'AG-1007' ? (TH ? 'คุณ' : 'You') : (NM[id] ? L(NM[id]) : id));
+    const ENG = commEngine(ALL_CT, UPOF);
+    const ymA = (d) => d.slice(0, 7);
+    const attendedA = (m) => s.acts.some((a) => ymA(a.date) === m && a.st === 'attended') || this.seedWeekly().some((w) => ymA(w.date) === m && w.att.indexOf('AG-1007') !== -1);
+    const shareItems = [];
+    ENG.list.forEach((c) => { ENG.by[c.id].allocs.forEach((al) => { if (al.agent === 'AG-1007' && al.kind === 'ov') shareItems.push({ c: c, e: ENG.by[c.id], al: al }); }); });
+    const ownTotal = sales.reduce((a, x) => a + comm(x), 0);
+    const shareTotal = shareItems.reduce((a, x) => a + x.al.amount, 0);
+    const shareRows = shareItems.slice().reverse().map((x) => {
+      const c = x.c, e = x.e, al = x.al;
+      const m = ymA(c.date);
+      const mm = fmtMonth(m);
+      let st;
+      if (attendedA(m)) st = chip('blue', TH ? 'รอจ่าย' : 'Pending');
+      else if (m >= CUR) st = chip('amber', TH ? 'รอกิจกรรม ' + mm : 'Awaiting ' + mm + ' activity');
+      else st = chip('red', TH ? 'ระงับ: ขาดกิจกรรม ' + mm : 'Held: missed ' + mm);
+      return {
+        id: c.id, dateText: fmtDate(c.date), seller: nm(c.agent), sellerSub: c.agent + (TH ? ' · อยู่ใต้คุณ ' + al.lvl + ' ชั้น' : ' · ' + al.lvl + ' level(s) below you'),
+        price: baht(c.price), sRate: e.sRate + '%', top: e.top + '%', diff: fmtPct(e.diff) + ' ÷ ' + e.ups.length,
+        split: e.allocs.filter((a) => a.kind === 'ov').map((a) => nm(a.agent) + ' ' + fmtPct(a.pct)).join(' · '),
+        mine: fmtPct(al.pct), amount: baht(al.amount), c: st
+      };
+    });
+    const ex = ENG.by['CT-2026-046'];
+    const ov = {
+      ownTitle: TH ? 'ค่าคอมฯ จากที่ขายเอง' : 'Commission from your own sales',
+      title: TH ? 'ส่วนแบ่งค่าคอมฯ จากที่ทีมงานขาย' : 'Your share from team sales',
+      ruleTitle: TH ? 'วิธีคิดส่วนแบ่ง (งบค่าคอมฯ 7% ต่อสัญญา)' : 'How the team share works (7% commission budget per contract)',
+      rules: TH ? [
+        'คนขายได้ค่าคอมฯ ตาม % ระดับของตัวเอง (3% / 5% / 7%)',
+        'ดูสายงานด้านบนของคนขายขึ้นไปไม่เกิน 4 ชั้น แล้วหา % ระดับที่สูงที่สุดในกลุ่มนี้ เรียกว่า "%ต้นสาย"',
+        '%ต้นสาย − % ของคนขาย = ส่วนต่าง นำไปแบ่งให้สายงานด้านบน (ไม่เกิน 4 ชั้น) คนละเท่าๆ กัน',
+        'ส่วนแบ่งจากทีมใช้เงื่อนไขกิจกรรมประจำเดือนเหมือนค่าคอมฯ จากที่ขายเอง'
+      ] : [
+        'The seller earns their own tier rate (3% / 5% / 7%)',
+        'Look up to 4 levels above the seller and take the highest tier among them — the "upline rate"',
+        'Upline rate − seller rate = the difference, split equally among those uplines (max 4 levels)',
+        'Team shares follow the same monthly activity condition as own-sale commission'
+      ],
+      example: TH
+        ? 'ตัวอย่าง CT-2026-046: ' + nm('AG-1015') + ' (' + ex.sRate + '%) ขาย ' + mil(7400000) + ' · สายงานด้านบน: ' + ex.ups.map((u) => nm(u.id) + ' ' + u.rate + '%').join(', ') + ' → %ต้นสาย ' + ex.top + '% → ส่วนต่าง ' + fmtPct(ex.diff) + ' แบ่ง ' + ex.ups.length + ' คน คนละ ' + fmtPct(ex.share) + ' = ' + baht(7400000 * ex.share / 100)
+        : 'Example CT-2026-046: ' + nm('AG-1015') + ' (' + ex.sRate + '%) sold ' + mil(7400000) + ' · uplines: ' + ex.ups.map((u) => nm(u.id) + ' ' + u.rate + '%').join(', ') + ' → upline rate ' + ex.top + '% → difference ' + fmtPct(ex.diff) + ' split ' + ex.ups.length + ' ways, ' + fmtPct(ex.share) + ' each = ' + baht(7400000 * ex.share / 100),
+      h: { ct: TH ? 'เลขสัญญา' : 'Contract', date: TH ? 'วันที่' : 'Date', seller: TH ? 'คนขาย' : 'Seller', price: TH ? 'ราคาขาย' : 'Price', sRate: TH ? '%คนขาย' : 'Seller %', top: TH ? '%ต้นสาย' : 'Upline %', diff: TH ? 'ส่วนต่าง ÷ คน' : 'Diff ÷ people', split: TH ? 'แบ่งให้' : 'Split between', mine: TH ? 'ส่วนของคุณ' : 'Your %', amount: TH ? 'ค่าคอมฯ' : 'Amount', status: TH ? 'สถานะ' : 'Status' },
+      rows: shareRows, noRows: shareRows.length === 0, empty: TH ? 'ยังไม่มีส่วนแบ่งจากทีม' : 'No team share yet',
+      note: TH ? 'ถ้า %ต้นสายไม่สูงกว่า % ของคนขาย จะไม่มีส่วนแบ่ง งบที่เหลือจาก 7% เป็นของบริษัท' : 'If the upline rate is not above the seller’s rate there is no share; any unused part of the 7% budget stays with the company.'
+    };
     const salesRows = sales.filter((x) => s.salesType === 'all' || PM[x.prop].type === s.salesType).slice().reverse().map((x) => ({
       id: x.id, dateText: fmtDate(x.date), prop: x.prop, propName: propName(PM[x.prop]), cust: L(x.cust), priceText: baht(x.price),
       seq: '#' + x.seq, rate: x.rate + '%', commText: baht(comm(x)),
@@ -848,13 +1227,18 @@ class Component extends DCLogic {
     const months = monthsList.map((m) => {
       const inM = s.acts.filter((a) => ymOf(a.date) === m);
       let c;
+      const wkIn = this.seedWeekly().some((w) => ymOf(w.date) === m && w.att.indexOf('AG-1007') !== -1);
       if (inM.some((a) => a.st === 'attended')) c = chip('green', TH ? 'เข้าร่วมแล้ว' : 'Attended');
+      else if (wkIn) c = chip('green', TH ? 'ฟังแชร์ความรู้แล้ว' : 'Attended weekly');
       else if (m < CUR) c = chip('red', TH ? 'ไม่ได้เข้าร่วม' : 'Missed');
       else if (inM.some((a) => a.st === 'registered')) c = chip('blue', TH ? 'ลงทะเบียนแล้ว' : 'Signed up');
       else c = chip('amber', TH ? 'ยังไม่ลงทะเบียน' : 'Not signed up');
       return { label: fmtMonth(m), c: c };
     });
-    const octOpen = s.acts.some((a) => ymOf(a.date) === CUR && a.st === 'open');
+    const wkAll = this.seedWeekly();
+    const curElig = s.acts.some((a) => ymOf(a.date) === CUR && a.st === 'attended') || wkAll.some((w) => ymOf(w.date) === CUR && w.att.indexOf('AG-1007') !== -1);
+    const curReg = s.acts.some((a) => ymOf(a.date) === CUR && a.st === 'registered') || wkAll.some((w) => ymOf(w.date) === CUR && !!s.wkReg[w.id]);
+    const octOpen = !curElig && !curReg;
     const actUp = s.acts.filter((a) => a.date >= TODAY).slice().sort((a, b) => (a.date > b.date ? 1 : -1)).map((a) => ({
       title: L(a.title), place: L(a.place), dateText: fmtDate(a.date),
       canRegister: a.st === 'open', isRegistered: a.st === 'registered',
@@ -923,10 +1307,212 @@ class Component extends DCLogic {
     }));
     const setTfF = setter('tf');
 
+    // ---------- contract count breakdown ----------
+    const padM = (n) => (n < 10 ? '0' + n : '' + n);
+    const buildCum = (rootId, people, ledger, filter, selfTag, membersTitle, onPick) => {
+      const PX = {};
+      people.forEach((p) => { PX[p.id] = p; });
+      const rows0 = ledger.filter((c) => PX[c.agent]).slice().sort((a, b) => (a.date > b.date ? 1 : -1));
+      const own = rows0.filter((c) => c.agent === rootId).length;
+      const total = rows0.length;
+      const team = total - own;
+      const counts = {};
+      rows0.forEach((c) => { counts[c.agent] = (counts[c.agent] || 0) + 1; });
+      const others = people.filter((p) => p.id !== rootId);
+      const maxC = Math.max.apply(null, [1].concat(others.map((p) => counts[p.id] || 0)));
+      const members = others.map((p) => { const n = counts[p.id] || 0; return { name: p.name, initial: p.name.charAt(0), code: p.id, meta: (TH ? 'ชั้นที่ ' : 'Level ') + p.lvl + ' · ' + (TH ? 'แนะนำโดย ' : 'referred by ') + p.up, n: n, count: String(n), w: (n / maxC * 100) + '%', fg: n ? '#12372A' : '#7A857F' }; }).sort((a, b) => b.n - a.n);
+      const months = [];
+      if (rows0.length) { let m = rows0[0].date.slice(0, 7); let guard = 0; while (m <= CUR && guard < 36) { months.push(m); const p = m.split('-').map(Number); m = p[1] === 12 ? (p[0] + 1) + '-01' : p[0] + '-' + padM(p[1] + 1); guard++; } }
+      const scale = Math.max(10, total + 2);
+      const cols = months.map((m) => { const upto = rows0.filter((c) => c.date.slice(0, 7) <= m); const o = upto.filter((c) => c.agent === rootId).length; return { total: String(upto.length), own: o, ownH: (o / scale * 100) + '%', teamH: ((upto.length - o) / scale * 100) + '%', label: fmtMonth(m) }; });
+      const lines = [
+        { b: (3 / scale * 100) + '%', c: '#1D4E9E', label: TH ? 'ครบ 3 สัญญา → สัญญาที่ 4 ได้ 5%' : '3 contracts → 5% from #4' },
+        { b: (8 / scale * 100) + '%', c: '#8A4B00', label: TH ? 'ครบ 8 สัญญา → สัญญาที่ 9 ได้ 7%' : '8 contracts → 7% from #9' }
+      ];
+      const rows = rows0.map((c, i) => { const mine = c.agent === rootId; return { seq: '#' + (i + 1), date: fmtDate(c.date), who: PX[c.agent].name + (mine ? ' (' + selfTag + ')' : ''), code: c.agent, prop: c.prop, kind: mine ? 'own' : 'team', c: mine ? chip('green', TH ? 'ขายเอง' : 'Own') : chip('amber', TH ? 'ทีมขาย' : 'Team'), rateAt: rateFor(i + 1) + '%' }; }).filter((r) => filter === 'all' || r.kind === filter);
+      let nx;
+      if (total < 3) nx = TH ? 'อีก ' + (3 - total) + ' สัญญา จะได้ 5% ตั้งแต่สัญญาที่ 4' : (3 - total) + ' more to earn 5% from contract #4';
+      else if (total < 8) nx = TH ? 'อีก ' + (8 - total) + ' สัญญา จะได้ 7% ตั้งแต่สัญญาที่ 9' : (8 - total) + ' more to earn 7% from contract #9';
+      else nx = TH ? 'อยู่ในระดับสูงสุด 7% แล้ว' : 'Already at the top tier (7%)';
+      const card = (key, label, value, sub, subFg) => { const on = filter === key; return { label: label, value: String(value), sub: sub, subFg: subFg, pressed: on ? 'true' : 'false', bg: on ? '#EEF5F1' : '#FFFFFF', bd: on ? '#12372A' : '#E1E6E3', pick: () => onPick(key) }; };
+      return {
+        cards: [
+          card('own', TH ? 'ขายเอง' : 'Sold personally', own, TH ? 'ปิดการขายด้วยตัวเอง' : 'Closed by ' + selfTag, '#155B34'),
+          card('team', TH ? 'คนในทีมขาย' : 'Sold by the team', team, TH ? 'คลิกดูว่าใครขายคนละกี่สัญญา ›' : 'Tap to see who sold how many ›', '#1D4E9E'),
+          card('all', TH ? 'รวมที่นับระดับค่าคอมฯ' : 'Total counted for tier', total, (TH ? 'อัตราสำหรับสัญญาถัดไป ' : 'Rate for next contract ') + rateFor(total + 1) + '%', '#8A4B00')
+        ],
+        nextText: (TH ? 'ขายเอง ' + own + ' + ทีมขาย ' + team + ' = รวม ' + total + ' สัญญา · ' : own + ' own + ' + team + ' team = ' + total + ' contracts · ') + nx,
+        showMembers: filter === 'team', members: members, noMembers: members.length === 0, membersTitle: membersTitle,
+        cols: cols, lines: lines, rows: rows, noRows: rows.length === 0,
+        chartAria: cols.map((c) => c.label + ' ' + c.total).join(', ')
+      };
+    };
+    const cx = {
+      aria: TH ? 'แยกประเภทสัญญาสะสม' : 'Contract breakdown', unit: TH ? 'สัญญา' : '', noTeam: TH ? 'ยังไม่มีคนในทีม' : 'No team members yet',
+      chartTitle: TH ? 'กราฟสัญญาสะสมรายเดือน' : 'Cumulative contracts by month', ownLbl: TH ? 'ขายเอง' : 'Own', teamLbl: TH ? 'ทีมขาย' : 'Team',
+      chartNote: TH ? 'แท่งกราฟคือยอดสะสมถึงสิ้นเดือนนั้น (สีเขียวเข้ม = ขายเอง, สีส้ม = ทีมขาย) เส้นประคือเกณฑ์เลื่อนระดับค่าคอมมิชชัน' : 'Bars show the running total at each month end (dark = own, amber = team); dashed lines are the tier thresholds.',
+      ledgerTitle: TH ? 'รายการสัญญาที่นับ (เรียงตามลำดับ)' : 'Counted contracts (in order)', empty: TH ? 'ไม่มีรายการ' : 'No contracts',
+      h: { seq: TH ? 'ลำดับ' : 'No.', date: TH ? 'วันที่' : 'Date', who: TH ? 'ผู้ขาย' : 'Sold by', prop: TH ? 'ทรัพย์' : 'Listing', kind: TH ? 'ประเภท' : 'Type', rate: TH ? 'ระดับ ณ ลำดับนี้' : 'Tier at this no.' }
+    };
+    const LEDGER = [
+      { date: '2026-05-12', agent: 'AG-1007', prop: 'PV-A02' },
+      { date: '2026-06-08', agent: 'AG-1012', prop: 'LD-05' },
+      { date: '2026-07-03', agent: 'AG-1007', prop: 'LD-02' },
+      { date: '2026-08-14', agent: 'AG-1020', prop: 'PV-A03' },
+      { date: '2026-08-22', agent: 'AG-1012', prop: 'LD-06' },
+      { date: '2026-09-20', agent: 'AG-1007', prop: 'PV-B01' },
+      { date: '2026-10-09', agent: 'AG-1015', prop: 'PV-C02' }
+    ];
+    const flatP = [];
+    const walkP = (n, lvl, up) => { flatP.push({ id: n.id, name: L(n.name), lvl: lvl, up: up }); n.kids.forEach((k) => walkP(k, lvl + 1, L(n.name))); };
+    walkP(tree, 0, '');
+    const cum = buildCum('AG-1007', flatP, LEDGER, s.cumF, TH ? 'คุณ' : 'you', TH ? 'สัญญาที่คนในทีมของคุณขาย (แยกรายคน)' : 'Contracts sold by your team (per person)', (k) => this.setState({ cumF: k }));
+
+    // ---------- activity overview (6 parts) ----------
+    const buildAct = (o) => {
+      const kindOf = (ref) => (o.all ? 'all' : (ref === o.root ? 'own' : (o.line.indexOf(ref) !== -1 ? 'line' : null)));
+      const inS = (ref) => { const k = kindOf(ref); return !!k && (o.all || o.scope === 'all' || o.scope === k); };
+      const tag = (ref) => { const k = kindOf(ref); return k === 'own' ? chip('green', TH ? 'ติดตัว' : 'Personal') : (k === 'line' ? chip('amber', (TH ? 'สายงาน · ' : 'Line · ') + o.nameOf(ref)) : chip('grey', o.nameOf(ref))); };
+      const MAP = (m, k) => chip(m[k][0], m[k][1]);
+      const OVS = { registered: ['blue', TH ? 'ลงทะเบียน' : 'Registered'], attended: ['green', TH ? 'เข้าฟังแล้ว' : 'Attended'], absent: ['grey', TH ? 'ไม่ได้เข้าฟัง' : 'Absent'] };
+      const TRS = { registered: ['blue', TH ? 'ลงทะเบียน' : 'Registered'], passed: ['green', TH ? 'ผ่านการอบรม' : 'Passed'], failed: ['red', TH ? 'ไม่ผ่าน' : 'Failed'] };
+      const VS = { pending: ['amber', TH ? 'รอยืนยัน' : 'Awaiting'], confirmed: ['blue', TH ? 'ยืนยันแล้ว' : 'Confirmed'], visited: ['green', TH ? 'เข้าชมแล้ว' : 'Visited'], noshow: ['red', TH ? 'ไม่มาตามนัด' : 'No-show'], cancelled: ['grey', TH ? 'ยกเลิก' : 'Cancelled'] };
+      const desc = (a, b) => (a.date < b.date ? 1 : -1);
+      const ov = o.data.ov.filter((x) => inS(x.ref)).sort(desc);
+      const tr = o.data.tr.filter((x) => inS(x.ref));
+      const vs = o.data.visits.filter((x) => inS(x.agent) && x.st !== 'cancelled').sort(desc);
+      const pastW = o.data.weekly.filter((w) => w.date <= o.today);
+      const meIn = (arr) => !o.all && arr.indexOf(o.root) !== -1;
+      const lineIn = (arr) => (o.all ? 0 : arr.filter((id) => o.line.indexOf(id) !== -1).length);
+      const showMe = o.all || o.scope !== 'line';
+      const showLine = !o.all && o.scope !== 'own';
+      const wkCount = (w) => (o.all ? w.att.length : ((showMe && meIn(w.att) ? 1 : 0) + (showLine ? lineIn(w.att) : 0)));
+      const months = ['2026-06', '2026-07', '2026-08', '2026-09', '2026-10'];
+      const ym = (d) => String(d).slice(0, 7);
+      const COLORS = ['#4A7FD4', '#E3A23B', '#1F6B45', '#8E6BBF'];
+      const SN = TH ? ['พามาฟัง Overview', 'ลงทะเบียนอบรม', 'พาลูกค้าเข้าชม', 'ฟังแชร์ความรู้ (ครั้ง)'] : ['Overview guests', 'Training sign-ups', 'Site visits', 'Knowledge sessions'];
+      const series = months.map((m) => [
+        ov.filter((x) => ym(x.date) === m).length,
+        tr.filter((x) => ym(x.rdate) === m).length,
+        vs.filter((x) => ym(x.date) === m).length,
+        pastW.filter((w) => ym(w.date) === m).reduce((a, w) => a + wkCount(w), 0)
+      ]);
+      const maxV = Math.max.apply(null, [1].concat(series.map((r) => Math.max.apply(null, r))));
+      const groups = months.map((m, i) => ({ label: fmtMonth(m), bars: series[i].map((v, j) => ({ v: String(v), h: (v / maxV * 85) + '%', c: COLORS[j] })) }));
+      const byRound = (a, b) => (a.d1 < b.d1 ? 1 : -1);
+      const rdates = (r) => fmtDate(r.d1) + ' – ' + fmtDate(r.d2);
+      const trRounds = o.data.rounds.slice().sort(byRound).map((r) => {
+        const people = tr.filter((x) => x.round === r.id);
+        return { id: r.id, dates: rdates(r), count: people.length + (TH ? ' คน' : ' people'), has: people.length > 0,
+          people: people.map((x) => ({ name: x.name, sub: x.code ? (TH ? 'เป็นตัวแทนแล้ว ' : 'Now agent ') + x.code : '', tag: tag(x.ref), st: MAP(TRS, x.st) })) };
+      }).filter((r) => r.has);
+      const weeklyRows = o.data.weekly.slice().sort(desc).map((w) => {
+        const past = w.date <= o.today;
+        let res;
+        if (o.all) res = chip('grey', (past ? w.att.length : w.reg.length) + (TH ? (past ? ' คนเข้าฟัง' : ' คนลงทะเบียน') : (past ? ' attended' : ' signed up')));
+        else if (past) res = meIn(w.att) ? chip('green', TH ? 'เข้าฟัง' : 'Attended') : chip('red', TH ? 'ไม่ได้เข้าฟัง' : 'Missed');
+        else res = meIn(w.reg) ? chip('blue', TH ? 'ลงทะเบียนแล้ว' : 'Signed up') : chip('amber', TH ? 'ยังไม่ลงทะเบียน' : 'Not signed up');
+        const act = o.all ? null : o.weeklyAct(w, past, past ? meIn(w.att) : meIn(w.reg));
+        return { date: fmtDate(w.date), title: L(w.title), res: res, lineTxt: o.all ? '—' : String(lineIn(past ? w.att : w.reg)) + (TH ? ' คน' : ''),
+          hasAct: !!act, noAct: !act, actLabel: act ? act.label : '', act: act ? act.fn : () => {} };
+      });
+      const roundRows = o.data.rounds.slice().sort(byRound).map((r) => {
+        const past = r.d1 <= o.today;
+        const people = o.data.tr.filter((x) => x.round === r.id);
+        const own = o.all ? people : people.filter((x) => x.ref === o.root);
+        const line = o.all ? [] : people.filter((x) => o.line.indexOf(x.ref) !== -1);
+        let c;
+        if (o.all) c = chip('grey', (past ? r.att.length : r.reg.length) + (TH ? (past ? ' ตัวแทนมาร่วม' : ' ตัวแทนลงทะเบียน') : (past ? ' agents came' : ' agents signed up')));
+        else if (past) c = meIn(r.att) ? chip('green', TH ? 'มาร่วมอบรม' : 'Came') : chip('grey', TH ? 'ไม่ได้มา' : 'Did not come');
+        else c = meIn(r.reg) ? chip('blue', TH ? 'ลงทะเบียนมาร่วมแล้ว' : 'Signed up') : chip('amber', TH ? 'ยังไม่ลงทะเบียน' : 'Not signed up');
+        return { id: r.id, dates: rdates(r), c: c, ownN: String(own.length), ownNames: own.map((x) => x.name).join(', ') || '—',
+          lineN: o.all ? '—' : String(line.length), lineNames: o.all ? '' : (line.map((x) => x.name + ' (' + o.nameOf(x.ref) + ')').join(', ') || '—') };
+      });
+      const meW = pastW.filter((w) => meIn(w.att)).length;
+      const lineW = pastW.reduce((a, w) => a + lineIn(w.att), 0);
+      const allW = pastW.reduce((a, w) => a + w.att.length, 0);
+      const pastR = o.data.rounds.filter((r) => r.d1 <= o.today);
+      const meR = pastR.filter((r) => meIn(r.att)).length;
+      const ownTr = o.data.tr.filter((x) => x.ref === o.root).length;
+      const lineTr = o.data.tr.filter((x) => !o.all && o.line.indexOf(x.ref) !== -1).length;
+      const wkVal = o.all ? String(allW) : (o.scope === 'line' ? String(lineW) : meW + '/' + pastW.length);
+      const wkSub = o.all ? (TH ? 'ครั้งรวม ใน ' + pastW.length + ' สัปดาห์' : 'attendances over ' + pastW.length + ' weeks')
+        : (o.scope === 'line' ? (TH ? 'ครั้ง รวมคนในสายงาน' : 'attendances by your line') : (TH ? 'สัปดาห์ที่เข้าฟัง' + (o.scope === 'all' ? ' · สายงาน ' + lineW + ' ครั้ง' : '') : 'weeks attended' + (o.scope === 'all' ? ' · line ' + lineW : '')));
+      const rVal = o.all ? String(pastR.reduce((a, r) => a + r.att.length, 0)) : meR + '/' + pastR.length;
+      const rSub = o.all ? (TH ? 'ครั้งที่ตัวแทนมาร่วมอบรม' : 'agent visits to training') : (TH ? 'รอบ · พาทีมมาเอง ' + ownTr + ' คน · สายงาน ' + lineTr + ' คน' : 'rounds · brought ' + ownTr + ' · line ' + lineTr);
+      return {
+        showScope: !o.all,
+        scopes: [['all', TH ? 'รวม' : 'All'], ['own', TH ? 'ติดตัว' : 'Personal'], ['line', TH ? 'สายงาน' : 'Line']].map((x) => Object.assign(pill(o.scope === x[0]), { label: x[1], pick: () => o.onScope(x[0]) })),
+        kpis: [
+          { label: SN[0], value: String(ov.length), sub: (TH ? 'เข้าฟังแล้ว ' : 'attended ') + ov.filter((x) => x.st === 'attended').length + (TH ? ' คน' : '') },
+          { label: SN[1], value: String(tr.length), sub: (TH ? 'ผ่านการอบรม ' : 'passed ') + tr.filter((x) => x.st === 'passed').length + (TH ? ' คน' : '') },
+          { label: SN[2], value: String(vs.length), sub: (TH ? 'เข้าชมแล้ว ' : 'visited ') + vs.filter((x) => x.st === 'visited').length + (TH ? ' ครั้ง' : '') },
+          { label: TH ? 'ฟังแชร์ความรู้วันพุธ' : 'Wednesday sessions', value: wkVal, sub: wkSub },
+          { label: TH ? 'มาร่วมอบรมตัวแทน' : 'Came to training', value: rVal, sub: rSub }
+        ],
+        legend: SN.map((n, j) => ({ label: n, c: COLORS[j] })),
+        groups: groups, chartAria: groups.map((g, i) => g.label + ': ' + series[i].join('/')).join(', '),
+        ovRows: ov.map((x) => ({ name: x.name, date: fmtDate(x.date), tag: tag(x.ref), st: MAP(OVS, x.st) })), noOv: ov.length === 0,
+        trRounds: trRounds, noTr: trRounds.length === 0,
+        visitRows: vs.map((x) => ({ date: fmtDate(x.date) + ' · ' + x.time, cust: x.cust, prop: o.propLabel(x.prop), tag: tag(x.agent), st: MAP(VS, x.st) })), noVis: vs.length === 0,
+        weeklyRows: weeklyRows, roundRows: roundRows,
+        t: {
+          scope: TH ? 'มุมมอง:' : 'View:', chart: TH ? 'กราฟภาพรวมกิจกรรมรายเดือน' : 'Monthly activity overview',
+          s1: TH ? '1. พาคนมาฟัง Overview เพื่อเข้าอบรมเป็นตัวแทน' : '1. Guests brought to the online overview',
+          s2: TH ? '2. ลงทะเบียนอบรมเป็นตัวแทนฝ่ายขาย (แยกตามรอบ)' : '2. Agent training sign-ups (by round)',
+          s3: TH ? '3. ลงทะเบียนพาลูกค้าเข้าชมโครงการ' : '3. Customer site visits',
+          s4: TH ? '4. ฟังกิจกรรมแชร์ความรู้ออนไลน์ (ทุกวันพุธ)' : '4. Online knowledge sharing (every Wednesday)',
+          s4note: TH ? 'ออนไลน์ผ่าน Zoom ทุกวันพุธ 19:00 น. · เข้าฟังอย่างน้อย 1 ครั้งในเดือน นับเป็นกิจกรรมของเดือนนั้น ได้สิทธิ์รับค่าคอมมิชชัน' : 'Online via Zoom every Wednesday 19:00 · attending at least once in a month counts as that month’s activity for commission eligibility',
+          s5: TH ? '5. มาอบรมเป็นตัวแทนฝ่ายขายรอบไหนบ้าง และพาทีมงานมากี่คน' : '5. Training rounds attended and team members brought',
+          name: TH ? 'ชื่อ' : 'Name', date: TH ? 'วันที่' : 'Date', by: o.all ? (TH ? 'ตัวแทนผู้พามา' : 'Agent') : (TH ? 'ติดตัว / สายงาน' : 'Personal / line'), status: TH ? 'สถานะ' : 'Status',
+          cust: TH ? 'ลูกค้า' : 'Customer', prop: TH ? 'ทรัพย์' : 'Listing', topic: TH ? 'หัวข้อ' : 'Topic', res: o.all ? (TH ? 'ผู้เข้าร่วม' : 'Attendance') : (TH ? 'การเข้าฟัง' : 'Attendance'),
+          lineCol: TH ? 'คนในสายงาน' : 'Line members', action: TH ? 'จัดการ' : 'Action', round: TH ? 'รุ่น' : 'Round', join: TH ? 'การมาร่วม' : 'Joined',
+          own: o.all ? (TH ? 'ผู้เข้าอบรม' : 'Trainees') : (TH ? 'พาทีมมาเอง' : 'Brought personally'), line: TH ? 'สายงานพามา' : 'Brought by line', empty: TH ? 'ไม่มีรายการ' : 'Nothing here'
+        }
+      };
+    };
+    const LINE_OV = [
+      { name: ['มาลี ดวงแก้ว', 'Malee Duangkaew'], ref: 'AG-1015', date: '2026-07-25', st: 'attended' },
+      { name: ['ธีระ บุญยืน', 'Teera Boonyuen'], ref: 'AG-1015', date: '2026-08-29', st: 'attended' },
+      { name: ['วีรยุทธ ชัยมงคล', 'Weerayut Chaimongkol'], ref: 'AG-1012', date: '2026-09-26', st: 'attended' },
+      { name: ['สมพร ใจงาม', 'Somporn Jai-ngam'], ref: 'AG-1020', date: '2026-10-10', st: 'attended' },
+      { name: ['ดารุณี พึ่งบุญ', 'Darunee Phungboon'], ref: 'AG-1012', date: '2026-10-24', st: 'registered' }
+    ];
+    const LINE_TR = [
+      { name: ['มาลี ดวงแก้ว', 'Malee Duangkaew'], ref: 'AG-1015', round: 'TR-09', rdate: '2026-08-09', st: 'passed', code: 'AG-1031' },
+      { name: ['ธีระ บุญยืน', 'Teera Boonyuen'], ref: 'AG-1015', round: 'TR-10', rdate: '2026-10-11', st: 'failed', code: '' },
+      { name: ['วีรยุทธ ชัยมงคล', 'Weerayut Chaimongkol'], ref: 'AG-1012', round: 'TR-10', rdate: '2026-10-11', st: 'passed', code: '' },
+      { name: ['สมพร ใจงาม', 'Somporn Jai-ngam'], ref: 'AG-1020', round: 'TR-11', rdate: '2026-11-08', st: 'registered', code: '' }
+    ];
+    const LINE_VIS = [
+      { date: '2026-10-26', time: '11:00', name: ['คุณปรีชา วงศ์สวัสดิ์', 'Preecha Wongsawat'], prop: 'PV-C01', agent: 'AG-1012', st: 'pending' },
+      { date: '2026-10-22', time: '10:00', name: ['คุณธีรพงษ์ ใจกว้าง', 'Teerapong Jaikwang'], prop: 'LD-03', agent: 'AG-1015', st: 'confirmed' },
+      { date: '2026-10-18', time: '13:00', name: ['คุณนิภา ศรีสวัสดิ์', 'Nipa Srisawat'], prop: 'PV-B02', agent: 'AG-1020', st: 'noshow' },
+      { date: '2026-09-14', time: '10:00', name: ['คุณสุนทร มีทรัพย์', 'Sunthorn Meesap'], prop: 'PV-B03', agent: 'AG-1012', st: 'visited' },
+      { date: '2026-08-30', time: '14:00', name: ['คุณณัฐพล อินทร์แก้ว', 'Nattapon Inkaew'], prop: 'PV-C02', agent: 'AG-1015', st: 'visited' },
+      { date: '2026-07-27', time: '10:00', name: ['คุณสุภาวดี จันทร์เพ็ญ', 'Supawadee Chanpen'], prop: 'PV-A03', agent: 'AG-1020', st: 'visited' },
+      { date: '2026-07-10', time: '15:00', name: ['คุณรัชนี พูลผล', 'Ratchanee Poonpon'], prop: 'LD-06', agent: 'AG-1012', st: 'visited' }
+    ];
+    const ad = buildAct({
+      root: 'AG-1007', all: false, line: flatP.filter((p) => p.id !== 'AG-1007').map((p) => p.id), nameOf: nm, scope: s.actScope, today: TODAY,
+      onScope: (k) => this.setState({ actScope: k }),
+      propLabel: (id) => id + (PM[id] ? ' · ' + propName(PM[id]) : ''),
+      weeklyAct: (w, past, on) => (past || on ? null : { label: TH ? 'ลงทะเบียนเข้าฟัง' : 'Sign up', fn: () => { this.setState((st) => ({ wkReg: Object.assign({}, st.wkReg, { [w.id]: true }) })); this.flash(TH ? 'ลงทะเบียนฟังแชร์ความรู้แล้ว ระบบจะส่งลิงก์ Zoom ให้' : 'Signed up — the Zoom link will be sent'); } }),
+      data: {
+        ov: s.ovs.map((x) => ({ name: L(x.name), ref: 'AG-1007', date: x.sdate, st: x.st })).concat(LINE_OV.map((x) => ({ name: L(x.name), ref: x.ref, date: x.date, st: x.st }))),
+        tr: s.trs.map((x) => ({ name: L(x.name), ref: 'AG-1007', round: x.round, rdate: x.rdate, st: x.st, code: x.code || '' })).concat(LINE_TR.map((x) => ({ name: L(x.name), ref: x.ref, round: x.round, rdate: x.rdate, st: x.st, code: x.code }))),
+        visits: s.appts.map((x) => ({ date: x.date, time: x.time, cust: L(x.name), prop: x.prop, agent: 'AG-1007', st: x.st })).concat(LINE_VIS.map((x) => ({ date: x.date, time: x.time, cust: L(x.name), prop: x.prop, agent: x.agent, st: x.st }))),
+        weekly: this.seedWeekly().map((w) => Object.assign({}, w, { reg: w.reg.concat(s.wkReg[w.id] ? ['AG-1007'] : []) })),
+        rounds: this.seedRounds()
+      }
+    });
+
     // ---------- nav ----------
     const ICON = {
       profile: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5',
       tree: 'M9 3h6v4H9zM3 17h6v4H3zM15 17h6v4h-6zM12 7v5M6 17v-5h12v5',
+      contracts: 'M4 20V11M10 20V5M16 20v-7M2 20h20',
+      actsum: 'M3 12h4l3-8 4 16 3-8h4',
       appt: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',
       sales: 'M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5',
       activity: 'M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z',
@@ -940,12 +1526,13 @@ class Component extends DCLogic {
     };
     const seg = (on) => ({ bg: on ? '#12372A' : '#FFFFFF', fg: on ? '#FFFFFF' : '#1B2420', pressed: on ? 'true' : 'false' });
     const show = {};
-    ['profile', 'tree', 'appt', 'sales', 'activity', 'props', 'overview', 'training'].forEach((k) => { show[k] = s.screen === k; });
+    ['profile', 'tree', 'contracts', 'appt', 'sales', 'activity', 'actsum', 'props', 'overview', 'training'].forEach((k) => { show[k] = s.screen === k; });
 
     return {
       t: t, show: show,
       page: { title: t['p_' + s.screen], sub: t['s_' + s.screen] },
-      navMain: ['profile', 'tree', 'appt', 'sales', 'activity', 'props'].map(navItem),
+      navMain: ['profile', 'tree', 'contracts', 'appt', 'sales', 'activity', 'actsum', 'props'].map(navItem),
+      ad: ad,
       navRecruit: ['overview', 'training'].map(navItem),
       langBtn: { th: seg(TH), en: seg(!TH) },
       setTh: () => this.setState({ lang: 'th' }), setEn: () => this.setState({ lang: 'en' }),
@@ -1000,11 +1587,12 @@ class Component extends DCLogic {
       },
 
       salesKpis: [
-        { label: TH ? 'สัญญาที่ปิดได้' : 'Contracts closed', value: String(sales.length) },
-        { label: TH ? 'ยอดขายรวม' : 'Total sales', value: mil(sales.reduce((a, x) => a + x.price, 0)) },
-        { label: TH ? 'ค่าคอมฯ ได้รับแล้ว' : 'Commission received', value: baht(earned) },
-        { label: TH ? 'ค่าคอมฯ รอจ่าย' : 'Commission pending', value: baht(pending) }
+        { label: TH ? 'ค่าคอมฯ จากที่ขายเอง' : 'From own sales', value: baht(ownTotal) },
+        { label: TH ? 'ส่วนแบ่งจากทีมงานขาย' : 'Share from team sales', value: baht(shareTotal) },
+        { label: TH ? 'ยอดรวมค่าคอมฯ' : 'Total commission', value: baht(ownTotal + shareTotal) },
+        { label: TH ? 'ได้รับแล้ว' : 'Received', value: baht(earned) }
       ],
+      ov: ov,
       salesChips: typeChips(s.salesType, 'salesType'), salesRows: salesRows,
 
       months: months, actUp: actUp, actHist: actHist,
@@ -1039,6 +1627,7 @@ class Component extends DCLogic {
         this.flash(TH ? 'ลงทะเบียนอบรมเรียบร้อย' : 'Registered for training');
       },
 
+      cum: cum, cx: cx,
       hasToast: !!s.toast, toast: s.toast,
       narrow: !!s.narrow,
       nv: { body: !s.narrow || !!s.menuOpen, pad: s.narrow ? '12px 16px' : '24px 16px', gap: s.narrow ? '12px' : '20px', pos: s.narrow ? 'sticky' : 'static', maxH: s.narrow ? '100vh' : 'none', icon: s.menuOpen ? 'M6 6l12 12M18 6L6 18' : 'M4 7h16M4 12h16M4 17h16', label: s.menuOpen ? (TH ? 'ปิดเมนู' : 'Close menu') : (TH ? 'เปิดเมนู' : 'Open menu'), expanded: s.menuOpen ? 'true' : 'false' },
