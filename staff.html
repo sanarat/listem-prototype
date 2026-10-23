@@ -62,6 +62,14 @@ button,input,select,textarea{font-family:inherit}
 </header>
 <div role="note" style="background: #FFF8EA; border: 1px solid #EED6A2; color: #6B4A0E; border-radius: 8px; padding: 8px 12px; font-size: 13px">{{t.sample}}</div>
 
+<template data-k="if" value="{{tabs.show}}" hint-placeholder-val="{{ false }}">
+<div role="tablist" aria-label="{{tabs.aria}}" style="display: flex; gap: 4px; border-bottom: 1px solid #CBD3CF; overflow-x: auto">
+<template data-k="for" list="{{tabs.items}}" as="tb" hint-placeholder-count="2">
+<button type="button" role="tab" aria-selected="{{tb.sel}}" onClick="{{tb.pick}}" style="min-height: 44px; padding: 0 18px; border: 0; border-bottom: 3px solid {{tb.bd}}; margin-bottom: -1px; background: transparent; color: {{tb.fg}}; font-size: 15px; font-weight: 600; cursor: pointer; white-space: nowrap">{{tb.label}} <span style="font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: {{tb.cbg}}; color: {{tb.cfg}}">{{tb.count}}</span></button>
+</template>
+</div>
+<div style="font-size: 13px; color: #3D4843; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 10px; padding: 10px 14px">{{tabs.note}}</div>
+</template>
 <template data-k="if" value="{{hasKpis}}" hint-placeholder-val="{{ true }}">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px">
 <template data-k="for" list="{{kpis}}" as="k" hint-placeholder-count="4">
@@ -102,6 +110,20 @@ button,input,select,textarea{font-family:inherit}
 <div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-status" style="font-size: 13px; font-weight: 600">{{t.cStatus}}</label><select id="pf-status" value="{{pf.status}}" onChange="{{setPf.status}}" style="min-height: 44px; padding: 0 10px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF"><template data-k="for" list="{{statusOptions}}" as="o" hint-placeholder-count="3"><option value="{{o.v}}">{{o.l}}</option></template></select></div>
 </div>
 <div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-promo" style="font-size: 13px; font-weight: 600">{{t.fPromo}}</label><input id="pf-promo" type="text" value="{{pf.promo}}" onChange="{{setPf.promo}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div>
+<template data-k="if" value="{{pfP21}}" hint-placeholder-val="{{ false }}">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; background: #F7F9F8; border-radius: 10px; padding: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-title" style="font-size: 13px; font-weight: 600">{{t.fTitle}}</label><input id="pf-title" type="text" value="{{pf.title}}" onChange="{{setPfX.title}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-origin" style="font-size: 13px; font-weight: 600">{{t.fOrigin}}</label><select id="pf-origin" value="{{pf.origin}}" onChange="{{setPfX.origin}}" style="min-height: 44px; padding: 0 10px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF"><template data-k="for" list="{{originOptions}}" as="o" hint-placeholder-count="3"><option value="{{o.v}}">{{o.l}}</option></template></select></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-from" style="font-size: 13px; font-weight: 600">{{t.fFrom}}</label><input id="pf-from" type="text" value="{{pf.from}}" onChange="{{setPfX.from}}" placeholder="LD-04" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-owner" style="font-size: 13px; font-weight: 600">{{t.fOwner}}</label><input id="pf-owner" type="text" value="{{pf.owner}}" onChange="{{setPfX.owner}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF"></div>
+</div>
+</template>
+<template data-k="if" value="{{pfMain}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px">
+<button type="button" onClick="{{toggleMonthly}}" aria-pressed="{{pfMonthly.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 8px; border: 1px solid {{pfMonthly.bd}}; background: {{pfMonthly.bg}}; color: {{pfMonthly.fg}}; font-size: 14px; font-weight: 600; cursor: pointer">{{pfMonthly.label}}</button>
+<template data-k="if" value="{{pfShowPromoPrice}}" hint-placeholder-val="{{ false }}"><div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-pp" style="font-size: 13px; font-weight: 600">{{t.fPromoPrice}} *</label><input id="pf-pp" type="text" inputmode="numeric" value="{{pf.promoPrice}}" onChange="{{setPfX.promoPrice}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px"></div></template>
+</div>
+</template>
 <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; border: 1px dashed #B9C6C0; border-radius: 10px; padding: 12px">
 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#55625C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18v14H3zM3 16l5-5 4 4 3-3 6 6M15 9.5v.01"></path></svg>
 <div style="flex: 1 1 200px; font-size: 13px; color: #55625C">{{t.photoHint}}</div>
@@ -121,8 +143,8 @@ button,input,select,textarea{font-family:inherit}
 <template data-k="for" list="{{propRows}}" as="r" hint-placeholder-count="8">
 <div role="row" style="display: grid; grid-template-columns: 90px minmax(220px, 2fr) 130px minmax(200px, 1.6fr) 110px 100px; gap: 12px; padding: 8px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center">
 <div role="cell" style="font-weight: 600">{{r.id}}</div>
-<div role="cell"><div>{{r.name}}</div><div style="font-size: 12px; color: #55625C">{{r.spec}}</div></div>
-<div role="cell" style="font-variant-numeric: tabular-nums">{{r.priceText}}</div>
+<div role="cell"><div>{{r.name}}</div><div style="font-size: 12px; color: #55625C">{{r.spec}}</div><template data-k="if" value="{{r.isMonthly}}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; margin-top: 3px; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; background: #8E2B1E; color: #FFFFFF">{{r.monthlyLbl}}</span></template><template data-k="if" value="{{r.hasOrigin}}" hint-placeholder-val="{{ false }}"><div style="font-size: 12px; color: #1D4E9E">{{r.originTxt}}</div></template></div>
+<div role="cell" style="font-variant-numeric: tabular-nums"><div style="font-weight: 600; color: {{r.priceFg}}">{{r.priceText}}</div><template data-k="if" value="{{r.isMonthly}}" hint-placeholder-val="{{ false }}"><div style="font-size: 12px; color: #55625C; text-decoration: line-through">{{r.origPrice}}</div></template></div>
 <div role="cell" style="font-size: 13px; color: #6B3A00">{{r.promo}}</div>
 <div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.c.bg}}; color: {{r.c.fg}}">{{r.c.label}}</span></div>
 <div role="cell"><button type="button" onClick="{{r.edit}}" style="min-height: 40px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 13px; font-weight: 600; cursor: pointer">{{t.edit}}</button></div>
@@ -829,11 +851,11 @@ class Component extends DCLogic {
       ovRegs: this.seedOv(), fOverview: 'all', newSess: { date: '2026-11-14', time: '19:00' },
       trRegs: this.seedTr(), fTraining: 'all', nextAg: 1036, cumAgent: 'AG-1007', cumF: 'all', ovPaid: { 'CT-2026-027|AG-1001': '2026-08-15' },
       actAgent: 'AG-1007', actScope: 'all', weekly: this.seedWeekly(), rounds2: this.seedRounds(),
-      calMonth: '2026-10', calSel: '2026-10-21', calF: { visit: true, training: true, overview: true, weekly: true }
+      calMonth: '2026-10', calSel: '2026-10-21', calF: { visit: true, training: true, overview: true, weekly: true }, propProj: 'main'
     };
   }
 
-  blankPF() { return { mode: 'add', id: '', type: 'villa', model: 'A', bed: '3', area: '', land: '', price: '', status: 'available', promo: '' }; }
+  blankPF(proj) { return { mode: 'add', id: '', type: 'villa', model: 'A', bed: '3', area: '', land: '', price: '', status: 'available', promo: '', project: proj || 'main', monthly: false, promoPrice: '', title: '', origin: 'renovate', owner: '', from: '' }; }
   blankSale() { return { prop: '', cust: '', phone: '', agent: 'AG-1007', price: '', date: '2026-10-21', pay: 'full', inst: '6' }; }
 
   seedProps() {
@@ -845,14 +867,19 @@ class Component extends DCLogic {
       { id: 'PV-B01', type: V, model: 'B', bed: 4, bath: 5, land: 150, area: 320, price: 12500000, status: 'sold', promo: '' },
       { id: 'PV-B02', type: V, model: 'B', bed: 4, bath: 5, land: 155, area: 320, price: 12900000, status: 'available', promo: ['ส่วนลดเงินสด 300,000 บาท', 'Cash discount THB 300,000'] },
       { id: 'PV-B03', type: V, model: 'B', bed: 4, bath: 5, land: 150, area: 320, price: 12700000, status: 'reserved', promo: '' },
-      { id: 'PV-C01', type: V, model: 'C', bed: 2, bath: 2, land: 80, area: 160, price: 6900000, status: 'available', promo: ['ผ่อนดาวน์ 0% นาน 12 เดือน', '0% down-payment plan for 12 months'] },
+      { id: 'PV-C01', type: V, model: 'C', bed: 2, bath: 2, land: 80, area: 160, price: 6900000, status: 'available', promo: ['ผ่อนดาวน์ 0% นาน 12 เดือน', '0% down-payment plan for 12 months'], monthly: true, promoPrice: 6490000 },
       { id: 'PV-C02', type: V, model: 'C', bed: 2, bath: 2, land: 85, area: 165, price: 7400000, status: 'sold', promo: '' },
-      { id: 'LD-01', type: N, land: 200, price: 3600000, status: 'available', promo: ['ส่วนลด 5% เมื่อโอนภายใน 60 วัน', '5% off when transferred within 60 days'] },
+      { id: 'LD-01', type: N, land: 200, price: 3600000, status: 'available', promo: ['ส่วนลด 5% เมื่อโอนภายใน 60 วัน', '5% off when transferred within 60 days'], monthly: true, promoPrice: 3290000 },
       { id: 'LD-02', type: N, land: 280, price: 5100000, status: 'sold', promo: '' },
       { id: 'LD-03', type: N, land: 250, price: 4500000, status: 'available', promo: '' },
       { id: 'LD-04', type: N, land: 230, price: 4200000, status: 'sold', promo: '' },
       { id: 'LD-05', type: N, land: 220, price: 3950000, status: 'sold', promo: '' },
-      { id: 'LD-06', type: N, land: 260, price: 4600000, status: 'sold', promo: '' }
+      { id: 'LD-06', type: N, land: 260, price: 4600000, status: 'sold', promo: '' },
+      { id: 'P21-01', project: 'p21', origin: 'renovate', from: 'PV-A02', owner: ['คุณนภา รัตนวงศ์', 'Napa Rattanawong'], type: V, model: 'A', bed: 4, bath: 4, land: 100, area: 260, price: 10900000, status: 'available', title: ['พูลวิลล่าแบบ A ต่อเติมเป็น 4 ห้องนอน', 'Type A villa extended to 4 bedrooms'], desc: ['ต่อเติมห้องนอนชั้นล่างและครัวไทย ตกแต่งใหม่ทั้งหลัง เฟอร์นิเจอร์ครบ พร้อมเข้าอยู่', 'Added a ground-floor bedroom and Thai kitchen, fully refurbished and furnished, ready to move in'], promo: '' },
+      { id: 'P21-02', project: 'p21', origin: 'newbuild', from: 'LD-04', owner: ['คุณประเสริฐ ทองดี', 'Prasert Thongdee'], type: V, model: 'N', bed: 3, bath: 4, land: 230, area: 280, price: 11500000, status: 'available', title: ['พูลวิลล่าสร้างใหม่บนแปลง LD-04', 'New pool villa on plot LD-04'], desc: ['สร้างใหม่บนที่ดินที่ซื้อจากโครงการ สระ 4×10 ม. สวนกว้าง งานก่อสร้างคืบหน้า 70%', 'Newly built on land bought from the project, 4×10 m pool, large garden, construction 70% complete'], promo: ['รับประกันโครงสร้าง 5 ปี', '5-year structural warranty'] },
+      { id: 'P21-03', project: 'p21', origin: 'newbuild', from: 'LD-05', owner: ['คุณอรอุมา แก้วใส', 'Onuma Kaewsai'], type: V, model: 'N', bed: 4, bath: 5, land: 220, area: 320, price: 13200000, status: 'reserved', title: ['พูลวิลล่าสร้างใหม่บนแปลง LD-05', 'New pool villa on plot LD-05'], desc: ['พูลวิลล่า 2 ชั้น สร้างใหม่บนที่ดินที่ซื้อจากโครงการ สระ 5×12 ม. ห้องนอนใหญ่วิวสวน สร้างเสร็จแล้ว', 'Two-storey villa newly built on land bought from the project, 5×12 m pool, garden-view master suite, completed'], promo: '' },
+      { id: 'P21-04', project: 'p21', origin: 'subdivide', from: 'LD-06', owner: ['คุณรัชนี พูลผล', 'Ratchanee Poonpon'], type: N, land: 130, price: 2450000, status: 'available', title: ['ที่ดินแบ่งขาย LD-06 แปลงย่อย 1/2', 'Subdivided land LD-06, lot 1 of 2'], desc: ['แบ่งจากแปลง LD-06 (260 ตร.ว.) เป็น 2 แปลงย่อย โฉนดแยก ไฟฟ้า-ประปาถึงแปลง', 'Split from plot LD-06 (260 sq.wah) into 2 lots with separate title deeds, utilities at the boundary'], promo: ['ฟรีค่าโอน', 'Free transfer fee'] },
+      { id: 'P21-05', project: 'p21', origin: 'subdivide', from: 'LD-06', owner: ['คุณรัชนี พูลผล', 'Ratchanee Poonpon'], type: N, land: 130, price: 2450000, status: 'sold', title: ['ที่ดินแบ่งขาย LD-06 แปลงย่อย 2/2', 'Subdivided land LD-06, lot 2 of 2'], desc: ['แบ่งจากแปลง LD-06 (260 ตร.ว.) เป็น 2 แปลงย่อย โฉนดแยก ไฟฟ้า-ประปาถึงแปลง', 'Split from plot LD-06 (260 sq.wah) into 2 lots with separate title deeds, utilities at the boundary'], promo: '' }
     ];
   }
 
@@ -981,7 +1008,8 @@ class Component extends DCLogic {
       n_activities: ['กิจกรรมตัวแทน', 'Agent activities'], n_overview: ['Overview Online', 'Online overview'], n_training: ['อบรมตัวแทน', 'Agent training'], n_contracts: ['สัญญาสะสมตัวแทน', 'Agent contract counts'], n_tree: ['ผังสายงานตัวแทน', 'Agent tree'], n_actsum: ['ภาพรวมกิจกรรม', 'Activity overview'], n_calendar: ['ปฏิทินกิจกรรม', 'Calendar'],
       pickAgent: ['ดูกิจกรรมของ', 'Show activities for'], pickHint: ['เลือกตัวแทนเพื่อดูกิจกรรมแยก ติดตัว / สายงาน หรือเลือก "ทั้งโครงการ" เพื่อดูรวมทุกคน · เช็กชื่อฟังแชร์ความรู้วันพุธได้ในข้อ 4', 'Pick an agent to split personal vs line activity, or "Whole project" for everyone · check in Wednesday sessions in part 4'],
       fCode: ['รหัส', 'Code'], fType: ['ประเภท', 'Type'], fModel: ['แบบบ้าน', 'House type'], fBed: ['ห้องนอน', 'Bedrooms'], fArea: ['พื้นที่ใช้สอย (ตร.ม.)', 'Usable area (sq.m)'],
-      fLand: ['ขนาดที่ดิน (ตร.ว.)', 'Land size (sq.wah)'], fPrice: ['ราคาขาย', 'Price'], fPromo: ['โปรโมชั่น', 'Promotion'], fPhone: ['เบอร์โทร', 'Phone'], fEmail: ['อีเมล', 'Email'],
+      fLand: ['ขนาดที่ดิน (ตร.ว.)', 'Land size (sq.wah)'], fPrice: ['ราคาขาย', 'Price'],
+      fTitle: ['ชื่อทรัพย์', 'Listing name'], fOrigin: ['ที่มาของทรัพย์', 'Listing origin'], fOwner: ['เจ้าของเดิม (ลูกค้าโครงการ)', 'Original owner (project customer)'], fFrom: ['แปลงเดิมในโครงการหลัก', 'Original plot in main project'], fPromoPrice: ['ราคาโปรโมชั่นประจำเดือน (บาท)', 'Promo price (THB)'], fPromo: ['โปรโมชั่น', 'Promotion'], fPhone: ['เบอร์โทร', 'Phone'], fEmail: ['อีเมล', 'Email'],
       photoHint: ['รูปภาพทรัพย์ (JPG/PNG สูงสุด 10 รูป) จะแสดงในหน้าข้อมูลทรัพย์ของตัวแทนขาย', 'Listing photos (JPG/PNG, up to 10) appear on the agents’ listing page'],
       uploadPhoto: ['อัปโหลดรูป', 'Upload photos'], save: ['บันทึก', 'Save'], cancel: ['ยกเลิก', 'Cancel'], edit: ['แก้ไข', 'Edit'], close: ['ปิด', 'Close'], choose: ['— เลือก —', '— Select —'],
       cListing: ['ทรัพย์', 'Listing'], cStatus: ['สถานะ', 'Status'], cAction: ['จัดการ', 'Actions'], cName: ['ชื่อ-นามสกุล', 'Full name'],
@@ -1051,10 +1079,12 @@ class Component extends DCLogic {
     const aName = (id) => (AM[id] ? L(AM[id].name) : id || '-');
     const aLabel = (id) => (AM[id] ? id + ' · ' + L(AM[id].name) : '-');
     const sqw = TH ? 'ตร.ว.' : 'sq.wah';
-    const propName = (p) => (!p ? '' : (p.type === 'villa'
+    const propName = (p) => (!p ? '' : p.title ? L(p.title) : (p.type === 'villa'
       ? (TH ? 'พูลวิลล่า แบบ ' + p.model + ' · ' + p.bed + ' ห้องนอน' : 'Pool Villa Type ' + p.model + ' · ' + p.bed + ' bed')
       : (TH ? 'ที่ดินเปล่า ' + p.land + ' ตร.ว.' : 'Land plot · ' + p.land + ' sq.wah')));
     const PST = { available: ['green', TH ? 'ว่าง' : 'Available'], reserved: ['amber', TH ? 'จองแล้ว' : 'Reserved'], sold: ['grey', TH ? 'ขายแล้ว' : 'Sold'] };
+    const ORIG = { renovate: ['amber', TH ? 'ตกแต่ง/ต่อเติมบ้านเดิม' : 'Renovated resale'], newbuild: ['blue', TH ? 'สร้างพูลวิลล่าใหม่' : 'Newly built villa'], subdivide: ['green', TH ? 'ซื้อที่ดินมาแบ่งขาย' : 'Subdivided land'] };
+    const originText = (p) => (!p.origin || !ORIG[p.origin] ? '' : ORIG[p.origin][1] + (p.from ? (TH ? ' · จากแปลง ' : ' · from ') + p.from : '') + (p.owner ? (TH ? ' · เจ้าของ ' : ' · owner ') + L(p.owner) : ''));
 
     const kidsOf = {};
     s.agents.forEach((a) => { if (a.up) { (kidsOf[a.up] = kidsOf[a.up] || []).push(a.id); } });
@@ -1071,11 +1101,14 @@ class Component extends DCLogic {
     let primary = { show: false, label: '', go: () => {} };
 
     // ---------- PROPERTIES ----------
-    const propRows = s.props.filter((p) => s.fProps === 'all' || p.type === s.fProps || p.status === s.fProps).map((p) => ({
+    const propRows = s.props.filter((p) => (p.project || 'main') === s.propProj).filter((p) => s.fProps === 'all' || p.type === s.fProps || p.status === s.fProps || (s.fProps === 'monthly' && p.monthly) || p.origin === s.fProps).map((p) => ({
       id: p.id, name: propName(p),
       spec: p.type === 'villa' ? (p.land + ' ' + sqw + ' · ' + p.area + (TH ? ' ตร.ม.' : ' sq.m')) : (p.land + ' ' + sqw),
-      priceText: baht(p.price), promo: L(p.promo) || '—', c: chip(PST[p.status][0], PST[p.status][1]),
-      edit: () => this.setState({ showPF: true, pf: { mode: 'edit', id: p.id, type: p.type, model: p.model || 'A', bed: String(p.bed || ''), area: String(p.area || ''), land: String(p.land), price: p.price.toLocaleString('en-US'), status: p.status, promo: L(p.promo) } })
+      priceText: baht(p.monthly && p.promoPrice ? p.promoPrice : p.price), promo: L(p.promo) || '—', c: chip(PST[p.status][0], PST[p.status][1]),
+      isMonthly: !!p.monthly, monthlyLbl: (TH ? 'โปรประจำเดือน ' : 'Promo of the month · ') + fmtMonth(CUR), origPrice: baht(p.price), priceFg: p.monthly ? '#8E2B1E' : '#1B2420',
+      hasOrigin: !!p.origin, originTxt: originText(p),
+      edit: () => this.setState({ showPF: true, pf: { mode: 'edit', id: p.id, type: p.type, model: p.model || 'A', bed: String(p.bed || ''), area: String(p.area || ''), land: String(p.land), price: p.price.toLocaleString('en-US'), status: p.status, promo: L(p.promo),
+        project: p.project || 'main', monthly: !!p.monthly, promoPrice: p.promoPrice ? p.promoPrice.toLocaleString('en-US') : '', title: L(p.title), origin: p.origin || 'renovate', owner: L(p.owner), from: p.from || '' } })
     }));
     const setPfF = setter('pf');
 
@@ -1650,15 +1683,20 @@ class Component extends DCLogic {
     // ---------- per-screen KPIs / chips / primary ----------
     const sc = s.screen;
     if (sc === 'props') {
-      const n = (f) => s.props.filter(f).length;
+      const projProps = s.props.filter((p) => (p.project || 'main') === s.propProj);
+      const n = (f) => projProps.filter(f).length;
       kpis = [
-        { label: TH ? 'ทรัพย์ทั้งหมด' : 'Total listings', value: String(s.props.length) },
+        { label: TH ? 'ทรัพย์ทั้งหมด' : 'Total listings', value: String(projProps.length) },
         { label: TH ? 'ว่าง' : 'Available', value: String(n((p) => p.status === 'available')) },
-        { label: TH ? 'จองแล้ว' : 'Reserved', value: String(n((p) => p.status === 'reserved')) },
+        s.propProj === 'p21'
+          ? { label: TH ? 'จองแล้ว' : 'Reserved', value: String(n((p) => p.status === 'reserved')) }
+          : { label: TH ? 'โปรประจำเดือน ' + fmtMonth(CUR) : 'Promo of the month', value: String(n((p) => p.monthly && p.status !== 'sold')) },
         { label: TH ? 'ขายแล้ว' : 'Sold', value: String(n((p) => p.status === 'sold')) }
       ];
-      chips = mkChips('fProps', [['all', TH ? 'ทั้งหมด' : 'All'], ['villa', TH ? 'พูลวิลล่า' : 'Pool villas'], ['land', TH ? 'ที่ดิน' : 'Land'], ['available', TH ? 'ว่าง' : 'Available'], ['sold', TH ? 'ขายแล้ว' : 'Sold']]);
-      primary = { show: true, label: TH ? 'เพิ่มทรัพย์' : 'Add listing', go: () => this.setState({ showPF: true, pf: this.blankPF() }) };
+      chips = s.propProj === 'p21'
+        ? mkChips('fProps', [['all', TH ? 'ทั้งหมด' : 'All'], ['renovate', ORIG.renovate[1]], ['newbuild', ORIG.newbuild[1]], ['subdivide', ORIG.subdivide[1]], ['available', TH ? 'ว่าง' : 'Available']])
+        : mkChips('fProps', [['all', TH ? 'ทั้งหมด' : 'All'], ['monthly', TH ? 'โปรประจำเดือน' : 'Promo of the month'], ['villa', TH ? 'พูลวิลล่า' : 'Pool villas'], ['land', TH ? 'ที่ดิน' : 'Land'], ['available', TH ? 'ว่าง' : 'Available'], ['sold', TH ? 'ขายแล้ว' : 'Sold']]);
+      primary = { show: true, label: TH ? 'เพิ่มทรัพย์' : 'Add listing', go: () => this.setState({ showPF: true, pf: this.blankPF(s.propProj) }) };
     } else if (sc === 'calendar') {
       kpis = calKpis;
       chips = calChips;
@@ -1790,6 +1828,21 @@ class Component extends DCLogic {
       setTh: () => this.setState({ lang: 'th' }), setEn: () => this.setState({ lang: 'en' }),
       kpis: kpis, hasKpis: kpis.length > 0, chips: chips, primary: primary,
 
+      tabs: {
+        show: sc === 'props', aria: TH ? 'เลือกโครงการ' : 'Choose project',
+        items: [['main', TH ? 'โครงการหลัก' : 'Main project'], ['p21', TH ? 'โครงการ 2+1' : 'Project 2+1']].map((x) => {
+          const on = s.propProj === x[0];
+          return { label: x[1], count: String(s.props.filter((p) => (p.project || 'main') === x[0]).length), sel: on ? 'true' : 'false', bd: on ? '#12372A' : 'transparent', fg: on ? '#12372A' : '#55625C', cbg: on ? '#12372A' : '#E1E6E3', cfg: on ? '#FFFFFF' : '#3D4843', pick: () => this.setState({ propProj: x[0], fProps: 'all', showPF: false }) };
+        }),
+        note: s.propProj === 'p21'
+          ? (TH ? 'ทรัพย์จากลูกค้าเดิมของโครงการ: ตกแต่ง/ต่อเติมบ้านเดิมแล้วขายต่อ, สร้างพูลวิลล่าใหม่บนที่ดินที่ซื้อจากโครงการ, หรือซื้อที่ดินจากโครงการมาแบ่งขาย ระบุแปลงเดิมและเจ้าของเดิมได้' : 'Listings from existing customers: renovated resales, villas newly built on project land, or project land split into lots — record the original plot and owner')
+          : (TH ? 'กำหนดแปลงโปรโมชั่นประจำเดือนได้ในฟอร์มแก้ไขทรัพย์ ตัวแทนขายจะเห็นป้ายและราคาโปรทันที' : 'Mark a plot as promo of the month in the edit form; agents see the badge and promo price immediately')
+      },
+      pfP21: s.pf.project === 'p21', pfMain: s.pf.project !== 'p21', pfMonthly: Object.assign(pill(!!s.pf.monthly), { label: s.pf.monthly ? (TH ? '✓ แปลงโปรโมชั่นประจำเดือน ' : '✓ Promo of the month ') + fmtMonth(CUR) : (TH ? 'ตั้งเป็นแปลงโปรโมชั่นประจำเดือน' : 'Set as promo of the month') }),
+      pfShowPromoPrice: s.pf.project !== 'p21' && !!s.pf.monthly,
+      toggleMonthly: () => this.setState((st) => ({ pf: Object.assign({}, st.pf, { monthly: !st.pf.monthly }) })),
+      originOptions: ['renovate', 'newbuild', 'subdivide'].map((k) => ({ v: k, l: ORIG[k][1] })),
+      setPfX: { promoPrice: setPfF('promoPrice'), title: setPfF('title'), origin: setPfF('origin'), owner: setPfF('owner'), from: setPfF('from') },
       propRows: propRows, showPF: s.showPF, pf: s.pf, pfLock: s.pf.mode === 'edit', pfVilla: s.pf.type === 'villa',
       pfTitle: s.pf.mode === 'edit' ? (TH ? 'แก้ไขทรัพย์ ' : 'Edit listing ') + s.pf.id : (TH ? 'เพิ่มทรัพย์ใหม่' : 'New listing'),
       setPf: { id: setPfF('id'), type: setPfF('type'), model: setPfF('model'), bed: setPfF('bed'), area: setPfF('area'), land: setPfF('land'), price: setPfF('price'), status: setPfF('status'), promo: setPfF('promo') },
@@ -1802,7 +1855,11 @@ class Component extends DCLogic {
         const id = f.id.trim().toUpperCase();
         if (!id || !num(f.price)) { this.flash(TH ? 'กรุณากรอกรหัสและราคา' : 'Please enter a code and price'); return; }
         const villa = f.type === 'villa';
-        const rec = { id: id, type: f.type, model: villa ? (f.model || 'A') : undefined, bed: villa ? num(f.bed) || 3 : undefined, bath: villa ? num(f.bed) || 3 : undefined, area: villa ? num(f.area) : undefined, land: num(f.land), price: num(f.price), status: f.status, promo: f.promo.trim() };
+        const p21 = f.project === 'p21';
+        if (f.monthly && !num(f.promoPrice)) { this.flash(TH ? 'กรุณากรอกราคาโปรโมชั่นประจำเดือน' : 'Please enter the promo price'); return; }
+        const rec = { id: id, type: f.type, model: villa ? (f.model || 'A') : undefined, bed: villa ? num(f.bed) || 3 : undefined, bath: villa ? num(f.bed) || 3 : undefined, area: villa ? num(f.area) : undefined, land: num(f.land), price: num(f.price), status: f.status, promo: f.promo.trim(),
+          project: f.project || 'main', monthly: !p21 && !!f.monthly, promoPrice: !p21 && f.monthly ? num(f.promoPrice) : 0,
+          title: p21 && f.title.trim() ? f.title.trim() : undefined, origin: p21 ? f.origin : undefined, owner: p21 && f.owner.trim() ? f.owner.trim() : undefined, from: p21 && f.from.trim() ? f.from.trim().toUpperCase() : undefined };
         if (f.mode === 'edit') {
           this.setState((st) => ({ props: st.props.map((p) => (p.id === id ? Object.assign({}, p, rec) : p)), showPF: false }));
           this.flash(TH ? 'บันทึกการแก้ไข ' + id + ' แล้ว' : id + ' updated');
