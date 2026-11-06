@@ -46,7 +46,8 @@ button,input,select,textarea{font-family:inherit}
 <button type="button" onClick="{{n.go}}" aria-current="{{n.cur}}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border: 0; border-radius: 8px; cursor: pointer; text-align: left; font-size: 14px; font-weight: 500; background: {{n.bg}}; color: {{n.fg}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.d}}"></path></svg>{{n.label}}</button>
 </template>
 </div>
-<a href="index.html" style="margin-top: auto; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; border-radius: 8px; color: #E6EEEA; text-decoration: none; font-size: 14px; border: 1px solid rgba(255,255,255,0.2)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"></path></svg>{{t.switchRole}}</a>
+<button type="button" onClick="{{resetDemo}}" style="margin-top: auto; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.3); background: transparent; color: #E6EEEA; font-size: 14px; cursor: pointer; text-align: left"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4v6h6M20 12a8 8 0 1 1-2.3-5.7L4 10"></path></svg>{{t.reset}}</button>
+<a href="index.html" style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; border-radius: 8px; color: #E6EEEA; text-decoration: none; font-size: 14px; border: 1px solid rgba(255,255,255,0.2)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"></path></svg>{{t.switchRole}}</a>
 </template>
 </nav>
 
@@ -70,7 +71,120 @@ button,input,select,textarea{font-family:inherit}
 </div>
 </template>
 
-<template data-k="if" value="{{show.profile}}" hint-placeholder-val="{{ true }}">
+<template data-k="if" value="{{show.home}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+<section style="flex: 1 1 320px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; border-left: 6px solid {{hq.dot}}">
+<div style="font-size: 13px; color: #55625C">{{hq.title}}</div>
+<div style="display: flex; align-items: center; gap: 10px"><span aria-hidden="true" style="width: 14px; height: 14px; border-radius: 50%; background: {{hq.dot}}"></span><span style="font-size: 22px; font-weight: 700; color: #12372A">{{hq.label}}</span></div>
+<div style="font-size: 13px; color: #3D4843">{{hq.desc}}</div>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px">
+<template data-k="for" list="{{hq.checks}}" as="c" hint-placeholder-count="4">
+<li style="display: flex; align-items: center; gap: 8px; font-size: 14px"><span aria-hidden="true" style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: {{c.bg}}; color: {{c.fg}}; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700">{{c.mark}}</span><span style="color: {{c.tc}}">{{c.label}}</span></li>
+</template>
+</ul>
+</section>
+<section style="flex: 1 1 320px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; gap: 8px; align-items: baseline"><h2 style="margin: 0; font-size: 17px; color: #12372A">{{hl.title}}</h2><span style="padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{hl.c.bg}}; color: {{hl.c.fg}}">{{hl.c.label}}</span></div>
+<div style="font-size: 14px; color: #3D4843">{{hl.text}}</div>
+<template data-k="if" value="{{hl.canReq}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{hl.request}}" style="align-self: flex-start; min-height: 44px; padding: 0 18px; border: 0; border-radius: 8px; background: #06C755; color: #FFFFFF; font-size: 14px; font-weight: 700; cursor: pointer">{{hl.btn}}</button></template>
+<div style="font-size: 12px; color: #55625C">{{hl.note}}</div>
+</section>
+</div>
+<section style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: baseline"><h2 style="margin: 0; font-size: 17px; color: #12372A">{{hm.todoTitle}}</h2><div style="font-size: 13px; color: #55625C">{{hm.todoSub}}</div></div>
+<template data-k="for" list="{{hm.todos}}" as="d" hint-placeholder-count="4">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; border: 1px solid #E1E6E3; background: {{d.bg}}; border-radius: 10px; padding: 10px 14px">
+<span aria-hidden="true" style="flex: none; width: 10px; height: 10px; border-radius: 50%; background: {{d.dot}}"></span>
+<div style="flex: 1 1 220px; min-width: 0"><div style="font-weight: 600">{{d.title}}</div><div style="font-size: 13px; color: #3D4843">{{d.sub}}</div></div>
+<button type="button" onClick="{{d.go}}" style="min-height: 40px; padding: 0 14px; border: 1px solid #12372A; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 13px; font-weight: 600; cursor: pointer">{{d.btn}}</button>
+</div>
+</template>
+<template data-k="if" value="{{hm.allClear}}" hint-placeholder-val="{{ false }}"><div style="padding: 10px 0; color: #155B34; font-weight: 600">{{hm.clear}}</div></template>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<div><h2 style="margin: 0; font-size: 17px; color: #12372A">{{hm.quickTitle}}</h2><div style="font-size: 13px; color: #55625C">{{hm.quickSub}}</div></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px">
+<template data-k="for" list="{{hm.quick}}" as="q" hint-placeholder-count="6">
+<button type="button" onClick="{{q.go}}" style="text-align: left; cursor: pointer; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; color: #1B2420">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 9px; background: #EEF5F1; color: #12372A; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{q.d}}"></path></svg></span>
+<span style="font-weight: 700; color: #12372A">{{q.title}}</span>
+<span style="font-size: 13px; color: #55625C">{{q.sub}}</span>
+</button>
+</template>
+</div>
+</section>
+</div>
+</template>
+
+<template data-k="if" value="{{show.proof}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<section style="flex: 1 1 340px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{pf.formTitle}}</h2>
+<div style="border-radius: 10px; padding: 10px 12px; font-size: 14px; background: {{pf.due.bg}}; color: {{pf.due.fg}}; font-weight: 600">{{pf.due.label}}</div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-ch" style="font-size: 13px; font-weight: 600">{{pf.chLbl}}</label><select id="pf-ch" value="{{pf.ch}}" onChange="{{pf.setCh}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF; padding: 0 10px"><template data-k="for" list="{{pf.chOpts}}" as="o" hint-placeholder-count="5"><option value="{{o.v}}">{{o.l}}</option></template></select></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="pf-url" style="font-size: 13px; font-weight: 600">{{pf.urlLbl}} *</label><input id="pf-url" type="url" value="{{pf.url}}" onChange="{{pf.setUrl}}" placeholder="https://" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF"></div>
+<button type="button" onClick="{{pf.submit}}" style="align-self: flex-start; min-height: 44px; padding: 0 20px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">{{pf.submitBtn}}</button>
+<div style="font-size: 12px; color: #55625C">{{pf.formNote}}</div>
+</section>
+<section style="flex: 1 1 340px; min-width: 0; background: #DCE8FB; color: #163C78; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px">
+<h2 style="margin: 0; font-size: 17px">{{pf.ruleTitle}}</h2>
+<ol style="margin: 0; padding-left: 20px; font-size: 14px; display: flex; flex-direction: column; gap: 4px"><template data-k="for" list="{{pf.rules}}" as="x" hint-placeholder-count="5"><li>{{x}}</li></template></ol>
+</section>
+</div>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{pf.histTitle}}</h2>
+<div style="overflow-x: auto; border: 1px solid #E1E6E3; border-radius: 12px; background: #FFFFFF">
+<div role="table" aria-label="{{pf.histTitle}}" style="min-width: 680px">
+<div role="row" style="display: grid; grid-template-columns: 120px 110px minmax(240px, 2fr) 120px minmax(160px, 1.2fr); gap: 12px; padding: 10px 16px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C">
+<div role="columnheader">{{pf.h.date}}</div><div role="columnheader">{{pf.h.ch}}</div><div role="columnheader">{{pf.h.link}}</div><div role="columnheader">{{pf.h.res}}</div><div role="columnheader">{{pf.h.note}}</div>
+</div>
+<template data-k="for" list="{{pf.rows}}" as="r" hint-placeholder-count="3">
+<div role="row" style="display: grid; grid-template-columns: 120px 110px minmax(240px, 2fr) 120px minmax(160px, 1.2fr); gap: 12px; padding: 8px 16px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center">
+<div role="cell">{{r.date}}</div><div role="cell" style="font-size: 13px">{{r.ch}}</div>
+<div role="cell" style="font-size: 13px; word-break: break-all"><a href="{{r.url}}" target="_blank" rel="noopener">{{r.url}}</a></div>
+<div role="cell"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{r.c.bg}}; color: {{r.c.fg}}">{{r.c.label}}</span></div>
+<div role="cell" style="font-size: 13px; color: #3D4843">{{r.note}}</div>
+</div>
+</template>
+</div>
+</div>
+</section>
+</div>
+</template>
+
+<template data-k="if" value="{{show.sim}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<section style="flex: 1 1 300px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 17px; color: #12372A">{{sm.formTitle}}</h2>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="sim-agent" style="font-size: 13px; font-weight: 600">{{sm.sellerLbl}}</label><select id="sim-agent" value="{{sm.agent}}" onChange="{{sm.setAgent}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF; padding: 0 10px"><template data-k="for" list="{{sm.agentOpts}}" as="o" hint-placeholder-count="5"><option value="{{o.id}}">{{o.name}}</option></template></select></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="sim-price" style="font-size: 13px; font-weight: 600">{{sm.priceLbl}}</label><input id="sim-price" type="text" inputmode="numeric" value="{{sm.price}}" onChange="{{sm.setPrice}}" style="min-height: 44px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px; background: #FFFFFF"></div>
+<div role="group" aria-label="{{sm.presetAria}}" style="display: flex; flex-wrap: wrap; gap: 6px"><template data-k="for" list="{{sm.presets}}" as="p" hint-placeholder-count="3"><button type="button" onClick="{{p.pick}}" style="min-height: 36px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 999px; background: #FFFFFF; color: #12372A; font-size: 12px; font-weight: 600; cursor: pointer">{{p.label}}</button></template></div>
+<div role="note" style="background: #FFF8EA; border: 1px solid #EED6A2; color: #6B4A0E; border-radius: 8px; padding: 8px 12px; font-size: 13px">{{sm.disclaimer}}</div>
+</section>
+<section style="flex: 999 1 480px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px"><template data-k="for" list="{{sm.big}}" as="b" hint-placeholder-count="3"><div><div style="font-size: 12px; color: #55625C">{{b.label}}</div><div style="font-size: 30px; font-weight: 700; line-height: 1.2; color: {{b.fg}}">{{b.value}}</div><div style="font-size: 12px; color: #3D4843">{{b.sub}}</div></div></template></div>
+<div role="img" aria-label="{{sm.barAria}}" style="display: flex; height: 34px; border-radius: 8px; overflow: hidden; border: 1px solid #E1E6E3"><template data-k="for" list="{{sm.segs}}" as="g" hint-placeholder-count="3"><div style="width: {{g.w}}; background: {{g.bg}}; color: {{g.fg}}; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; white-space: nowrap; overflow: hidden">{{g.label}}</div></template></div>
+<div style="font-size: 14px; color: #3D4843">{{sm.formula}}</div>
+<div style="overflow-x: auto; border: 1px solid #EEF1EF; border-radius: 10px">
+<div role="table" aria-label="{{sm.tblTitle}}" style="min-width: 520px">
+<div role="row" style="display: grid; grid-template-columns: minmax(170px, 1.6fr) 130px 70px 90px 120px; gap: 10px; padding: 8px 14px; background: #F7F9F8; font-size: 13px; font-weight: 600; color: #55625C"><div role="columnheader">{{sm.h.who}}</div><div role="columnheader">{{sm.h.role}}</div><div role="columnheader">{{sm.h.tier}}</div><div role="columnheader">{{sm.h.pct}}</div><div role="columnheader">{{sm.h.amt}}</div></div>
+<template data-k="for" list="{{sm.rows}}" as="r" hint-placeholder-count="3">
+<div role="row" style="display: grid; grid-template-columns: minmax(170px, 1.6fr) 130px 70px 90px 120px; gap: 10px; padding: 8px 14px; border-top: 1px solid #EEF1EF; font-size: 14px; align-items: center; background: {{r.bg}}"><div role="cell"><div style="font-weight: 600">{{r.name}}</div><div style="font-size: 12px; color: #55625C">{{r.code}}</div></div><div role="cell" style="font-size: 13px">{{r.role}}</div><div role="cell">{{r.tier}}</div><div role="cell" style="font-weight: 700; color: #12372A">{{r.pct}}</div><div role="cell" style="font-variant-numeric: tabular-nums; font-weight: 600">{{r.amt}}</div></div>
+</template>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-size: 15px; color: #12372A">{{sm.credTitle}}</h3>
+<div style="font-size: 13px; color: #55625C">{{sm.credSub}}</div>
+<template data-k="for" list="{{sm.creds}}" as="c" hint-placeholder-count="3"><div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; border-top: 1px solid #EEF1EF; padding-top: 6px; font-size: 14px"><span><strong>{{c.name}}</strong> <span style="color: #55625C; font-size: 12px">{{c.code}}</span></span><span style="font-variant-numeric: tabular-nums">{{c.change}} <span style="font-weight: 700; color: {{c.fg}}">{{c.after}}</span></span></div></template>
+</div>
+</section>
+</div>
+</template>
+
+<template data-k="if" value="{{show.profile}}" hint-placeholder-val="{{ false }}">
 <div style="display: flex; flex-direction: column; gap: 16px">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px">
 <template data-k="for" list="{{profileKpis}}" as="k" hint-placeholder-count="4">
@@ -149,11 +263,18 @@ button,input,select,textarea{font-family:inherit}
 </div>
 </template>
 </div>
+<section style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: baseline"><h2 style="margin: 0; font-size: 17px; color: #12372A">{{ml.title}}</h2><span style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{ml.c.bg}}; color: {{ml.c.fg}}"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{ml.dot}}"></span>{{ml.c.label}}</span></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0 24px">
+<template data-k="for" list="{{ml.rows}}" as="r" hint-placeholder-count="6"><div style="display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid #EEF1EF; padding: 8px 0"><span style="color: #55625C; font-size: 14px">{{r.k}}</span><span style="font-weight: 700; text-align: right">{{r.v}}</span></div></template>
+</div>
+</section>
 <section aria-label="{{t.treeTitle}}" style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: baseline">
 <h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.treeTitle}}</h2>
 <div style="font-size: 13px; color: #55625C">{{t.treeLegend}}</div>
 </div>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #3D4843"><template data-k="for" list="{{qLegend}}" as="l" hint-placeholder-count="4"><span style="display: flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 50%; background: {{l.dot}}"></span>{{l.label}}</span></template></div>
 <div style="overflow-x: auto">
 <div style="min-width: max-content; display: flex; flex-direction: column; align-items: center; padding: 8px 8px 4px">
 <div style="width: 176px; box-sizing: border-box; border: 1px dashed #B9C6C0; background: #F7F9F8; border-radius: 10px; padding: 8px 10px; text-align: center">
@@ -173,20 +294,25 @@ button,input,select,textarea{font-family:inherit}
 <div style="position: relative; display: flex; flex-direction: column; align-items: center; padding: 0 8px">
 <div aria-hidden="true" style="position: absolute; top: 0; height: 2px; background: #B9C6C0; left: {{c.hl}}; right: {{c.hr}}"></div>
 <div aria-hidden="true" style="width: 2px; height: 20px; background: #B9C6C0"></div>
-<div style="width: 168px; box-sizing: border-box; border: 1px solid #CBD3CF; background: #FFFFFF; border-radius: 10px; padding: 10px 12px; text-align: center; display: flex; flex-direction: column; gap: 2px">
+<div style="position: relative; width: 168px; box-sizing: border-box; border: 1px solid #CBD3CF; background: #FFFFFF; border-radius: 10px; padding: 10px 12px; text-align: center; display: flex; flex-direction: column; gap: 2px">
+<span role="img" aria-label="{{c.qLabel}}" style="position: absolute; top: 8px; right: 8px; width: 10px; height: 10px; border-radius: 50%; background: {{c.qdot}}"></span>
 <div style="font-size: 12px; color: #55625C">{{c.code}}</div>
 <div style="font-weight: 600; font-size: 14px">{{c.name}}</div>
 <div style="font-size: 12px; color: #3D4843">{{c.stat}}</div>
 <span style="align-self: center; margin-top: 4px; padding: 1px 10px; border-radius: 999px; background: {{c.tbg}}; color: {{c.tfg}}; font-size: 12px; font-weight: 700">{{c.tier}}</span>
 </div>
 <template data-k="if" value="{{c.hasKids}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{c.toggle}}" aria-expanded="{{c.exp}}" aria-label="{{c.tglAria}}" style="margin-top: 4px; min-width: 32px; height: 22px; padding: 0 6px; border: 1px solid #12372A; border-radius: 999px; background: #FFFFFF; color: #12372A; font-size: 12px; font-weight: 700; cursor: pointer; line-height: 1">{{c.tglLabel}}</button>
+</template>
+<template data-k="if" value="{{c.showKids}}" hint-placeholder-val="{{ true }}">
 <div aria-hidden="true" style="width: 2px; height: 20px; background: #B9C6C0"></div>
 <div style="display: flex; justify-content: center">
 <template data-k="for" list="{{c.kids}}" as="k" hint-placeholder-count="2">
 <div style="position: relative; display: flex; flex-direction: column; align-items: center; padding: 0 8px">
 <div aria-hidden="true" style="position: absolute; top: 0; height: 2px; background: #B9C6C0; left: {{k.hl}}; right: {{k.hr}}"></div>
 <div aria-hidden="true" style="width: 2px; height: 20px; background: #B9C6C0"></div>
-<div style="width: 160px; box-sizing: border-box; border: 1px solid #E1E6E3; background: #F7F9F8; border-radius: 10px; padding: 10px 12px; text-align: center; display: flex; flex-direction: column; gap: 2px">
+<div style="position: relative; width: 160px; box-sizing: border-box; border: 1px solid #E1E6E3; background: #F7F9F8; border-radius: 10px; padding: 10px 12px; text-align: center; display: flex; flex-direction: column; gap: 2px">
+<span role="img" aria-label="{{k.qLabel}}" style="position: absolute; top: 8px; right: 8px; width: 10px; height: 10px; border-radius: 50%; background: {{k.qdot}}"></span>
 <div style="font-size: 12px; color: #55625C">{{k.code}}</div>
 <div style="font-weight: 600; font-size: 14px">{{k.name}}</div>
 <div style="font-size: 12px; color: #3D4843">{{k.stat}}</div>
@@ -429,6 +555,20 @@ button,input,select,textarea{font-family:inherit}
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="flex: none; margin-top: 2px"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v6M12 7.5v.01"></path></svg>
 <div>{{t.actRule}}</div>
 </div>
+<section style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; border: 2px solid #12372A">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: baseline"><h2 style="margin: 0; font-size: 17px; color: #12372A">{{ci.title}}</h2><div style="font-size: 13px; color: #55625C">{{ci.sub}}</div></div>
+<template data-k="for" list="{{ci.items}}" as="e" hint-placeholder-count="3">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; border-top: 1px solid #EEF1EF; padding-top: 10px">
+<div style="flex: 1 1 220px; min-width: 0"><div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap"><span style="padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; background: {{e.tbg}}; color: {{e.tfg}}">{{e.type}}</span><span style="font-size: 13px; color: #55625C">{{e.when}}</span></div><div style="font-weight: 600">{{e.title}}</div></div>
+<template data-k="if" value="{{e.open}}" hint-placeholder-val="{{ true }}">
+<input type="text" inputmode="numeric" aria-label="{{ci.codeAria}}" value="{{ci.code}}" onChange="{{ci.setCode}}" placeholder="{{ci.codePh}}" style="width: 130px; min-height: 40px; padding: 0 10px; border: 1px solid #CBD3CF; border-radius: 8px; font-size: 14px">
+<button type="button" onClick="{{e.checkIn}}" style="min-height: 40px; padding: 0 16px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">{{ci.btn}}</button>
+</template>
+<template data-k="if" value="{{e.closed}}" hint-placeholder-val="{{ false }}"><span style="padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: {{e.c.bg}}; color: {{e.c.fg}}">{{e.c.label}}</span></template>
+</div>
+</template>
+<div style="font-size: 12px; color: #55625C">{{ci.note}}</div>
+</section>
 <section style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
 <h2 style="margin: 0; font-size: 17px; color: #12372A">{{t.monthsTitle}}</h2>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px">
@@ -836,14 +976,28 @@ button,input,select,textarea{font-family:inherit}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = {
-      lang: 'th', screen: 'profile', toast: '',
+    this.state = this.initState();
+  }
+
+  initState() {
+    return {
+      lang: 'th', screen: 'home', toast: '',
+      lineSt: 'out', lineDate: '2026-10-02', myProofs: this.seedProofs(), pfF: { ch: 'facebook', url: '' },
+      simAgent: 'AG-1015', simPrice: '3,000,000', wkAtt: {}, ciCode: '', collapsed: {},
       appts: this.seedAppts(), apptTab: 'up', showAppt: false, af: this.blankAppt('PV-A01'), nextAp: 123,
       propType: 'all', selProp: '', salesType: 'all',
       acts: this.seedActs(),
       ovSession: 'OV-1107', ovs: this.seedOv(), of: { first: '', last: '', phone: '', email: '', line: '' },
       trRound: 'TR-11', trs: this.seedTr(), tf: { name: '', phone: '' }, cumF: 'all', actScope: 'all', wkReg: {}, propProj: 'main'
     };
+  }
+
+  seedProofs() {
+    return [
+      { date: '2026-07-02', ch: 'facebook', url: 'https://www.facebook.com/somchai.villa/posts/1029', st: 'pass', note: '' },
+      { date: '2026-05-20', ch: 'tiktok', url: 'https://www.tiktok.com/@somchai.home/video/7518840', st: 'fail', note: ['โพสต์ราคาเก่า ไม่ตรงกับโปรปัจจุบัน', 'Old price, did not match the current promotion'] },
+      { date: '2026-04-10', ch: 'facebook', url: 'https://www.facebook.com/somchai.villa/posts/0871', st: 'pass', note: '' }
+    ];
   }
 
   blankAppt(p) { return { name: '', phone: '', date: '2026-10-30', time: '10:00', people: '2', prop: p, note: '' }; }
@@ -947,6 +1101,10 @@ class Component extends DCLogic {
       grpRecruit: ['ชวนทีมงาน', 'RECRUIT TEAM'],
       switchRole: ['เปลี่ยนบทบาท / ออกจากระบบ', 'Switch role / Sign out'],
       sample: ['ข้อมูลในหน้านี้เป็นข้อมูลตัวอย่างสำหรับการนำเสนอเท่านั้น', 'All data on this page is sample data for presentation only.'],
+      n_home: ['หน้าแรก', 'Home'], n_proof: ['ส่งหลักฐานการตลาด', 'Marketing proof'], n_sim: ['จำลองค่าคอมฯ', 'Commission simulator'], reset: ['รีเซ็ตข้อมูลจำลอง', 'Reset demo data'],
+      p_home: ['สวัสดี คุณสมชาย', 'Hello, Somchai'], s_home: ['สถานะของคุณ สิ่งที่ต้องทำ และทางลัดไปงานที่ใช้บ่อย', 'Your status, what to do next and shortcuts'],
+      p_proof: ['ส่งหลักฐานการตลาด', 'Submit marketing proof'], s_proof: ['โพสต์ขายทรัพย์ของโครงการอย่างน้อย 1 ครั้งทุก 3 เดือน แล้วส่งลิงก์ให้เจ้าหน้าที่ตรวจ', 'Post about project listings at least once every 3 months and send the link for review'],
+      p_sim: ['จำลองค่าคอมมิชชัน', 'Commission simulator'], s_sim: ['ลองใส่คนขายและราคา ดูว่าคุณและทีมจะได้ส่วนแบ่งเท่าไร', 'Pick a seller and price to see what you and your team would earn'],
       n_profile: ['โปรไฟล์', 'Profile'], n_tree: ['ผังสายงาน', 'Team tree'], n_appt: ['นัดหมายชมโครงการ', 'Site visits'], n_sales: ['ประวัติการขายและค่าคอมฯ', 'Sales & commission'],
       n_activity: ['กิจกรรมประจำเดือน', 'Monthly activities'], n_props: ['ข้อมูลทรัพย์', 'Listings'], n_overview: ['ลงทะเบียนฟัง Overview', 'Overview sign-up'], n_training: ['ลงทะเบียนอบรมตัวแทน', 'Agent training sign-up'], n_contracts: ['สัญญาสะสม', 'Contract count'], n_actsum: ['ภาพรวมกิจกรรม', 'Activity overview'],
       p_actsum: ['ภาพรวมกิจกรรมของฉันและสายงาน', 'My and my line’s activities'], s_actsum: ['แยกได้ว่าเป็นกิจกรรมที่ทำเอง (ติดตัว) หรือคนในสายงานทำ', 'Split into what you did personally and what your line did'],
@@ -1035,6 +1193,11 @@ class Component extends DCLogic {
     const pill = (on) => ({ pressed: on ? 'true' : 'false', bg: on ? '#12372A' : '#FFFFFF', fg: on ? '#FFFFFF' : '#1B2420', bd: on ? '#12372A' : '#CBD3CF' });
     const rateFor = (n) => (n >= 9 ? 7 : (n >= 4 ? 5 : 3));
     const setter = (key) => (field) => (e) => { const v = e.target.value; this.setState((st) => ({ [key]: Object.assign({}, st[key], { [field]: v }) })); };
+    const wkData = this.seedWeekly().map((w) => (s.wkAtt[w.id] ? Object.assign({}, w, { att: w.att.concat(['AG-1007']) }) : w));
+    const padD = (n) => (n < 10 ? '0' + n : '' + n);
+    const addMonths = (d, k) => { const p = d.split('-').map(Number); let m = p[1] - 1 + k; const y = p[0] + Math.floor(m / 12); m = m % 12; return y + '-' + padD(m + 1) + '-' + padD(Math.min(p[2], 28)); };
+    const num = (v) => Number(String(v).replace(/[^0-9.]/g, '')) || 0;
+    const go = (screen, extra) => () => { this.setState(Object.assign({ screen: screen, menuOpen: false, selProp: '' }, extra || {})); window.scrollTo(0, 0); };
 
     // ---------- listings ----------
     const props = this.seedProps();
@@ -1115,9 +1278,22 @@ class Component extends DCLogic {
     const TCH = { 3: ['#ECECEC', '#3D4843'], 5: ['#DCE8FB', '#1D4E9E'], 7: ['#FCEFD9', '#8A4B00'] };
     const edge = (i, n) => (n === 1 ? { hl: '50%', hr: '50%' } : (i === 0 ? { hl: '50%', hr: '0' } : (i === n - 1 ? { hl: '0', hr: '50%' } : { hl: '0', hr: '0' })));
     const statText = (n) => (TH ? 'ปิดเอง ' + n.own + ' · สายงาน ' + sub(n) : 'Own ' + n.own + ' · Line ' + sub(n));
+    const QS = {
+      ok: { dot: '#1F8A4C', ch: 'green', label: TH ? 'เขียว · ครบถ้วน' : 'Green · complete', desc: TH ? 'ทำตามเงื่อนไขครบ ได้รับสิทธิ์ตามปกติ' : 'Meets every condition — full rights' },
+      fix: { dot: '#D99A1E', ch: 'amber', label: TH ? 'เหลือง · ต้องแก้ไข' : 'Yellow · needs fixing', desc: TH ? 'ขาดบางเงื่อนไข แก้ไขให้ครบเพื่อรักษาสิทธิ์รับค่าคอมมิชชัน' : 'Something is missing — fix it to keep your commission rights' },
+      risk: { dot: '#C0392B', ch: 'red', label: TH ? 'แดง · เสี่ยงขาดคุณสมบัติ' : 'Red · at risk', desc: TH ? 'ขาดเงื่อนไขต่อเนื่อง ใกล้ถูกระงับสิทธิ์' : 'Repeatedly missing conditions — close to suspension' },
+      ended: { dot: '#8C9490', ch: 'grey', label: TH ? 'เทา · สิ้นสุดสถานะ' : 'Grey · ended', desc: TH ? 'สิ้นสุดการเป็นตัวแทน' : 'No longer an agent' }
+    };
+    const QAG = { 'AG-1007': 'fix', 'AG-1012': 'ok', 'AG-1015': 'ok', 'AG-1018': 'fix', 'AG-1020': 'risk', 'AG-1023': 'ok', 'AG-1031': 'ok' };
     const decoNode = (n, i, len) => {
       const r = rateFor(sub(n) + 1);
-      return Object.assign({ code: n.id, name: L(n.name), stat: statText(n), tier: r + '%', tbg: TCH[r][0], tfg: TCH[r][1], hasKids: n.kids.length > 0, kids: n.kids.map((k, j) => decoNode(k, j, n.kids.length)) }, edge(i, len));
+      const q = QS[QAG[n.id] || 'ok'];
+      const col = !!s.collapsed[n.id];
+      const hidden = members(n);
+      return Object.assign({ code: n.id, name: L(n.name), stat: statText(n), tier: r + '%', tbg: TCH[r][0], tfg: TCH[r][1], hasKids: n.kids.length > 0, showKids: n.kids.length > 0 && !col, kids: n.kids.map((k, j) => decoNode(k, j, n.kids.length)),
+        qdot: q.dot, qLabel: q.label, exp: col ? 'false' : 'true', tglLabel: col ? '+' + hidden : '−',
+        tglAria: (col ? (TH ? 'ขยายสายงานของ ' : 'Expand line of ') : (TH ? 'ยุบสายงานของ ' : 'Collapse line of ')) + L(n.name),
+        toggle: () => this.setState((st) => ({ collapsed: Object.assign({}, st.collapsed, { [n.id]: !st.collapsed[n.id] }) })) }, edge(i, len));
     };
     const teamClosed = sub(tree);
     const myRate = rateFor(teamClosed + 1);
@@ -1147,11 +1323,13 @@ class Component extends DCLogic {
     const sales = [
       { id: 'CT-2026-014', date: '2026-05-12', prop: 'PV-A02', cust: ['คุณนภา รัตนวงศ์', 'Napa Rattanawong'], price: 8900000, seq: 1, rate: 3, paidOn: '2026-06-15' },
       { id: 'CT-2026-027', date: '2026-07-03', prop: 'LD-02', cust: ['คุณชัยวัฒน์ มีสุข', 'Chaiwat Meesuk'], price: 5100000, seq: 3, rate: 3, paidOn: '2026-08-15' },
-      { id: 'CT-2026-041', date: '2026-09-20', prop: 'PV-B01', cust: ['คุณวีระ สมบูรณ์', 'Weera Somboon'], price: 12500000, seq: 6, rate: 5, paidOn: '' }
+      { id: 'CT-2026-041', date: '2026-09-20', prop: 'PV-B01', cust: ['คุณวีระ สมบูรณ์', 'Weera Somboon'], price: 12500000, seq: 6, rate: 5, paidOn: '' },
+      { id: 'CT-2026-047', date: '2026-10-19', prop: 'PV-B03', cust: ['คุณพงศกร ศรีงาม', 'Pongsakorn Sri-ngam'], price: 12700000, seq: 0, rate: 0, paidOn: '', pend: true }
     ];
     const comm = (x) => x.price * x.rate / 100;
-    const earned = sales.filter((x) => x.paidOn).reduce((a, x) => a + comm(x), 0);
-    const pending = sales.filter((x) => !x.paidOn).reduce((a, x) => a + comm(x), 0);
+    const okSales = sales.filter((x) => !x.pend);
+    const earned = okSales.filter((x) => x.paidOn).reduce((a, x) => a + comm(x), 0);
+    const pending = okSales.filter((x) => !x.paidOn).reduce((a, x) => a + comm(x), 0);
 
     // ---------- commission engine: own sale + team share (7% budget) ----------
     const commEngine = (contracts, upOf) => {
@@ -1190,10 +1368,10 @@ class Component extends DCLogic {
     const nm = (id) => (id === 'AG-1007' ? (TH ? 'คุณ' : 'You') : (NM[id] ? L(NM[id]) : id));
     const ENG = commEngine(ALL_CT, UPOF);
     const ymA = (d) => d.slice(0, 7);
-    const attendedA = (m) => s.acts.some((a) => ymA(a.date) === m && a.st === 'attended') || this.seedWeekly().some((w) => ymA(w.date) === m && w.att.indexOf('AG-1007') !== -1);
+    const attendedA = (m) => s.acts.some((a) => ymA(a.date) === m && a.st === 'attended') || wkData.some((w) => ymA(w.date) === m && w.att.indexOf('AG-1007') !== -1);
     const shareItems = [];
     ENG.list.forEach((c) => { ENG.by[c.id].allocs.forEach((al) => { if (al.agent === 'AG-1007' && al.kind === 'ov') shareItems.push({ c: c, e: ENG.by[c.id], al: al }); }); });
-    const ownTotal = sales.reduce((a, x) => a + comm(x), 0);
+    const ownTotal = okSales.reduce((a, x) => a + comm(x), 0);
     const shareTotal = shareItems.reduce((a, x) => a + x.al.amount, 0);
     const shareRows = shareItems.slice().reverse().map((x) => {
       const c = x.c, e = x.e, al = x.al;
@@ -1235,8 +1413,8 @@ class Component extends DCLogic {
     };
     const salesRows = sales.filter((x) => s.salesType === 'all' || PM[x.prop].type === s.salesType).slice().reverse().map((x) => ({
       id: x.id, dateText: fmtDate(x.date), prop: x.prop, propName: propName(PM[x.prop]), cust: L(x.cust), priceText: baht(x.price),
-      seq: '#' + x.seq, rate: x.rate + '%', commText: baht(comm(x)),
-      c: x.paidOn ? chip('green', (TH ? 'จ่ายแล้ว ' : 'Paid ') + fmtDate(x.paidOn)) : chip('amber', TH ? 'รอจ่าย' : 'Pending')
+      seq: x.pend ? '—' : '#' + x.seq, rate: x.pend ? '—' : x.rate + '%', commText: x.pend ? (TH ? 'คำนวณหลังรับรอง' : 'After approval') : baht(comm(x)),
+      c: x.pend ? chip('blue', TH ? 'รอเจ้าหน้าที่รับรองเครดิต' : 'Awaiting credit approval') : (x.paidOn ? chip('green', (TH ? 'จ่ายแล้ว ' : 'Paid ') + fmtDate(x.paidOn)) : chip('amber', TH ? 'รอจ่าย' : 'Pending'))
     }));
 
     // ---------- appointments ----------
@@ -1264,7 +1442,7 @@ class Component extends DCLogic {
     const months = monthsList.map((m) => {
       const inM = s.acts.filter((a) => ymOf(a.date) === m);
       let c;
-      const wkIn = this.seedWeekly().some((w) => ymOf(w.date) === m && w.att.indexOf('AG-1007') !== -1);
+      const wkIn = wkData.some((w) => ymOf(w.date) === m && w.att.indexOf('AG-1007') !== -1);
       if (inM.some((a) => a.st === 'attended')) c = chip('green', TH ? 'เข้าร่วมแล้ว' : 'Attended');
       else if (wkIn) c = chip('green', TH ? 'ฟังแชร์ความรู้แล้ว' : 'Attended weekly');
       else if (m < CUR) c = chip('red', TH ? 'ไม่ได้เข้าร่วม' : 'Missed');
@@ -1272,7 +1450,7 @@ class Component extends DCLogic {
       else c = chip('amber', TH ? 'ยังไม่ลงทะเบียน' : 'Not signed up');
       return { label: fmtMonth(m), c: c };
     });
-    const wkAll = this.seedWeekly();
+    const wkAll = wkData;
     const curElig = s.acts.some((a) => ymOf(a.date) === CUR && a.st === 'attended') || wkAll.some((w) => ymOf(w.date) === CUR && w.att.indexOf('AG-1007') !== -1);
     const curReg = s.acts.some((a) => ymOf(a.date) === CUR && a.st === 'registered') || wkAll.some((w) => ymOf(w.date) === CUR && !!s.wkReg[w.id]);
     const octOpen = !curElig && !curReg;
@@ -1539,10 +1717,163 @@ class Component extends DCLogic {
         ov: s.ovs.map((x) => ({ name: L(x.name), ref: 'AG-1007', date: x.sdate, st: x.st })).concat(LINE_OV.map((x) => ({ name: L(x.name), ref: x.ref, date: x.date, st: x.st }))),
         tr: s.trs.map((x) => ({ name: L(x.name), ref: 'AG-1007', round: x.round, rdate: x.rdate, st: x.st, code: x.code || '' })).concat(LINE_TR.map((x) => ({ name: L(x.name), ref: x.ref, round: x.round, rdate: x.rdate, st: x.st, code: x.code }))),
         visits: s.appts.map((x) => ({ date: x.date, time: x.time, cust: L(x.name), prop: x.prop, agent: 'AG-1007', st: x.st })).concat(LINE_VIS.map((x) => ({ date: x.date, time: x.time, cust: L(x.name), prop: x.prop, agent: x.agent, st: x.st }))),
-        weekly: this.seedWeekly().map((w) => Object.assign({}, w, { reg: w.reg.concat(s.wkReg[w.id] ? ['AG-1007'] : []) })),
+        weekly: wkData.map((w) => Object.assign({}, w, { reg: w.reg.concat(s.wkReg[w.id] ? ['AG-1007'] : []) })),
         rounds: this.seedRounds()
       }
     });
+
+
+    // ---------- my status / LINE / proof / check-in ----------
+    const myQ = QS.fix;
+    const CHN = { facebook: 'Facebook', tiktok: 'TikTok', instagram: 'Instagram', website: TH ? 'เว็บไซต์' : 'Website', other: TH ? 'อื่นๆ' : 'Other' };
+    const PFS = { pending: ['amber', TH ? 'รอตรวจสอบ' : 'Pending review'], pass: ['green', TH ? 'ผ่าน' : 'Pass'], fail: ['red', TH ? 'ไม่ผ่าน' : 'Fail'] };
+    const passed = s.myProofs.filter((x) => x.st === 'pass').map((x) => x.date).sort();
+    const lastPass = passed.length ? passed[passed.length - 1] : '';
+    const proofDue = lastPass ? addMonths(lastPass, 3) : '';
+    const proofPend = s.myProofs.some((x) => x.st === 'pending');
+    const proofOver = !proofDue || proofDue < TODAY;
+    const lineIn = s.lineSt === 'in';
+    const checks = [
+      { ok: curElig, label: curElig ? (TH ? 'เข้าร่วมกิจกรรมเดือน ต.ค. แล้ว' : 'Joined an October activity') : (TH ? 'ยังไม่มีกิจกรรมเดือน ต.ค. — เช็กชื่อแชร์ความรู้คืนนี้ได้' : 'No October activity yet — check in tonight') },
+      { ok: !proofOver, warn: proofOver && proofPend, label: !proofOver ? (TH ? 'หลักฐานการตลาดอยู่ในกำหนด (ถึง ' + fmtDate(proofDue) + ')' : 'Marketing proof on track (until ' + fmtDate(proofDue) + ')') : (proofPend ? (TH ? 'ส่งหลักฐานการตลาดแล้ว รอเจ้าหน้าที่ตรวจ' : 'Marketing proof sent, awaiting review') : (TH ? 'หลักฐานการตลาดเลยกำหนด (' + fmtDate(proofDue) + ')' : 'Marketing proof overdue (' + fmtDate(proofDue) + ')')) },
+      { ok: lineIn, warn: s.lineSt === 'pending', label: lineIn ? (TH ? 'อยู่ในกลุ่ม LINE ตัวแทน' : 'In the agents’ LINE group') : (s.lineSt === 'pending' ? (TH ? 'ขอเข้ากลุ่ม LINE แล้ว รออนุมัติ' : 'LINE group request sent') : (TH ? 'ยังไม่อยู่ในกลุ่ม LINE ตัวแทน' : 'Not in the agents’ LINE group')) },
+      { ok: true, label: TH ? 'แนบไฟล์สัญญาตัวแทนแล้ว' : 'Agent contract on file' }
+    ].map((c) => ({ label: c.label, mark: c.ok ? '✓' : (c.warn ? '…' : '!'), bg: c.ok ? '#D7EEDF' : (c.warn ? '#DCE8FB' : '#FBE1DD'), fg: c.ok ? '#155B34' : (c.warn ? '#1D4E9E' : '#8E2B1E'), tc: c.ok ? '#1B2420' : '#1B2420' }));
+    const hq = { title: TH ? 'สถานะคุณสมบัติตัวแทนของคุณ' : 'Your agent status', label: myQ.label, desc: myQ.desc + (TH ? ' · เจ้าหน้าที่จะปรับสถานะหลังตรวจ' : ' · staff update it after review'), dot: myQ.dot, checks: checks };
+    const LST = { in: ['green', TH ? 'อยู่ในกลุ่ม' : 'In group'], pending: ['amber', TH ? 'รออนุมัติ' : 'Awaiting approval'], out: ['grey', TH ? 'ไม่อยู่ในกลุ่ม' : 'Not in group'] };
+    const hl = {
+      title: TH ? 'กลุ่ม LINE ตัวแทนโครงการ' : 'Project agents’ LINE group', c: chip(LST[s.lineSt][0], LST[s.lineSt][1]),
+      text: s.lineSt === 'out' ? (TH ? 'คุณออกจากกลุ่มเมื่อ ' + fmtDate(s.lineDate) + ' กดขอเข้ากลุ่มใหม่ เจ้าหน้าที่อนุมัติแล้วจะเชิญคุณผ่าน LINE' : 'You left on ' + fmtDate(s.lineDate) + '. Request to rejoin; staff approve and invite you in LINE.')
+        : (s.lineSt === 'pending' ? (TH ? 'ส่งคำขอเมื่อ ' + fmtDate(s.lineDate) + ' รอเจ้าหน้าที่อนุมัติและเชิญเข้ากลุ่ม' : 'Requested on ' + fmtDate(s.lineDate) + ' — waiting for staff to approve and invite you') : (TH ? 'คุณอยู่ในกลุ่มแล้ว' : 'You are in the group')),
+      canReq: s.lineSt === 'out', btn: TH ? 'ขอเข้ากลุ่ม LINE' : 'Request to join',
+      request: () => { this.setState({ lineSt: 'pending', lineDate: TODAY }); this.flash(TH ? 'ส่งคำขอเข้ากลุ่ม LINE แล้ว รอเจ้าหน้าที่อนุมัติ' : 'Request sent — waiting for staff approval'); },
+      note: TH ? 'ระบบใช้ LINE User ID ที่ผูกกับบัญชีของคุณ เพื่อยืนยันว่าเป็นตัวแทนจริง' : 'Your linked LINE User ID is used to confirm you are a registered agent'
+    };
+    const pfF = s.pfF;
+    const setPfF = setter('pfF');
+    const dueChip = proofPend ? chip('blue', TH ? 'มีหลักฐานรอตรวจ · ครบกำหนดเดิม ' + fmtDate(proofDue) : 'Proof under review · was due ' + fmtDate(proofDue))
+      : (proofOver ? chip('red', TH ? 'เลยกำหนดส่งตั้งแต่ ' + fmtDate(proofDue) + ' — ส่งได้ทันที' : 'Overdue since ' + fmtDate(proofDue) + ' — submit now') : chip('green', TH ? 'ครั้งถัดไปภายใน ' + fmtDate(proofDue) : 'Next one due by ' + fmtDate(proofDue)));
+    const pf = {
+      formTitle: TH ? 'ส่งลิงก์โพสต์' : 'Send a post link', due: dueChip,
+      chLbl: TH ? 'ช่องทาง' : 'Channel', urlLbl: TH ? 'ลิงก์โพสต์จริง (URL)' : 'Post URL', ch: pfF.ch, url: pfF.url, setCh: setPfF('ch'), setUrl: setPfF('url'),
+      chOpts: ['facebook', 'tiktok', 'instagram', 'website', 'other'].map((k) => ({ v: k, l: CHN[k] })),
+      submitBtn: TH ? 'ส่งให้ตรวจสอบ' : 'Submit for review',
+      formNote: TH ? 'ระบบเก็บเฉพาะลิงก์ เจ้าหน้าที่จะเปิดตรวจและบันทึกผล ผ่านแล้วนับรอบ 3 เดือนใหม่จากวันที่โพสต์' : 'Only the link is stored. Staff open it and record the result; a pass restarts the 3-month clock.',
+      submit: () => {
+        const f = this.state.pfF;
+        const u = f.url.trim();
+        if (!/^https?:\/\/\S+\.\S+/.test(u)) { this.flash(TH ? 'กรุณาใส่ลิงก์โพสต์ที่ขึ้นต้นด้วย https://' : 'Please enter a post link starting with https://'); return; }
+        this.setState((st) => ({ myProofs: [{ date: TODAY, ch: f.ch, url: u, st: 'pending', note: '' }].concat(st.myProofs), pfF: { ch: f.ch, url: '' } }));
+        this.flash(TH ? 'ส่งหลักฐานแล้ว รอเจ้าหน้าที่ตรวจสอบ' : 'Proof sent — waiting for review');
+      },
+      ruleTitle: TH ? 'กฎตรวจหลักฐาน' : 'Review rules',
+      rules: TH ? ['ลิงก์ต้องเปิดได้และเป็นโพสต์สาธารณะ', 'เนื้อหาเกี่ยวกับทรัพย์หรือโครงการของเรา', 'ราคาและโปรโมชั่นตรงกับข้อมูลล่าสุดของโครงการ', 'ต้องเป็นโพสต์ของคุณเอง', 'โพสต์อย่างน้อย 1 ครั้งทุก 3 เดือน เพื่อรักษาสถานะตัวแทน']
+        : ['The link opens and the post is public', 'It is about our listings or project', 'Prices and promotions match current project data', 'It is your own post', 'Post at least once every 3 months to keep your agent status'],
+      histTitle: TH ? 'ประวัติการส่ง' : 'Your submissions',
+      h: { date: TH ? 'วันที่ส่ง' : 'Sent', ch: TH ? 'ช่องทาง' : 'Channel', link: TH ? 'ลิงก์' : 'Link', res: TH ? 'ผลตรวจ' : 'Result', note: TH ? 'หมายเหตุจากเจ้าหน้าที่' : 'Staff note' },
+      rows: s.myProofs.map((x) => ({ date: fmtDate(x.date), ch: CHN[x.ch], url: x.url, c: chip(PFS[x.st][0], PFS[x.st][1]), note: L(x.note) || '—' }))
+    };
+    const CI_CODE = '2110';
+    const ciEvents = [
+      { id: 'WK-08', kind: 'weekly', date: '2026-10-21', time: '19:00–21:00', title: ['แชร์ความรู้วันพุธ: อัปเดตโปรโมชั่นไตรมาส 4', 'Wednesday sharing: Q4 promotion update'] },
+      { id: 'ACT-10', kind: 'act', date: '2026-10-28', time: '09:30–12:00', title: ['Agent Day ประจำเดือน ต.ค.', 'Monthly Agent Day – October'] },
+      { id: 'WK-09', kind: 'weekly', date: '2026-10-28', time: '19:00–21:00', title: ['แชร์ความรู้วันพุธ: เคสศึกษาลูกค้าต่างชาติ', 'Wednesday sharing: foreign buyers'] }
+    ];
+    const ci = {
+      title: TH ? 'เช็กชื่อเข้าร่วมกิจกรรมด้วยตัวเอง' : 'Self check-in', sub: TH ? 'เปิดให้เช็กชื่อเฉพาะวันที่มีกิจกรรม' : 'Opens only on the event day',
+      code: s.ciCode, setCode: (e) => this.setState({ ciCode: e.target.value }), codeAria: TH ? 'รหัสกิจกรรม' : 'Event code', codePh: TH ? 'รหัส 4 หลัก' : '4-digit code', btn: TH ? 'เช็กชื่อ' : 'Check in',
+      note: TH ? 'เจ้าหน้าที่จะประกาศรหัสกิจกรรมใน Zoom หรือหน้างาน (ตัวอย่างนี้ใช้รหัส ' + CI_CODE + ') · การเช็กชื่อนับเป็นกิจกรรมของเดือนนั้นทันที · ระบบจริงเปิดเช็กชื่อเฉพาะช่วงเวลากิจกรรม' : 'Staff announce the event code in Zoom or on site (this demo uses ' + CI_CODE + ') · a check-in counts for that month right away · the live system only opens during the event',
+      items: ciEvents.map((e) => {
+        const done = e.kind === 'weekly' ? !!s.wkAtt[e.id] : s.acts.some((a) => a.id === e.id && a.st === 'attended');
+        const today = e.date === TODAY;
+        return {
+          type: e.kind === 'weekly' ? (TH ? 'ออนไลน์ · Zoom' : 'Online · Zoom') : (TH ? 'ออนไซต์' : 'On site'), tbg: e.kind === 'weekly' ? '#ECE4F7' : '#DCE8FB', tfg: e.kind === 'weekly' ? '#5B3E8F' : '#1D4E9E',
+          when: (today ? (TH ? 'วันนี้ · ' : 'Today · ') : fmtDate(e.date) + ' · ') + e.time + (TH ? ' น.' : ''), title: L(e.title),
+          open: today && !done, closed: !today || done,
+          c: done ? chip('green', TH ? 'เช็กชื่อแล้ว' : 'Checked in') : chip('grey', (TH ? 'เปิดเช็กชื่อ ' : 'Opens ') + fmtDate(e.date)),
+          checkIn: () => {
+            if (String(this.state.ciCode).trim() !== CI_CODE) { this.flash(TH ? 'รหัสกิจกรรมไม่ถูกต้อง' : 'Wrong event code'); return; }
+            if (e.kind === 'weekly') this.setState((st) => ({ wkAtt: Object.assign({}, st.wkAtt, { [e.id]: true }), ciCode: '' }));
+            else this.setState((st) => ({ acts: st.acts.map((a) => (a.id === e.id ? Object.assign({}, a, { st: 'attended' }) : a)), ciCode: '' }));
+            this.flash(TH ? 'เช็กชื่อแล้ว · นับเป็นกิจกรรมเดือน ' + fmtMonth(e.date.slice(0, 7)) + ' มีสิทธิ์รับค่าคอมฯ เดือนนี้' : 'Checked in — counts as your ' + fmtMonth(e.date.slice(0, 7)) + ' activity');
+          }
+        };
+      })
+    };
+
+    // ---------- commission simulator (uses the same rules as the project) ----------
+    const ancA = (id) => { const out = []; let u = UPOF[id]; let g = 0; while (u && g < 50) { out.push(u); u = UPOF[u]; g++; } return out; };
+    const cntA = (id) => ALL_CT.filter((c) => c.agent === id || ancA(c.agent).indexOf(id) !== -1).length;
+    const fmtPctA = (p) => (Math.round(p * 100) / 100) + '%';
+    const simAg = s.simAgent;
+    const simPriceN = num(s.simPrice);
+    const simRate = rateFor(cntA(simAg) + 1);
+    const simUps = ancA(simAg).slice(0, 4).map((u, i) => ({ id: u, lvl: i + 1, rate: rateFor(cntA(u) + 1) }));
+    const simTop = simUps.reduce((m, u) => Math.max(m, u.rate), 0);
+    const simDiff = Math.max(0, simTop - simRate);
+    const simShare = simUps.length ? simDiff / simUps.length : 0;
+    const simCo = Math.max(0, 7 - simRate - simDiff);
+    const nmFull = (id) => (id === 'AG-1007' ? meName + (TH ? ' (คุณ)' : ' (you)') : nm(id));
+    const sm = {
+      formTitle: TH ? 'ข้อมูลสำหรับจำลอง' : 'Simulation inputs', sellerLbl: TH ? 'คนขาย' : 'Seller', priceLbl: TH ? 'ราคาขาย (บาท)' : 'Sale price (THB)',
+      agent: simAg, agentOpts: flatP.map((p) => ({ id: p.id, name: p.id + ' · ' + nmFull(p.id) + ' · ' + rateFor(cntA(p.id) + 1) + '%' })),
+      setAgent: (e) => this.setState({ simAgent: e.target.value }), price: s.simPrice, setPrice: (e) => this.setState({ simPrice: e.target.value }),
+      presetAria: TH ? 'ราคาตัวอย่าง' : 'Sample prices', presets: [3600000, 6900000, 12900000].map((v) => ({ label: mil(v), pick: () => this.setState({ simPrice: v.toLocaleString('en-US') }) })),
+      disclaimer: TH ? 'เครื่องมือจำลองเท่านั้น ตัวเลขจริงคำนวณหลังเจ้าหน้าที่รับรองเครดิตสัญญา และต้องผ่านเงื่อนไขกิจกรรมของเดือนนั้น' : 'Simulation only — real figures are set once staff approve the contract and the monthly activity condition is met.',
+      big: [
+        { label: TH ? 'คนขายได้' : 'Seller gets', value: simRate + '%', sub: baht(simPriceN * simRate / 100), fg: '#12372A' },
+        { label: TH ? 'ส่วนต่าง Upline' : 'Upline share', value: fmtPctA(simDiff), sub: baht(simPriceN * simDiff / 100), fg: '#1D4E9E' },
+        { label: TH ? 'คุณได้' : 'You get', value: simAg === 'AG-1007' ? simRate + '%' : (simUps.some((u) => u.id === 'AG-1007') && simDiff ? fmtPctA(simShare) : '0%'), sub: baht(simAg === 'AG-1007' ? simPriceN * simRate / 100 : (simUps.some((u) => u.id === 'AG-1007') ? simPriceN * simShare / 100 : 0)), fg: '#8A4B00' }
+      ],
+      segs: [[simRate, '#12372A', '#FFFFFF', (TH ? 'คนขาย ' : 'Seller ') + simRate + '%'], [simDiff, '#4A7FD4', '#FFFFFF', 'Upline ' + fmtPctA(simDiff)], [simCo, '#E1E6E3', '#3D4843', (TH ? 'บริษัท ' : 'Company ') + fmtPctA(simCo)]]
+        .filter((x) => x[0] > 0).map((x) => ({ w: (x[0] / 7 * 100) + '%', bg: x[1], fg: x[2], label: x[3] })),
+      barAria: (TH ? 'งบ 7%: คนขาย ' : '7% budget: seller ') + simRate + '%, upline ' + fmtPctA(simDiff),
+      formula: !simUps.length ? '' : (TH ? '%ต้นสาย ' + simTop + '% − ' + simRate + '% = ' + fmtPctA(simDiff) + (simDiff ? ' แบ่ง ' + simUps.length + ' คน คนละ ' + fmtPctA(simShare) : ' จึงไม่มีส่วนแบ่ง') : 'Upline rate ' + simTop + '% − ' + simRate + '% = ' + fmtPctA(simDiff) + (simDiff ? ' split ' + simUps.length + ' ways, ' + fmtPctA(simShare) + ' each' : ' — no share')),
+      tblTitle: TH ? 'ผู้ได้รับค่าคอมฯ' : 'Who gets paid',
+      h: { who: TH ? 'ผู้รับ' : 'Recipient', role: TH ? 'บทบาท' : 'Role', tier: TH ? 'ระดับ' : 'Tier', pct: TH ? 'ส่วนแบ่ง' : 'Share', amt: TH ? 'จำนวนเงิน' : 'Amount' },
+      rows: [{ id: simAg, name: nmFull(simAg), code: simAg, role: TH ? 'คนขาย' : 'Seller', tier: simRate + '%', pct: simRate + '%', amt: baht(simPriceN * simRate / 100) }]
+        .concat(simUps.map((u) => ({ id: u.id, name: nmFull(u.id), code: u.id, role: (TH ? 'Upline ชั้นที่ ' : 'Upline L') + u.lvl, tier: u.rate + '%', pct: fmtPctA(simShare), amt: baht(simPriceN * simShare / 100) })))
+        .map((r) => Object.assign(r, { bg: r.id === 'AG-1007' ? '#FFF8EA' : '#FFFFFF' })),
+      credTitle: TH ? 'เครดิตสัญญาสะสมเมื่อสัญญานี้ได้รับรอง' : 'Contract credit once approved',
+      credSub: TH ? 'คนขายและทุกคนในสายงานด้านบนได้ +1 เครดิต ใช้นับระดับ 3 / 5 / 7%' : 'The seller and everyone above get +1 credit toward the 3 / 5 / 7% tiers',
+      creds: [simAg].concat(ancA(simAg)).map((id) => { const n0 = cntA(id); const r0 = rateFor(n0 + 1); const r1 = rateFor(n0 + 2); return { name: nmFull(id), code: id, change: n0 + ' → ' + (n0 + 1) + (TH ? ' สัญญา · ระดับถัดไป ' : ' · next tier '), after: r1 + '%' + (r1 > r0 ? (TH ? ' (เลื่อนขึ้น)' : ' (up)') : ''), fg: r1 > r0 ? '#155B34' : '#12372A' }; })
+    };
+
+    // ---------- my line details ----------
+    const ml = {
+      title: TH ? 'รายละเอียดสายงานของฉัน' : 'My line details', c: chip(myQ.ch, myQ.label), dot: myQ.dot,
+      rows: [
+        { k: TH ? 'แม่ทีมสายตรง' : 'Direct upline', v: 'AG-1001 · ' + nm('AG-1001') },
+        { k: TH ? 'Upline ทั้งหมด' : 'All uplines', v: ancA('AG-1007').length + (TH ? ' คน' : '') },
+        { k: TH ? 'Downline ชั้นแรก' : 'Direct downlines', v: tree.kids.length + (TH ? ' คน' : '') },
+        { k: TH ? 'Downline ทั้งหมด' : 'All downlines', v: members(tree) + (TH ? ' คน' : '') },
+        { k: TH ? 'สัญญาสะสมในสายงาน' : 'Contracts in my line', v: teamClosed + (TH ? ' สัญญา' : '') },
+        { k: TH ? 'อีกกี่สัญญาถึงระดับถัดไป' : 'To the next tier', v: target ? (target - teamClosed) + (TH ? ' สัญญา → ' : ' → ') + (target === 3 ? 5 : 7) + '%' : (TH ? 'ระดับสูงสุดแล้ว' : 'Top tier') }
+      ]
+    };
+
+    // ---------- home ----------
+    const pendAp = s.appts.filter((a) => a.st === 'pending').length;
+    const todo = (on, dot, title, sub, btn, fn) => (on ? { dot: dot, bg: dot === '#C0392B' ? '#FFF6F4' : '#FFFFFF', title: title, sub: sub, btn: btn, go: fn } : null);
+    const hmTodos = [
+      todo(!curElig, '#C0392B', TH ? 'ยังไม่มีกิจกรรมเดือน ต.ค.' : 'No October activity yet', TH ? 'วันนี้มีแชร์ความรู้วันพุธ 19:00 น. เช็กชื่อเพื่อรักษาสิทธิ์ค่าคอมฯ เดือนนี้' : 'Wednesday sharing tonight at 19:00 — check in to keep this month’s commission', TH ? 'ไปเช็กชื่อ' : 'Check in', go('activity')),
+      todo(proofOver && !proofPend, '#C0392B', TH ? 'หลักฐานการตลาดเลยกำหนด' : 'Marketing proof overdue', TH ? 'ครบกำหนด ' + fmtDate(proofDue) + ' ส่งลิงก์โพสต์ใหม่เพื่อกลับเป็นสถานะเขียว' : 'Was due ' + fmtDate(proofDue) + ' — send a new post link', TH ? 'ส่งหลักฐาน' : 'Submit', go('proof')),
+      todo(s.lineSt === 'out', '#D99A1E', TH ? 'ยังไม่อยู่ในกลุ่ม LINE ตัวแทน' : 'Not in the agents’ LINE group', TH ? 'ประกาศโปรโมชั่นและกิจกรรมส่งผ่านกลุ่มนี้' : 'Promotions and events are announced there', TH ? 'ขอเข้ากลุ่ม' : 'Request', hl.request),
+      todo(sales.some((x) => x.pend), '#4A7FD4', TH ? 'สัญญา CT-2026-047 รอรับรองเครดิต' : 'CT-2026-047 awaiting credit approval', TH ? 'เจ้าหน้าที่รับรองแล้วจึงนับเป็นสัญญาสะสมและคำนวณค่าคอมฯ' : 'It counts toward your tier once staff approve it', TH ? 'ดูสัญญา' : 'View', go('sales')),
+      todo(pendAp, '#4A7FD4', TH ? 'นัดชมโครงการรอเจ้าหน้าที่ยืนยัน ' + pendAp + ' นัด' : pendAp + ' visit(s) awaiting confirmation', TH ? 'ระบบแจ้งเตือนเมื่อยืนยันแล้ว' : 'You will be notified once confirmed', TH ? 'ดูนัดหมาย' : 'View', go('appt'))
+    ].filter((x) => x);
+    const hm = {
+      todoTitle: TH ? 'สิ่งที่ต้องทำ' : 'To do', todoSub: TH ? 'ณ ' + fmtDate(TODAY) : 'As of ' + fmtDate(TODAY), todos: hmTodos, allClear: hmTodos.length === 0, clear: TH ? 'ไม่มีงานค้าง เยี่ยมมาก' : 'All clear — nice work',
+      quickTitle: TH ? 'เริ่มทำงานจากตรงนี้' : 'Start here', quickSub: TH ? 'ทางลัดไปงานที่ใช้บ่อย' : 'Shortcuts to common tasks',
+      quick: [
+        ['appt', TH ? 'นัดลูกค้าชมโครงการ' : 'Book a site visit', TH ? 'ส่งนัดให้เจ้าหน้าที่ยืนยัน' : 'Send for staff confirmation', { showAppt: true, apptTab: 'up', af: this.blankAppt('PV-A01') }],
+        ['props', TH ? 'ดูทรัพย์โปรประจำเดือน' : 'Promo listings', TH ? 'แปลงโปรและโครงการ 2+1' : 'Monthly promos and Project 2+1', { propType: 'monthly', propProj: 'main' }],
+        ['proof', TH ? 'ส่งหลักฐานการตลาด' : 'Submit marketing proof', TH ? 'ลิงก์โพสต์ทุก 3 เดือน' : 'A post link every 3 months'],
+        ['activity', TH ? 'เช็กชื่อกิจกรรม' : 'Check in', TH ? 'แชร์ความรู้วันพุธ / Agent Day' : 'Wednesday sharing / Agent Day'],
+        ['sim', TH ? 'จำลองค่าคอมมิชชัน' : 'Simulate commission', TH ? 'ดูส่วนแบ่งของคุณก่อนปิดการขาย' : 'See your share before closing'],
+        ['overview', TH ? 'ชวนคนฟัง Overview' : 'Invite to overview', TH ? 'เริ่มสร้างทีมของคุณ' : 'Start building your team']
+      ].map((x) => ({ key: x[0], title: x[1], sub: x[2], go: go(x[0], x[3]) }))
+    };
 
     // ---------- nav ----------
     const ICON = {
@@ -1555,7 +1886,10 @@ class Component extends DCLogic {
       activity: 'M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z',
       props: 'M3 11l9-7 9 7M5 10v10h14V10M10 20v-6h4v6',
       overview: 'M3 6h13v12H3zM16 10l5-3v10l-5-3',
-      training: 'M2 9l10-5 10 5-10 5zM6 11v5c3 2.5 9 2.5 12 0v-5'
+      training: 'M2 9l10-5 10 5-10 5zM6 11v5c3 2.5 9 2.5 12 0v-5',
+      home: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
+      proof: 'M4 15V9l11-5v16L4 15zM15 8h2a3 3 0 0 1 0 6h-2M7 15l1.5 5',
+      sim: 'M5 3h14v18H5zM8 7h8M8 11h2M12 11h2M16 11v6M8 15h2M12 15h2M8 18h6'
     };
     const navItem = (key) => {
       const on = s.screen === key;
@@ -1563,22 +1897,26 @@ class Component extends DCLogic {
     };
     const seg = (on) => ({ bg: on ? '#12372A' : '#FFFFFF', fg: on ? '#FFFFFF' : '#1B2420', pressed: on ? 'true' : 'false' });
     const show = {};
-    ['profile', 'tree', 'contracts', 'appt', 'sales', 'activity', 'actsum', 'props', 'overview', 'training'].forEach((k) => { show[k] = s.screen === k; });
+    ['home', 'profile', 'tree', 'contracts', 'appt', 'sales', 'activity', 'actsum', 'props', 'overview', 'training', 'proof', 'sim'].forEach((k) => { show[k] = s.screen === k; });
 
     return {
       t: t, show: show,
       page: { title: t['p_' + s.screen], sub: t['s_' + s.screen] },
-      navMain: ['profile', 'tree', 'contracts', 'appt', 'sales', 'activity', 'actsum', 'props'].map(navItem),
+      navMain: ['home', 'profile', 'tree', 'contracts', 'appt', 'sales', 'sim', 'activity', 'proof', 'actsum', 'props'].map(navItem),
+      hq: hq, hl: hl, pf: pf, ci: ci, sm: sm, ml: ml,
+      hm: Object.assign({}, hm, { quick: hm.quick.map((q) => Object.assign({}, q, { d: ICON[q.key] })) }),
+      qLegend: ['ok', 'fix', 'risk', 'ended'].map((k) => ({ dot: QS[k].dot, label: QS[k].label })),
+      resetDemo: () => { this.setState(Object.assign(this.initState(), { lang: this.state.lang, narrow: this.state.narrow, menuOpen: false })); window.scrollTo(0, 0); this.flash(TH ? 'รีเซ็ตข้อมูลจำลองกลับเป็นค่าเริ่มต้นแล้ว' : 'Demo data reset'); },
       ad: ad,
       navRecruit: ['overview', 'training'].map(navItem),
       langBtn: { th: seg(TH), en: seg(!TH) },
       setTh: () => this.setState({ lang: 'th' }), setEn: () => this.setState({ lang: 'en' }),
       me: { name: meName, initial: meName.charAt(0), code: 'AG-1007', tier: myRate + '%' },
-      warn: { show: octOpen },
+      warn: { show: octOpen && s.screen !== 'home' && s.screen !== 'activity' },
       goActivity: () => this.setState({ screen: 'activity' }),
 
       profileKpis: [
-        { label: TH ? 'สัญญาที่ปิดเอง' : 'Own contracts', value: String(sales.length) },
+        { label: TH ? 'สัญญาที่ปิดเอง' : 'Own contracts', value: String(okSales.length) },
         { label: TH ? 'สัญญารวมในสายงาน' : 'Contracts in your line', value: String(teamClosed) },
         { label: TH ? 'ค่าคอมฯ ที่ได้รับแล้ว' : 'Commission received', value: baht(earned) },
         { label: TH ? 'สมาชิกในสายงาน' : 'Team members', value: String(members(tree)) }
