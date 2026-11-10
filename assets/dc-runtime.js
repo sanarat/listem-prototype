@@ -1,5 +1,6 @@
 /* ListEm prototype – tiny template runtime (renders the page templates with React) */
 (function () {
+  window.__LISTEM_STATIC = true;
   var h = React.createElement;
   var HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
   var WHOLE = /^\s*\{\{\s*([^}]+?)\s*\}\}\s*$/;

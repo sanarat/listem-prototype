@@ -9,13 +9,14 @@
 | `staff.html` | เจ้าหน้าที่โครงการ |
 | `admin.html` | System admin |
 | `assets/` | ไฟล์ประกอบ (ต้องอัปโหลดไปด้วย) |
+| `media/` | รูปและวิดีโอตัวอย่างของทรัพย์ (ต้องอัปโหลดไปด้วย) |
 
 ## วิธีเอาขึ้น GitHub Pages (ผ่านหน้าเว็บ ไม่ต้องใช้คำสั่ง)
 
 1. ล็อกอิน github.com → กด **New repository**
 2. ตั้งชื่อ เช่น `listem-prototype` → เลือก **Public** → กด **Create repository**
 3. ในหน้า repo ที่ว่างอยู่ กดลิงก์ **uploading an existing file**
-4. ลากไฟล์ทั้งหมดในโฟลเดอร์นี้ (รวมโฟลเดอร์ `assets`) ไปวาง → กด **Commit changes**
+4. ลากไฟล์ทั้งหมดในโฟลเดอร์นี้ (รวมโฟลเดอร์ `assets` และ `media`) ไปวาง → กด **Commit changes**
 5. ไปที่ **Settings → Pages** → ช่อง Source เลือก **Deploy from a branch** → Branch เลือก **main** และ **/ (root)** → กด **Save**
 6. รอ 1–2 นาที ลิงก์จะขึ้นด้านบนของหน้า Pages:
    `https://<ชื่อผู้ใช้ GitHub>.github.io/listem-prototype/`

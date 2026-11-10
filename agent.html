@@ -184,6 +184,75 @@ button,input,select,textarea{font-family:inherit}
 </div>
 </template>
 
+<template data-k="if" value="{{show.media}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<button type="button" onClick="{{md.back}}" style="align-self: flex-start; min-height: 40px; padding: 0 14px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 14px; font-weight: 600; cursor: pointer">‹ {{md.backLbl}}</button>
+<section style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; align-items: flex-start">
+<div style="min-width: 0">
+<div style="font-size: 13px; color: #55625C">{{md.p.id}} · {{md.p.c.label}}</div>
+<h2 style="margin: 0; font-size: 22px; color: #12372A">{{md.p.name}}</h2>
+</div>
+<template data-k="if" value="{{md.p.isMonthly}}" hint-placeholder-val="{{ false }}"><div style="padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; background: #8E2B1E; color: #FFFFFF">{{md.p.monthlyLbl}}</div></template>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px"><span style="font-size: 26px; font-weight: 700; color: {{md.p.priceFg}}">{{md.p.priceText}}</span><template data-k="if" value="{{md.p.isMonthly}}" hint-placeholder-val="{{ false }}"><span style="font-size: 14px; color: #55625C; text-decoration: line-through">{{md.p.origPrice}}</span><span style="font-size: 13px; font-weight: 600; color: #8E2B1E">{{md.p.saveText}}</span></template></div>
+<template data-k="if" value="{{md.p.hasPromo}}" hint-placeholder-val="{{ false }}"><div style="background: #FCEFD9; color: #6B3A00; border-radius: 8px; padding: 10px 12px; font-size: 14px"><strong>{{t.promoLbl}}:</strong> {{md.p.promo}}</div></template>
+<template data-k="if" value="{{md.p.hasOrigin}}" hint-placeholder-val="{{ false }}"><div style="background: #F7F9F8; border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #3D4843"><span style="display: inline-block; margin-bottom: 4px; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; background: {{md.p.originBg}}; color: {{md.p.originFg}}">{{md.p.originLbl}}</span><div>{{md.p.originSub}}</div></div></template>
+<p style="margin: 0; font-size: 15px; color: #3D4843">{{md.p.desc}}</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px">
+<template data-k="for" list="{{md.specs}}" as="x" hint-placeholder-count="6"><div style="background: #F7F9F8; border-radius: 8px; padding: 8px 10px"><div style="font-size: 12px; color: #55625C">{{x.k}}</div><div style="font-weight: 600">{{x.v}}</div></div></template>
+</div>
+<template data-k="if" value="{{md.p.canBook}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{md.book}}" style="align-self: flex-start; min-height: 44px; padding: 0 18px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">{{t.bookVisit}}</button></template>
+</section>
+<section aria-label="{{md.galTitle}}" style="background: #FFFFFF; border: 1px solid #E1E6E3; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 16px; align-items: center">
+<div><h2 style="margin: 0; font-size: 17px; color: #12372A">{{md.galTitle}}</h2><div style="font-size: 13px; color: #55625C">{{md.galSub}}</div></div>
+</div>
+<div style="position: sticky; top: {{md.stickTop}}; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; background: #F7F9F8; border: 1px solid #E1E6E3; border-radius: 10px; padding: 8px 12px">
+<label style="display: flex; align-items: center; gap: 8px; min-height: 40px; font-size: 14px; font-weight: 600; cursor: pointer"><input type="checkbox" checked="{{md.allOn}}" onChange="{{md.toggleAll}}" style="width: 20px; height: 20px; accent-color: #12372A">{{md.allLbl}}</label>
+<span aria-live="polite" style="font-size: 13px; color: #3D4843">{{md.countText}}</span>
+<div style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px">
+<template data-k="if" value="{{md.anySel}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{md.clear}}" style="min-height: 40px; padding: 0 12px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #3D4843; font-size: 13px; font-weight: 600; cursor: pointer">{{md.clearLbl}}</button></template>
+<button type="button" onClick="{{md.download}}" disabled="{{md.dlDisabled}}" style="display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; border: 0; border-radius: 8px; background: {{md.dlBg}}; color: #FFFFFF; font-size: 14px; font-weight: 700; cursor: {{md.dlCursor}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>{{md.dlLbl}}</button>
+</div>
+</div>
+<template data-k="for" list="{{md.groups}}" as="g" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<h3 style="margin: 0; font-size: 15px; color: #12372A">{{g.title}}</h3>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax({{md.gridMin}}, 1fr)); gap: {{md.gridGap}}">
+<template data-k="for" list="{{g.items}}" as="m" hint-placeholder-count="4">
+<article style="position: relative; border: 2px solid {{m.bd}}; border-radius: 12px; overflow: hidden; background: #FFFFFF; display: flex; flex-direction: column">
+<template data-k="if" value="{{m.isImg}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{m.view}}" aria-label="{{m.viewAria}}" style="display: block; padding: 0; border: 0; background: #E3EEE8; cursor: zoom-in; aspect-ratio: 16 / 10"><img src="{{m.thumb}}" alt="{{m.label}}" loading="lazy" style="display: block; width: 100%; height: 100%; object-fit: cover"></button></template>
+<template data-k="if" value="{{m.isVideo}}" hint-placeholder-val="{{ false }}"><video src="{{m.url}}" poster="{{m.thumb}}" controls="{{ true }}" preload="none" playsinline="{{ true }}" aria-label="{{m.label}}" style="display: block; width: 100%; aspect-ratio: 16 / 10; background: #12372A; object-fit: cover"></video></template>
+<label style="position: absolute; top: 8px; left: 8px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; background: rgba(255,255,255,0.92); box-shadow: 0 1px 3px rgba(0,0,0,0.2); cursor: pointer"><input type="checkbox" checked="{{m.on}}" onChange="{{m.toggle}}" aria-label="{{m.selAria}}" style="width: 22px; height: 22px; margin: 0; accent-color: #12372A"></label>
+<span style="position: absolute; top: 12px; right: 10px; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; background: rgba(18,55,42,0.85); color: #FFFFFF">{{m.badge}}</span>
+<div style="display: flex; align-items: center; gap: 8px; padding: 8px 10px 10px">
+<div style="flex: 1 1 auto; min-width: 0"><div style="font-weight: 600; font-size: 14px">{{m.label}}</div><div style="font-size: 12px; color: #55625C">{{m.meta}}</div></div>
+<button type="button" onClick="{{m.dl}}" aria-label="{{m.dlAria}}" style="flex: none; width: 40px; height: 40px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></button>
+</div>
+</article>
+</template>
+</div>
+</div>
+</template>
+<div style="font-size: 12px; color: #55625C">{{md.note}}</div>
+</section>
+<template data-k="if" value="{{md.lb.open}}" hint-placeholder-val="{{ false }}">
+<div role="dialog" aria-modal="true" aria-label="{{md.lb.label}}" style="position: fixed; inset: 0; z-index: 60; background: rgba(10,20,16,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 16px">
+<img src="{{md.lb.url}}" alt="{{md.lb.label}}" style="max-width: 100%; max-height: 72vh; border-radius: 8px; object-fit: contain">
+<div style="color: #FFFFFF; font-weight: 600; text-align: center">{{md.lb.label}} <span style="font-weight: 400; color: #C9D3CE">· {{md.lb.pos}}</span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px">
+<button type="button" onClick="{{md.lb.prev}}" aria-label="{{md.lb.prevAria}}" style="min-width: 48px; min-height: 44px; border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; background: transparent; color: #FFFFFF; font-size: 18px; cursor: pointer">‹</button>
+<button type="button" onClick="{{md.lb.toggle}}" style="min-height: 44px; padding: 0 14px; border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; background: {{md.lb.selBg}}; color: {{md.lb.selFg}}; font-size: 14px; font-weight: 600; cursor: pointer">{{md.lb.selLbl}}</button>
+<button type="button" onClick="{{md.lb.dl}}" style="min-height: 44px; padding: 0 14px; border: 0; border-radius: 8px; background: #E3A23B; color: #12372A; font-size: 14px; font-weight: 700; cursor: pointer">{{md.lb.dlLbl}}</button>
+<button type="button" onClick="{{md.lb.next}}" aria-label="{{md.lb.nextAria}}" style="min-width: 48px; min-height: 44px; border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; background: transparent; color: #FFFFFF; font-size: 18px; cursor: pointer">›</button>
+<button type="button" onClick="{{md.lb.close}}" style="min-height: 44px; padding: 0 14px; border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; background: transparent; color: #FFFFFF; font-size: 14px; cursor: pointer">{{t.close}}</button>
+</div>
+</div>
+</template>
+</div>
+</template>
+
 <template data-k="if" value="{{show.profile}}" hint-placeholder-val="{{ false }}">
 <div style="display: flex; flex-direction: column; gap: 16px">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px">
@@ -842,7 +911,7 @@ button,input,select,textarea{font-family:inherit}
 <template data-k="if" value="{{sp.canBook}}" hint-placeholder-val="{{ true }}">
 <button type="button" onClick="{{bookFromProp}}" style="min-height: 44px; padding: 0 16px; border: 0; border-radius: 8px; background: #12372A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">{{t.bookVisit}}</button>
 </template>
-<button type="button" onClick="{{shareProp}}" style="min-height: 44px; padding: 0 16px; border: 1px solid #CBD3CF; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 14px; font-weight: 600; cursor: pointer">{{t.share}}</button>
+<button type="button" onClick="{{openMedia}}" style="min-height: 44px; padding: 0 16px; border: 1px solid #12372A; border-radius: 8px; background: #FFFFFF; color: #12372A; font-size: 14px; font-weight: 600; cursor: pointer">{{t.viewDetail}}</button>
 </div>
 </div>
 </aside>
@@ -984,6 +1053,7 @@ class Component extends DCLogic {
       lang: 'th', screen: 'home', toast: '',
       lineSt: 'out', lineDate: '2026-10-02', myProofs: this.seedProofs(), pfF: { ch: 'facebook', url: '' },
       simAgent: 'AG-1015', simPrice: '3,000,000', wkAtt: {}, ciCode: '', collapsed: {},
+      mediaProp: '', mediaSel: {}, mediaView: '', dlBusy: false,
       appts: this.seedAppts(), apptTab: 'up', showAppt: false, af: this.blankAppt('PV-A01'), nextAp: 123,
       propType: 'all', selProp: '', salesType: 'all',
       acts: this.seedActs(),
@@ -1114,6 +1184,7 @@ class Component extends DCLogic {
       p_appt: ['นัดหมายพาลูกค้าชมโครงการ', 'Customer site visits'], s_appt: ['ลงทะเบียนนัดหมายล่วงหน้า และดูประวัติการนัดหมาย', 'Book visits in advance and review past visits'],
       p_sales: ['ประวัติการขายและค่าคอมมิชชัน', 'Sales history & commission'], s_sales: ['สัญญาพูลวิลล่าและที่ดินที่คุณปิดการขาย', 'Pool villa and land contracts you closed'],
       p_activity: ['กิจกรรมประจำเดือน', 'Monthly activities'], s_activity: ['ประวัติการเข้าร่วมกิจกรรม ซึ่งเป็นเงื่อนไขการรับค่าคอมมิชชัน', 'Your attendance — a condition for receiving commission'],
+      p_media: ['รายละเอียดทรัพย์', 'Listing details'], s_media: ['รูปภาพและวิดีโอของทรัพย์ เลือกดาวน์โหลดบางไฟล์หรือทั้งหมดเพื่อส่งให้ลูกค้า', 'Photos and videos — download some or all of them to send to your customer'],
       p_props: ['ข้อมูลทรัพย์ของโครงการ', 'Project listings'], s_props: ['รูป รายละเอียด ราคาขาย และโปรโมชั่น สำหรับใช้แนะนำลูกค้า', 'Photos, details, prices and promotions to share with customers'],
       p_overview: ['ลงทะเบียนฟัง Overview Online', 'Online overview sign-up'], s_overview: ['ชวนคนที่สนใจมาฟังภาพรวมโครงการ ก่อนตัดสินใจอบรมเป็นตัวแทน', 'Invite prospects to an online overview before they decide to train'],
       p_training: ['ลงทะเบียนอบรมเป็นตัวแทนขาย', 'Agent training sign-up'], s_training: ['ส่งทีมงานเข้าอบรม เมื่อผ่านแล้วจะเป็นตัวแทนในสายงานของคุณ', 'Send recruits to training; once they pass they join your line'],
@@ -1156,6 +1227,75 @@ class Component extends DCLogic {
       quickFill: ['เลือกจากผู้ที่ฟัง Overview แล้ว:', 'Pick from overview attendees:'], trSubmit: ['ลงทะเบียนอบรม', 'Register'],
       myTrainees: ['ทีมงานที่ลงทะเบียนอบรม', 'Recruits registered for training'], cRound: ['รุ่นอบรม', 'Round'], cOutcome: ['ผลลัพธ์', 'Outcome']
     };
+  }
+
+  makeZip(files) {
+    // store-only ZIP (no compression: JPG/MP4 are already compressed)
+    const table = [];
+    for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; table[n] = c >>> 0; }
+    const crc32 = (d) => { let c = 0xFFFFFFFF; for (let i = 0; i < d.length; i++) c = table[(c ^ d[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+    const enc = new TextEncoder();
+    const now = new Date();
+    const dosTime = (now.getHours() << 11) | (now.getMinutes() << 5) | Math.floor(now.getSeconds() / 2);
+    const dosDate = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
+    const parts = []; const central = []; let offset = 0;
+    files.forEach((f) => {
+      const name = enc.encode(f.name); const crc = crc32(f.data); const size = f.data.length;
+      const lh = new DataView(new ArrayBuffer(30));
+      lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, 0, true);
+      lh.setUint16(10, dosTime, true); lh.setUint16(12, dosDate, true); lh.setUint32(14, crc, true); lh.setUint32(18, size, true); lh.setUint32(22, size, true);
+      lh.setUint16(26, name.length, true); lh.setUint16(28, 0, true);
+      parts.push(new Uint8Array(lh.buffer), name, f.data);
+      const ch = new DataView(new ArrayBuffer(46));
+      ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true); ch.setUint16(10, 0, true);
+      ch.setUint16(12, dosTime, true); ch.setUint16(14, dosDate, true); ch.setUint32(16, crc, true); ch.setUint32(20, size, true); ch.setUint32(24, size, true);
+      ch.setUint16(28, name.length, true); ch.setUint32(42, offset, true);
+      central.push(new Uint8Array(ch.buffer), name);
+      offset += 30 + name.length + size;
+    });
+    const cdSize = central.reduce((a, x) => a + x.length, 0);
+    const end = new DataView(new ArrayBuffer(22));
+    end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true); end.setUint32(12, cdSize, true); end.setUint32(16, offset, true);
+    return new Blob(parts.concat(central, [new Uint8Array(end.buffer)]), { type: 'application/zip' });
+  }
+
+  async saveBlob(blob, name) {
+    if (window.claude && typeof window.claude.use === 'function') {
+      let dl = null;
+      try { dl = await window.claude.use('downloads'); } catch (e) { dl = null; }
+      if (dl) {
+        try { await dl.save({ filename: name, data: blob }); return 'saved'; }
+        catch (e) { return e && e.code === 'declined' ? 'declined' : (e && e.code === 'rate_limited' ? 'busy' : 'failed'); }
+      }
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = name; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+    return 'saved';
+  }
+
+  async downloadMedia(items, zipName) {
+    const TH = this.state.lang === 'th';
+    if (!items.length || this.state.dlBusy) return;
+    this.setState({ dlBusy: true });
+    try {
+      const files = [];
+      for (const it of items) {
+        const r = await fetch(it.url);
+        if (!r.ok) throw new Error(it.url);
+        files.push({ name: it.name, data: new Uint8Array(await r.arrayBuffer()) });
+      }
+      const res = files.length === 1 ? await this.saveBlob(new Blob([files[0].data], { type: items[0].kind === 'video' ? 'video/mp4' : 'image/jpeg' }), files[0].name)
+        : await this.saveBlob(this.makeZip(files), zipName);
+      if (res === 'declined') { this.flash(TH ? 'ยกเลิกการดาวน์โหลดแล้ว' : 'Download cancelled'); this.setState({ dlBusy: false }); return; }
+      if (res === 'busy') { this.flash(TH ? 'มีหน้าต่างยืนยันดาวน์โหลดเปิดอยู่ กรุณากดยืนยันก่อน' : 'A download prompt is already open'); this.setState({ dlBusy: false }); return; }
+      if (res === 'failed') throw new Error('save');
+      this.flash(files.length === 1 ? (TH ? 'ดาวน์โหลด ' + files[0].name + ' แล้ว' : 'Downloaded ' + files[0].name) : (TH ? 'ดาวน์โหลด ' + files.length + ' ไฟล์ เป็น ' + zipName + ' แล้ว' : 'Downloaded ' + files.length + ' files as ' + zipName));
+    } catch (e) {
+      this.flash(TH ? 'ดาวน์โหลดไม่สำเร็จ ลองใหม่อีกครั้ง' : 'Download failed — please try again');
+    }
+    this.setState({ dlBusy: false });
   }
 
   flash(msg) {
@@ -1233,9 +1373,76 @@ class Component extends DCLogic {
         specs: villa
           ? [{ k: TH ? 'ห้องนอน' : 'Bedrooms', v: String(p.bed) }, { k: TH ? 'ห้องน้ำ' : 'Bathrooms', v: String(p.bath) }, { k: TH ? 'ขนาดที่ดิน' : 'Land size', v: p.land + ' ' + sqw }, { k: TH ? 'พื้นที่ใช้สอย' : 'Usable area', v: p.area + ' ' + sqm }]
           : [{ k: TH ? 'ขนาดที่ดิน' : 'Land size', v: p.land + ' ' + sqw }, { k: TH ? 'ราคาต่อ ตร.ว.' : 'Price per sq.wah', v: baht(p.price / p.land) }, { k: TH ? 'หน้ากว้างถนน' : 'Road width', v: TH ? '8 ม.' : '8 m' }, { k: TH ? 'สาธารณูปโภค' : 'Utilities', v: TH ? 'ไฟฟ้า ประปา' : 'Power, water' }],
-        open: () => this.setState({ selProp: p.id })
+        open: () => { this.setState({ screen: 'media', mediaProp: p.id, mediaSel: {}, mediaView: '', selProp: '' }); window.scrollTo(0, 0); }
       };
     };
+
+    // ---------- listing details: photos + videos ----------
+    const MEDIA = {
+      villa: [['villa-01-exterior', 'ภาพด้านหน้าบ้าน', 'Front exterior'], ['villa-02-pool', 'สระว่ายน้ำ', 'Swimming pool'], ['villa-03-living', 'ห้องนั่งเล่น', 'Living room'], ['villa-04-bedroom', 'ห้องนอนใหญ่', 'Master bedroom'], ['villa-05-bathroom', 'ห้องน้ำ', 'Bathroom'], ['villa-06-floorplan', 'แปลนบ้าน', 'Floor plan']],
+      villaV: [['villa-tour', 'วิดีโอพาชมบ้าน', 'House walkthrough', 10], ['villa-drone', 'วิดีโอมุมสูง', 'Aerial view', 6]],
+      land: [['land-01-overview', 'ภาพรวมแปลงที่ดิน', 'Plot overview'], ['land-02-plotplan', 'ผังแปลงที่ดิน', 'Plot plan'], ['land-03-road', 'ถนนและสาธารณูปโภค', 'Road and utilities']],
+      landV: [['land-drone', 'วิดีโอมุมสูงแปลงที่ดิน', 'Aerial view of the plot', 6]]
+    };
+    // In the Claude canvas the files are stored as artifact assets; the GitHub Pages copy serves them from media/.
+    const MEDIA_BLOB = { 'land-01-overview-thumb.jpg': '/_blob/e2af7e1c36b10650c1951920bf1ff746', 'land-01-overview.jpg': '/_blob/4f072326823161634749fe99b21f9321', 'land-02-plotplan-thumb.jpg': '/_blob/f807a618164f0ca5c2cc2859f54068d2', 'land-02-plotplan.jpg': '/_blob/2f58b74a77eb7cb4ba90b0631c64727e', 'land-03-road-thumb.jpg': '/_blob/ccd513293192003e48f9ad11bd2e9a02', 'land-03-road.jpg': '/_blob/6c840e50cecb81fa4bb43d494a16daad', 'land-drone-poster.jpg': '/_blob/896bcf3842ef67f23defef59cce65e45', 'land-drone.mp4': '/_blob/70e8fc0d620bf62d1dd14b6ccc7d8ab9', 'villa-01-exterior-thumb.jpg': '/_blob/a84aa66e6a3b64a9b9947a9b447bf62f', 'villa-01-exterior.jpg': '/_blob/48c0b3e3bc42006d8c6ef7f3b9287fc5', 'villa-02-pool-thumb.jpg': '/_blob/40021794d4df5f9b99ded3e8373b7a0a', 'villa-02-pool.jpg': '/_blob/a6983ed287fdea1fc4a611b38b5008e8', 'villa-03-living-thumb.jpg': '/_blob/8240bde496013bf1cc40ea388158a005', 'villa-03-living.jpg': '/_blob/76f5155a2bbda6b75fe16b85c45487bb', 'villa-04-bedroom-thumb.jpg': '/_blob/4a6132132cb4f4f4d1ff2227a1b5f390', 'villa-04-bedroom.jpg': '/_blob/4d3941a242c0c373015cb79399cdf6aa', 'villa-05-bathroom-thumb.jpg': '/_blob/bab88a0e3fa59d0f360df66666dd8dbe', 'villa-05-bathroom.jpg': '/_blob/4fa5416d3f7611a5c7a8bf105a9df66c', 'villa-06-floorplan-thumb.jpg': '/_blob/fd6517ab605dfec1a2a4be33ba98e088', 'villa-06-floorplan.jpg': '/_blob/f4c46bcf293186c4f6730af354b2e2b8', 'villa-drone-poster.jpg': '/_blob/a77eb77857c482ecfa7998f242d58c11', 'villa-drone.mp4': '/_blob/418e1ee0d36fbbc405c61e8a16fb37f1', 'villa-tour-poster.jpg': '/_blob/ec4655d6fe916c78752534d22d58c2e1', 'villa-tour.mp4': '/_blob/e1a155ba7192026eea7e3af20152822b' };
+    const mUrl = (f) => (!window.__LISTEM_STATIC && MEDIA_BLOB[f] ? MEDIA_BLOB[f] : 'media/' + f);
+    const MSIZE = {'land-01-overview.jpg': 53046, 'land-02-plotplan.jpg': 79932, 'land-03-road.jpg': 44108, 'land-drone.mp4': 1627376, 'villa-01-exterior.jpg': 77801, 'villa-02-pool.jpg': 66607, 'villa-03-living.jpg': 56325, 'villa-04-bedroom.jpg': 48436, 'villa-05-bathroom.jpg': 62334, 'villa-06-floorplan.jpg': 77151, 'villa-drone.mp4': 1757180, 'villa-tour.mp4': 620927};
+    const sizeTxt = (f) => (MSIZE[f] ? (MSIZE[f] >= 1048576 ? (MSIZE[f] / 1048576).toFixed(1) + ' MB' : Math.round(MSIZE[f] / 1024) + ' KB') : '');
+    const mp = PM[s.mediaProp] || props[0];
+    const mVilla = mp.type === 'villa';
+    const mItems = (mVilla ? MEDIA.villa : MEDIA.land).map((x, i) => ({ key: 'i' + i, kind: 'img', file: x[0] + '.jpg', thumb: mUrl(x[0] + '-thumb.jpg'), label: L([x[1], x[2]]), meta: (s.narrow ? 'JPG · ' : 'JPG · 1600×1000 · ') + sizeTxt(x[0] + '.jpg') }))
+      .concat((mVilla ? MEDIA.villaV : MEDIA.landV).map((x, i) => ({ key: 'v' + i, kind: 'video', file: x[0] + '.mp4', thumb: mUrl(x[0] + '-poster.jpg'), label: L([x[1], x[2]]), meta: 'MP4 · ' + x[3] + (TH ? ' วินาที · ' : ' sec · ') + sizeTxt(x[0] + '.mp4') })))
+      .map((m) => Object.assign(m, { url: mUrl(m.file), name: mp.id + '_' + m.file }));
+    const mSel = mItems.filter((m) => s.mediaSel[m.key]);
+    const allOn = mSel.length === mItems.length;
+    const sizeTxtN = (arr) => { const b = arr.reduce((a, m) => a + (MSIZE[m.file] || 0), 0); return b >= 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.round(b / 1024) + ' KB'; };
+    const toggleKey = (k) => this.setState((st) => ({ mediaSel: Object.assign({}, st.mediaSel, { [k]: !st.mediaSel[k] }) }));
+    const zipName = mp.id + (TH ? '_รูปและวิดีโอ.zip' : '_media.zip');
+    const mImgs = mItems.filter((m) => m.kind === 'img');
+    const lbIdx = mImgs.findIndex((m) => m.key === s.mediaView);
+    const lbItem = mImgs[lbIdx];
+    const deco = decoProp(mp);
+    const md = {
+      stickTop: s.narrow ? '72px' : '0px', gridMin: s.narrow ? '150px' : '220px', gridGap: s.narrow ? '8px' : '12px',
+      backLbl: TH ? 'กลับไปข้อมูลทรัพย์' : 'Back to listings', back: () => { this.setState({ screen: 'props', selProp: '', mediaView: '' }); window.scrollTo(0, 0); },
+      p: deco,
+      specs: deco.specs.concat([{ k: TH ? 'รหัสทรัพย์' : 'Listing code', v: mp.id }, { k: TH ? 'สถานะ' : 'Status', v: deco.c.label }]),
+      book: () => this.setState({ screen: 'appt', showAppt: true, apptTab: 'up', af: this.blankAppt(mp.id) }),
+      galTitle: (TH ? 'รูปภาพและวิดีโอ (' : 'Photos and videos (') + mItems.length + ')',
+      galSub: TH ? 'ติ๊กเลือกไฟล์ที่ต้องการ แล้วกดดาวน์โหลด · เลือกหลายไฟล์จะได้เป็นไฟล์ .zip ไฟล์เดียว' : 'Tick the files you want, then download · several files come as one .zip',
+      allOn: allOn, allLbl: TH ? 'เลือกทั้งหมด' : 'Select all',
+      toggleAll: () => { const next = {}; if (!allOn) mItems.forEach((m) => { next[m.key] = true; }); this.setState({ mediaSel: next }); },
+      countText: (TH ? 'เลือกแล้ว ' : 'Selected ') + mSel.length + (TH ? ' จาก ' : ' of ') + mItems.length + (mSel.length ? ' · ' + sizeTxtN(mSel) : ''),
+      anySel: mSel.length > 0, clearLbl: TH ? 'ล้างที่เลือก' : 'Clear', clear: () => this.setState({ mediaSel: {} }),
+      dlDisabled: !mSel.length || s.dlBusy, dlBg: !mSel.length || s.dlBusy ? '#9AA6A0' : '#12372A', dlCursor: !mSel.length || s.dlBusy ? 'not-allowed' : 'pointer',
+      dlLbl: s.dlBusy ? (TH ? 'กำลังเตรียมไฟล์…' : 'Preparing…') : (TH ? 'ดาวน์โหลดที่เลือก (' : 'Download selected (') + mSel.length + ')',
+      download: () => this.downloadMedia(mSel, zipName),
+      groups: [[TH ? 'รูปภาพ' : 'Photos', 'img'], [TH ? 'วิดีโอ' : 'Videos', 'video']].map((g) => {
+        const its = mItems.filter((m) => m.kind === g[1]);
+        return { title: g[0] + ' (' + its.length + ')', items: its.map((m) => ({
+          isImg: m.kind === 'img', isVideo: m.kind === 'video', url: m.url, thumb: m.thumb, label: m.label, meta: m.meta,
+          badge: m.kind === 'img' ? (TH ? 'รูป' : 'Photo') : (TH ? 'วิดีโอ' : 'Video'),
+          on: !!s.mediaSel[m.key], bd: s.mediaSel[m.key] ? '#12372A' : '#E1E6E3', toggle: () => toggleKey(m.key),
+          selAria: (TH ? 'เลือก ' : 'Select ') + m.label, viewAria: (TH ? 'ดูรูปขนาดใหญ่: ' : 'View larger: ') + m.label,
+          view: () => this.setState({ mediaView: m.key }),
+          dl: () => this.downloadMedia([m], zipName), dlAria: (TH ? 'ดาวน์โหลด ' : 'Download ') + m.label
+        })) };
+      }),
+      note: TH ? 'ภาพและวิดีโอในต้นแบบนี้เป็นภาพตัวอย่าง ระบบจริงใช้ไฟล์ที่เจ้าหน้าที่อัปโหลดในหน้าจัดการข้อมูลทรัพย์' : 'Photos and videos in this prototype are samples. The live system uses files staff upload on the listing management page.',
+      lb: {
+        open: !!lbItem, url: lbItem ? lbItem.url : '', label: lbItem ? lbItem.label : '', pos: lbItem ? (lbIdx + 1) + ' / ' + mImgs.length : '',
+        prevAria: TH ? 'รูปก่อนหน้า' : 'Previous photo', nextAria: TH ? 'รูปถัดไป' : 'Next photo',
+        prev: () => lbItem && this.setState({ mediaView: mImgs[(lbIdx - 1 + mImgs.length) % mImgs.length].key }),
+        next: () => lbItem && this.setState({ mediaView: mImgs[(lbIdx + 1) % mImgs.length].key }),
+        close: () => this.setState({ mediaView: '' }),
+        toggle: () => lbItem && toggleKey(lbItem.key),
+        selLbl: lbItem && s.mediaSel[lbItem.key] ? (TH ? '✓ เลือกแล้ว' : '✓ Selected') : (TH ? 'เลือกรูปนี้' : 'Select this photo'),
+        selBg: lbItem && s.mediaSel[lbItem.key] ? '#FFFFFF' : 'transparent', selFg: lbItem && s.mediaSel[lbItem.key] ? '#12372A' : '#FFFFFF',
+        dl: () => lbItem && this.downloadMedia([lbItem], zipName), dlLbl: TH ? 'ดาวน์โหลดรูปนี้' : 'Download this photo'
+      }
+    };
+
     const order = { available: 0, reserved: 1, sold: 2 };
     const inProj = (p) => (p.project || 'main') === s.propProj;
     const propCards = props.filter(inProj).filter((p) => s.propType === 'all' || p.type === s.propType || (s.propType === 'monthly' && p.monthly) || p.origin === s.propType)
@@ -1892,12 +2099,12 @@ class Component extends DCLogic {
       sim: 'M5 3h14v18H5zM8 7h8M8 11h2M12 11h2M16 11v6M8 15h2M12 15h2M8 18h6'
     };
     const navItem = (key) => {
-      const on = s.screen === key;
+      const on = s.screen === key || (key === 'props' && s.screen === 'media');
       return { label: t['n_' + key], d: ICON[key], cur: on ? 'page' : 'false', bg: on ? '#E3A23B' : 'transparent', fg: on ? '#12372A' : '#E6EEEA', go: () => { this.setState({ screen: key, selProp: key === 'props' ? s.selProp : '', menuOpen: false }); window.scrollTo(0, 0); } };
     };
     const seg = (on) => ({ bg: on ? '#12372A' : '#FFFFFF', fg: on ? '#FFFFFF' : '#1B2420', pressed: on ? 'true' : 'false' });
     const show = {};
-    ['home', 'profile', 'tree', 'contracts', 'appt', 'sales', 'activity', 'actsum', 'props', 'overview', 'training', 'proof', 'sim'].forEach((k) => { show[k] = s.screen === k; });
+    ['home', 'profile', 'tree', 'contracts', 'appt', 'sales', 'activity', 'actsum', 'props', 'overview', 'training', 'proof', 'sim', 'media'].forEach((k) => { show[k] = s.screen === k; });
 
     return {
       t: t, show: show,
@@ -1976,7 +2183,8 @@ class Component extends DCLogic {
       hasSelProp: !!selP, sp: selP ? decoProp(selP) : emptySp,
       closeProp: () => this.setState({ selProp: '' }),
       bookFromProp: () => this.setState({ screen: 'appt', showAppt: true, apptTab: 'up', af: this.blankAppt(this.state.selProp) }),
-      shareProp: () => this.flash(TH ? 'คัดลอกลิงก์ข้อมูลทรัพย์สำหรับส่งลูกค้าแล้ว (ตัวอย่าง)' : 'Listing link copied for your customer (sample)'),
+      openMedia: () => { this.setState({ screen: 'media', mediaProp: this.state.selProp, mediaSel: {}, mediaView: '' }); window.scrollTo(0, 0); },
+      md: md,
 
       steps: steps, ovSessions: ovSessions, of: s.of,
       setOf: { first: setOfF('first'), last: setOfF('last'), phone: setOfF('phone'), email: setOfF('email'), line: setOfF('line') },
